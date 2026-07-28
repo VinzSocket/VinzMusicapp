@@ -27,7 +27,7 @@
   #authView, #appView { width: 100%; height: 100%; position: absolute; inset: 0; }
   #appView { display: none; background: radial-gradient(circle at top right, #1e293b, var(--bg-darker)); flex-direction: column; }
 
-  /* --- LOGIN SCREEN (Adaptasi dari Vinz Music Login) --- */
+  /* --- LOGIN SCREEN (Desain Asli Vinz) --- */
   #authView { display: flex; justify-content: center; align-items: center; background: radial-gradient(circle at center, #121212, #000); overflow: hidden; }
   .login-orb { position: absolute; width: 350px; height: 350px; border-radius: 50%; filter: blur(90px); opacity: 0.45; animation: moveOrb 15s infinite alternate ease-in-out; }
   .login-orb:nth-child(1) { background: #00eaff; left: 15%; top: 20%; animation-delay: 0s; }
@@ -36,11 +36,38 @@
   @keyframes moveOrb { 100% { transform: translate(-160px, -30px) scale(0.9); } }
 
   .glass-panel {
-    position: relative; width: 340px; padding: 40px 30px; display: flex; flex-direction: column; align-items: center;
+    position: relative; width: 360px; padding: 40px 30px; display: flex; flex-direction: column; align-items: center;
     background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 28px; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 15px 40px rgba(0,0,0,0.6); z-index: 10;
   }
-  .glass-panel h2 { margin: 0 0 25px 0; font-size: 24px; font-weight: 700; letter-spacing: 1px; }
+  .glass-panel h2 { color: white; margin: 0 0 25px 0; font-weight: 600; font-size: 24px; letter-spacing: 1px; }
+
+  /* Input Form ala Vinz */
+  .input-group { width: 100%; margin-bottom: 15px; }
+  .input-group input { width: 100%; padding: 14px 15px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 14px; outline: none; transition: 0.3s ease; }
+  .input-group input::placeholder { color: rgba(255, 255, 255, 0.4); }
+  .input-group input:focus { background: rgba(255, 255, 255, 0.05); border-color: #00eaff; box-shadow: 0 0 12px rgba(0, 234, 255, 0.15); }
+
+  /* Tombol Kaca */
+  .glass-btn { position: relative; width: 100%; padding: 12px 0; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 8px; color: white; font-size: 15px; font-weight: 600; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; cursor: pointer; overflow: hidden; transition: 0.3s ease; }
+  .glass-btn.primary { background: rgba(255, 255, 255, 0.1); margin-top: 5px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: inset 0 1px 1px rgba(255,255,255,0.2); }
+  .glass-btn::after { content: ""; position: absolute; width: 100px; height: 200px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: rotate(25deg) translateX(-250px); animation: shine 4s infinite; pointer-events: none; }
+  @keyframes shine { 0% { transform: rotate(25deg) translateX(-350px); } 50% { transform: rotate(25deg) translateX(350px); } 100% { transform: rotate(25deg) translateX(350px); } }
+  .glass-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.12); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+  .glass-btn:active { transform: translateY(0); }
+
+  /* Divider */
+  .divider { width: 100%; display: flex; align-items: center; margin: 15px 0 20px 0; color: rgba(255,255,255,0.3); font-size: 12px; }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
+  .divider span { margin: 0 10px; }
+
+  /* Register Link */
+  .register-link { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  .register-link a { color: #00eaff; text-decoration: none; font-weight: 600; transition: 0.3s; cursor: pointer; }
+  .register-link a:hover { color: #fff; text-shadow: 0 0 10px rgba(0, 234, 255, 0.5); }
+
+  /* Wadah Google Button agar pas */
+  #googleBtnContainer { margin-bottom: 12px; width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; }
   
   /* --- APP SCREENS --- */
   .content { flex: 1; position: relative; overflow: hidden; }
@@ -65,17 +92,13 @@
 
   /* --- AKUN SCREEN --- */
   .profile-card { text-align: center; padding: 30px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; margin-bottom: 20px; }
-  .profile-card img { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--primary); }
+  .profile-card img { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--primary); object-fit: cover; }
   .profile-card h3 { margin: 0 0 5px 0; font-size: 20px; }
   .profile-card p { margin: 0; color: var(--text-inactive); font-size: 14px; }
   .btn-logout { width: 100%; padding: 15px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 15px; font-weight: 600; cursor: pointer; }
 
   /* --- MINI PLAYER --- */
-  .mini-player {
-    position: absolute; bottom: -100px; left: 15px; right: 15px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border); border-radius: 18px; display: flex; align-items: center; padding: 8px 12px; gap: 12px;
-    transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer;
-  }
+  .mini-player { position: absolute; bottom: -100px; left: 15px; right: 15px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 18px; display: flex; align-items: center; padding: 8px 12px; gap: 12px; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer; }
   .mini-player.active { bottom: 100px; }
   .mp-cover { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; }
   .mp-info { flex: 1; overflow: hidden; }
@@ -83,27 +106,20 @@
   .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); }
   .mp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
 
-  /* --- FULL SCREEN PLAYER (Tampilan ala Spotify) --- */
-  .full-player {
-    position: fixed; inset: 0; background: linear-gradient(180deg, #1e293b 0%, #020617 100%);
-    z-index: 200; display: flex; flex-direction: column; padding: 30px 25px;
-    transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
+  /* --- FULL SCREEN PLAYER --- */
+  .full-player { position: fixed; inset: 0; background: linear-gradient(180deg, #1e293b 0%, #020617 100%); z-index: 200; display: flex; flex-direction: column; padding: 30px 25px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   .full-player.active { transform: translateY(0); }
-  
   .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
   .fp-header button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
   .fp-header p { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(--text-inactive); text-transform: uppercase; }
-  
   .fp-cover-container { width: 100%; aspect-ratio: 1/1; margin-bottom: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border-radius: 12px; overflow: hidden; }
   .fp-cover-container img { width: 100%; height: 100%; object-fit: cover; }
-  
   .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
   .fp-meta-text { flex: 1; overflow: hidden; }
   .fp-meta-text h2 { margin: 0 0 5px 0; font-size: 22px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); }
   .btn-love { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; }
-  .btn-love.active svg { fill: #1db954; stroke: #1db954; } /* Warna Hijau ala Spotify */
+  .btn-love.active svg { fill: #1db954; stroke: #1db954; } 
 
   /* Timeline */
   .fp-timeline { margin-bottom: 25px; }
@@ -132,15 +148,39 @@
 </head>
 <body>
 
-<!-- WADAH LOGIN -->
+<!-- WADAH LOGIN (UI ASLI VINZ) -->
 <div id="authView">
   <div class="login-orb"></div><div class="login-orb"></div><div class="login-orb"></div>
   <div class="glass-panel">
-    <h2>Vinz Music</h2>
-    <p style="color: #a1a1aa; font-size: 13px; text-align: center; margin-top: -10px; margin-bottom: 25px;">Masuk untuk menyimpan koleksi musikmu</p>
-    
-    <!-- Tombol Google Otomatis (GSI) -->
+    <h2>Welcome</h2>
+
+    <!-- FORM LOGIN STANDAR -->
+    <div class="input-group">
+      <input type="email" placeholder="Email" required>
+    </div>
+    <div class="input-group">
+      <input type="password" placeholder="Password" required>
+    </div>
+    <button class="glass-btn primary" onclick="alert('Untuk menyimpan lagu, silakan gunakan Login Google di bawah ini.')">Login</button>
+
+    <!-- PEMISAH -->
+    <div class="divider">
+      <span>ATAU</span>
+    </div>
+
+    <!-- WADAH GOOGLE GSI ASLI -->
     <div id="googleBtnContainer"></div>
+
+    <!-- LOGIN GUEST -->
+    <button class="glass-btn" onclick="loginGuest()">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      Masuk sebagai Tamu
+    </button>
+
+    <!-- LINK DAFTAR -->
+    <div class="register-link">
+      Belum punya akun? <a onclick="alert('Fitur daftar sedang dikembangkan. Gunakan Login Google.')">Daftar Akun</a>
+    </div>
   </div>
 </div>
 
@@ -203,35 +243,27 @@
     </div>
   </div>
 
-  <!-- FULL SCREEN PLAYER (Melayang Ke Atas) -->
+  <!-- FULL SCREEN PLAYER -->
   <div class="full-player" id="fullPlayer">
-    <!-- Header: Tombol Turun & Keterangan -->
     <div class="fp-header">
       <button onclick="closeFullPlayer()">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
       <p>Memainkan dari VinzMusic</p>
-      <button style="opacity: 0;"><svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="1"></circle></svg></button> <!-- Spacer -->
+      <button style="opacity: 0;"><svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="1"></circle></svg></button> 
     </div>
-    
-    <!-- Cover -->
     <div class="fp-cover-container">
       <img id="fpCover" src="https://via.placeholder.com/400" alt="Cover Besar">
     </div>
-    
-    <!-- Meta Data & Tombol Love -->
     <div class="fp-meta">
       <div class="fp-meta-text">
         <h2 id="fpTitle">Judul Lagu</h2>
         <p id="fpArtist">Nama Artis</p>
       </div>
       <button class="btn-love" id="btnLove" onclick="toggleCollection()">
-        <!-- SVG Hati -->
         <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
       </button>
     </div>
-    
-    <!-- Progress Bar -->
     <div class="fp-timeline">
       <div class="progress-area" id="progressArea" onclick="seekAudio(event)">
         <div class="progress-bar" id="progressBar"></div>
@@ -241,22 +273,18 @@
         <span id="durationTime">--:--</span>
       </div>
     </div>
-    
-    <!-- Main Controls -->
     <div class="fp-controls">
       <button><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path></svg></button>
       <button onclick="skipAudio(-10)"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"></path></svg></button>
-      
       <button class="btn-main-play" id="fpPlayPauseBtn" onclick="togglePlayPause()">
         <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
       </button>
-      
       <button onclick="skipAudio(10)"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"></path></svg></button>
       <button><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg></button>
     </div>
   </div>
 
-  <!-- NAVIGASI BAWAH (Menu Dasar) -->
+  <!-- NAVIGASI BAWAH -->
   <div class="bottom-nav">
     <div class="indicator"></div>
     <div class="nav-item active" data-title="Dashboard">
@@ -280,39 +308,36 @@
 
 <script>
   // ==========================================
-  // 1. SISTEM LOGIN GOOGLE IDENTITY
+  // 1. SISTEM LOGIN GOOGLE IDENTITY & TAMU
   // ==========================================
-  const GOOGLE_CLIENT_ID = "606659995825-bdmkmg51k222mbr6b6dtie92ahbg1hpt.apps.googleusercontent.com"; //[span_2](start_span)[span_2](end_span)
+  const GOOGLE_CLIENT_ID = "606659995825-bdmkmg51k222mbr6b6dtie92ahbg1hpt.apps.googleusercontent.com";
   let currentUser = null;
 
   window.onload = function () {
-    // Cek apakah user sudah login sebelumnya via localStorage
     const savedUser = localStorage.getItem('vinz_user');
     if(savedUser) {
       currentUser = JSON.parse(savedUser);
       masukKeApp();
     } else {
-      // Inisialisasi Tombol Login Google
       google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleCredentialResponse
       });
+      // Tombol GSI (Lebar 300px agar pas dengan padding glass-panel)
       google.accounts.id.renderButton(
         document.getElementById("googleBtnContainer"),
-        { theme: "outline", size: "large", shape: "pill", width: 280 }
+        { theme: "outline", size: "large", shape: "pill", width: 300 }
       );
     }
   }
 
   function handleCredentialResponse(response) {
-    // Decode JWT Token dari Google
     const responsePayload = decodeJwtResponse(response.credential);
     currentUser = {
       name: responsePayload.name,
       email: responsePayload.email,
       picture: responsePayload.picture
     };
-    // Simpan sesi ke memori lokal
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
     masukKeApp();
   }
@@ -326,26 +351,33 @@
     return JSON.parse(jsonPayload);
   }
 
+  // Fungsi khusus untuk "Masuk Sebagai Tamu"
+  function loginGuest() {
+    currentUser = {
+      name: "Akun Tamu",
+      email: "Belum terhubung ke Google",
+      picture: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+    };
+    masukKeApp();
+  }
+
   function masukKeApp() {
     document.getElementById('authView').style.display = 'none';
     document.getElementById('appView').style.display = 'flex';
     
-    // Isi data ke Menu Akun
     document.getElementById('userName').innerText = currentUser.name;
     document.getElementById('userEmail').innerText = currentUser.email;
     document.getElementById('userPicture').src = currentUser.picture;
 
-    // Render data lokal
     renderHistory();
     renderCollection();
     
-    // Setup Navigasi
     setTimeout(() => { moveIndicator(document.querySelector('.nav-item.active')); }, 100);
   }
 
   function logoutGoogle() {
     localStorage.removeItem('vinz_user');
-    window.location.reload(); // Refresh total layar
+    window.location.reload(); 
   }
 
   // ==========================================
@@ -386,10 +418,9 @@
   let currentActiveSong = null;
 
   function saveToHistory(songObj) {
-    // Hapus duplikat kalau lagu sudah ada, pindahkan ke urutan teratas
     playHistory = playHistory.filter(s => s.url !== songObj.url);
     playHistory.unshift(songObj);
-    if(playHistory.length > 20) playHistory.pop(); // Max 20 riwayat
+    if(playHistory.length > 20) playHistory.pop(); 
     localStorage.setItem('vinz_history', JSON.stringify(playHistory));
   }
 
@@ -421,7 +452,6 @@
   }
 
   function generateCardHTML(song) {
-    // Escaping petik agar onclick tidak error
     const t = song.title.replace(/'/g, "\\'");
     const a = song.artist.replace(/'/g, "\\'");
     return `
@@ -473,22 +503,16 @@
   }
 
   async function fetchAudio(spotifyUrl, title, artist, cover) {
-    // Siapkan object lagu saat ini
     currentActiveSong = { title, artist, cover, url: spotifyUrl };
     saveToHistory(currentActiveSong);
     
-    // Update UI Status (Heart icon)
     const isSaved = savedCollection.find(s => s.url === spotifyUrl);
     document.getElementById('btnLove').className = isSaved ? 'btn-love active' : 'btn-love';
 
-    // Munculkan Mini Player
     document.getElementById('miniPlayer').classList.add('active');
-    
-    // Sinkronisasi teks di Mini dan Full Player
     document.getElementById('mpTitle').innerText = title;
     document.getElementById('mpArtist').innerText = "Memuat...";
     document.getElementById('mpCover').src = cover;
-    
     document.getElementById('fpTitle').innerText = title;
     document.getElementById('fpArtist').innerText = "Mengekstrak MP3...";
     document.getElementById('fpCover').src = cover;
@@ -516,11 +540,11 @@
       updatePlayIcons(iconPlay);
     }
   }
+
   // ==========================================
   // 5. KONTROL AUDIO & ANIMASI FULL SCREEN
   // ==========================================
   function openFullPlayer(e) {
-    // Cegah klik tombol play di mini player agar tidak ikut membuka layar
     if(e.target.closest('#mpPlayPauseBtn')) return; 
     document.getElementById('fullPlayer').classList.add('active');
   }
@@ -546,7 +570,6 @@
   audio.addEventListener("play", () => updatePlayIcons(iconPause));
   audio.addEventListener("pause", () => updatePlayIcons(iconPlay));
 
-  // Update Progress Bar
   const pBar = document.getElementById("progressBar");
   const tCur = document.getElementById("currentTime");
   const tDur = document.getElementById("durationTime");
@@ -560,7 +583,6 @@
     }
   });
 
-  // Seek bar manual
   function seekAudio(e) {
     const area = document.getElementById("progressArea");
     const clickX = e.offsetX;
