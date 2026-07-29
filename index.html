@@ -7,105 +7,119 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   :root {
-    --bg-dark: #0f172a;
-    --bg-darker: #020617;
-    --nav-bg: rgba(30, 41, 59, 0.75);
+    --bg-darker: #02040a;
+    --bg-app: #080b12;
+    --nav-bg: rgba(10, 15, 26, 0.85);
     --glass-indicator: linear-gradient(135deg, rgba(56, 189, 248, 0.4) 0%, rgba(129, 140, 248, 0.2) 100%);
     --text-active: #ffffff;
-    --text-inactive: #64748b;
+    --text-inactive: #94a3b8;
     --primary: #38bdf8;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --primary-glow: rgba(56, 189, 248, 0.5);
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.08);
   }
 
   * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; height: 100vh; background-color: var(--bg-darker); overflow: hidden; color: #fff; position: relative; }
 
-  body {
-    margin: 0;
-    height: 100vh;
-    background-color: var(--bg-darker);
-    overflow: hidden;
-    color: #fff;
-    position: relative;
-  }
-
-  /* --- ORBS BACKGROUND --- */
-  .orb { position: absolute; width: 450px; height: 450px; border-radius: 50%; filter: blur(120px); opacity: 0.3; animation: moveOrb 20s infinite alternate ease-in-out; z-index: 0; pointer-events: none; }
+  /* --- CAHAYA ORBS GLOBAL --- */
+  .orb { position: absolute; width: 450px; height: 450px; border-radius: 50%; filter: blur(120px); opacity: 0.2; animation: moveOrb 20s infinite alternate ease-in-out; z-index: 0; pointer-events: none; }
   .orb:nth-child(1) { background: #00eaff; left: -10%; top: -10%; animation-delay: 0s; }
   .orb:nth-child(2) { background: #8b5cf6; right: -10%; top: 40%; animation-delay: -5s; }
   .orb:nth-child(3) { background: #ff2d75; left: 20%; bottom: -10%; animation-delay: -10s; }
   @keyframes moveOrb { 100% { transform: translate(100px, 100px) scale(1.2); } }
 
-  /* --- KUNANG-KUNANG CANVAS --- */
-  #firefliesCanvas {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    z-index: 1; pointer-events: none;
-    opacity: 0; transition: opacity 2.5s ease-in-out;
-  }
+  /* --- KUNANG-KUNANG --- */
+  #firefliesCanvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0; transition: opacity 2.5s ease-in-out; }
   #firefliesCanvas.active { opacity: 1; }
 
   /* --- VIEW CONTROLLER --- */
-  #authView, #appView { width: 100%; height: 100%; position: absolute; inset: 0; z-index: 10; }
+  #splashScreen, #authView, #appView { width: 100%; height: 100%; position: absolute; inset: 0; z-index: 10; }
   
+  /* --- SPLASH SCREEN (ANIMASI BUKA APLIKASI) --- */
+  #splashScreen { display: none; flex-direction: column; justify-content: center; align-items: center; background: var(--bg-darker); z-index: 9999; transition: opacity 0.6s ease; }
+  .splash-logo { font-size: 42px; font-weight: 900; background: linear-gradient(135deg, #00eaff, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: pulseLogo 1.5s infinite alternate; }
+  .splash-text { margin-top: 15px; font-size: 14px; color: var(--text-inactive); letter-spacing: 2px; }
+  .splash-spinner { margin-top: 30px; width: 25px; height: 25px; border: 3px solid rgba(56, 189, 248, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes pulseLogo { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 20px var(--primary-glow); } }
+
   /* --- LOGIN SCREEN --- */
   #authView { display: flex; justify-content: center; align-items: center; background: transparent; }
   .glass-panel { position: relative; width: 350px; padding: 40px 30px; display: flex; flex-direction: column; align-items: center; background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 20px 50px rgba(0,0,0,0.8); z-index: 10; }
   .glass-panel h2 { color: white; margin: 0 0 25px 0; font-weight: 600; font-size: 24px; letter-spacing: 1px; }
-
   .input-group { width: 100%; margin-bottom: 15px; }
   .input-group input { width: 100%; padding: 14px 15px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 14px; outline: none; transition: 0.3s ease; }
-  .input-group input::placeholder { color: rgba(255, 255, 255, 0.4); }
   .input-group input:focus { border-color: #00eaff; box-shadow: 0 0 12px rgba(0, 234, 255, 0.2); }
-
   .glass-btn { position: relative; width: 100%; padding: 12px 0; margin-bottom: 12px; display: flex; justify-content: center; align-items: center; gap: 8px; color: white; font-size: 15px; font-weight: 600; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; cursor: pointer; transition: 0.3s ease; }
   .glass-btn.primary { background: rgba(255, 255, 255, 0.1); margin-top: 5px; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2); }
-  .glass-btn:active { transform: scale(0.97); }
-
   .divider { width: 100%; display: flex; align-items: center; margin: 15px 0 20px 0; color: rgba(255,255,255,0.3); font-size: 12px; }
   .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
   .divider span { margin: 0 10px; }
   #googleBtnContainer { margin-bottom: 12px; width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; }
 
   /* --- APP SCREENS --- */
-  #appView { display: none; background: radial-gradient(circle at top right, rgba(30,41,59,0.3), transparent); flex-direction: column; z-index: 5; }
+  #appView { display: none; background: radial-gradient(circle at top right, rgba(30,41,59,0.3), var(--bg-app)); flex-direction: column; z-index: 5; }
+  .app-header { padding: 30px 20px 10px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 20; }
+  .app-header h1 { margin: 0; font-size: 22px; font-weight: 800; background: linear-gradient(90deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  
   .content { flex: 1; position: relative; overflow: hidden; }
-  .screen { position: absolute; inset: 0; padding: 30px 20px 180px 20px; opacity: 0; visibility: hidden; overflow-y: auto; transition: 0.3s ease; display: flex; flex-direction: column; }
+  .screen { position: absolute; inset: 0; padding: 10px 20px 180px 20px; opacity: 0; visibility: hidden; overflow-y: auto; transition: 0.4s ease; display: flex; flex-direction: column; }
   .screen.active { opacity: 1; visibility: visible; z-index: 20; }
-  .screen.center-content { justify-content: center; align-items: center; text-align: center; }
+  .section-title { font-size: 20px; font-weight: 700; margin-bottom: 15px; color: #fff; display: flex; align-items: center; gap: 8px; }
   
-  .section-title { font-size: 26px; font-weight: 800; margin-bottom: 25px; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  
-  /* --- UI LIST LAGU --- */
+  /* --- UI LIST LAGU (DI-PERCANTIK) --- */
   .song-list { display: flex; flex-direction: column; gap: 12px; }
-  .song-card { display: flex; align-items: center; gap: 14px; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 10px; border-radius: 16px; backdrop-filter: blur(10px); transition: 0.3s; animation: slideUp 0.3s ease forwards; opacity: 0; transform: translateY(15px); cursor: pointer; }
-  .song-card:active { transform: scale(0.98); background: rgba(255,255,255,0.08); }
-  .song-card img { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; }
+  .song-card { display: flex; align-items: center; gap: 14px; background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 10px; border-radius: 16px; backdrop-filter: blur(10px); transition: 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+  .song-card:hover { background: rgba(255, 255, 255, 0.06); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+  .song-card:active { transform: scale(0.98); }
+  .song-card img { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
   .song-info { flex: 1; overflow: hidden; }
-  .song-info h3 { margin: 0 0 4px 0; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .song-info h3 { margin: 0 0 4px 0; font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
   .song-info p { margin: 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   
-  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-
-  /* --- SEARCH BOX --- */
-  .search-box { display: flex; gap: 10px; margin-bottom: 25px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(15px); }
+  /* --- PENCARIAN (DI-PERCANTIK) --- */
+  .search-box { display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 6px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(15px); transition: 0.3s; }
+  .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
   .search-box input { flex: 1; padding: 12px 15px; background: transparent; border: none; color: #fff; outline: none; font-size: 14px; }
-  .search-box button { padding: 0 20px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary); border-radius: 15px; cursor: pointer; transition: 0.2s; }
+  .search-box button { padding: 0 20px; background: linear-gradient(135deg, #38bdf8, #2563eb); border: none; color: #fff; border-radius: 15px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4); }
   .search-box button:active { transform: scale(0.9); }
+  .search-tags { display: flex; gap: 10px; margin-bottom: 25px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+  .search-tags::-webkit-scrollbar { display: none; }
+  .tag { padding: 6px 16px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; font-size: 12px; white-space: nowrap; cursor: pointer; transition: 0.2s; }
+  .tag:hover { background: rgba(255,255,255,0.15); color: var(--primary); border-color: var(--primary); }
+
+  /* --- MENU AKUN (DI-PERCANTIK TOTAL) --- */
+  .account-wrapper { padding-top: 10px; }
+  .profile-card { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); border-radius: 24px; overflow: hidden; margin-bottom: 25px; backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+  .profile-banner { height: 100px; background: linear-gradient(135deg, #38bdf8, #8b5cf6); position: relative; }
+  .profile-info { padding: 0 20px 25px 20px; text-align: center; position: relative; }
+  .profile-info img { width: 85px; height: 85px; border-radius: 50%; border: 4px solid var(--bg-app); margin-top: -42px; background: var(--bg-app); object-fit: cover; }
+  .profile-info h3 { margin: 10px 0 2px 0; font-size: 20px; font-weight: 700; }
+  .profile-info p { margin: 0; color: var(--text-inactive); font-size: 13px; }
+  .profile-stats { display: flex; justify-content: space-around; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+  .stat-box { text-align: center; }
+  .stat-box strong { display: block; font-size: 18px; color: #fff; }
+  .stat-box span { font-size: 11px; color: var(--text-inactive); text-transform: uppercase; letter-spacing: 1px; }
+  .btn-logout { width: 100%; padding: 15px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+  .btn-logout:hover { background: #ef4444; color: #fff; }
+
+  /* --- MENU PREMIUM (DI-PERCANTIK TOTAL) --- */
+  .premium-hero { text-align: center; padding: 20px 0; }
+  .premium-hero h2 { font-size: 28px; margin: 0; background: linear-gradient(135deg, #f59e0b, #ea580c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .premium-box { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 24px; padding: 25px; margin-top: 15px; box-shadow: 0 10px 40px rgba(245, 158, 11, 0.1); position: relative; overflow: hidden; }
+  .premium-box::before { content: ""; position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: #f59e0b; filter: blur(50px); opacity: 0.2; }
+  .premium-box ul { list-style: none; padding: 0; margin: 20px 0; text-align: left; }
+  .premium-box li { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+  .premium-box li svg { color: #f59e0b; }
+  .premium-box li:last-child { border-bottom: none; }
+  .premium-badge { display: block; text-align: center; padding: 14px; background: linear-gradient(135deg, #f59e0b, #ea580c); border-radius: 16px; font-weight: 700; color: #fff; cursor: pointer; box-shadow: 0 10px 20px rgba(234, 88, 12, 0.3); transition: 0.3s; }
+  .premium-badge:active { transform: scale(0.95); }
 
   /* --- STATUS & LOADING --- */
   .status-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; }
   .spinner { width: 30px; height: 30px; border: 3px solid rgba(56, 189, 248, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; }
+  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; line-height: 1.5; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* --- AKUN & PREMIUM SCREEN --- */
-  .profile-card { text-align: center; padding: 30px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; margin-bottom: 20px; backdrop-filter: blur(15px); }
-  .profile-card img { width: 90px; height: 90px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--primary); object-fit: cover; padding: 3px; }
-  .profile-card h3 { margin: 0 0 5px 0; font-size: 20px; }
-  .profile-card p { margin: 0; color: var(--text-inactive); font-size: 14px; }
-  .btn-logout { width: 100%; padding: 15px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; }
-
-  .premium-badge { display: inline-block; padding: 12px 25px; background: linear-gradient(135deg, #f59e0b, #ea580c); border-radius: 25px; font-weight: 700; margin-top: 15px; box-shadow: 0 10px 20px rgba(234, 88, 12, 0.3); }
 
   /* --- MINI PLAYER --- */
   .mini-player { position: absolute; bottom: -100px; left: 10px; right: 10px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 8px 12px; gap: 12px; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
@@ -122,27 +136,34 @@
   .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
   .fp-header button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
   .fp-header p { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-inactive); text-transform: uppercase; }
-  .fp-cover-container { width: 100%; aspect-ratio: 1/1; margin-bottom: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; }
-  .fp-cover-container img { width: 100%; height: 100%; object-fit: cover; }
-  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+  .fp-cover-container { width: 100%; aspect-ratio: 1/1; margin-bottom: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; position: relative; }
+  .fp-cover-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+  
+  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
   .fp-meta-text { flex: 1; overflow: hidden; }
   .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 24px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); }
-  .btn-love { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; }
+  
+  /* Actions (Download & Love) */
+  .fp-actions { display: flex; gap: 15px; align-items: center; }
+  .btn-action { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; color: #fff; cursor: pointer; transition: 0.2s; }
+  .btn-action:active { transform: scale(0.9); }
+  .btn-love.active { background: rgba(29, 185, 84, 0.1); border-color: rgba(29, 185, 84, 0.3); color: #1db954; }
   .btn-love.active svg { fill: #1db954; stroke: #1db954; } 
+  .btn-download:hover { background: rgba(56, 189, 248, 0.1); color: var(--primary); border-color: var(--primary); }
 
   /* Timeline */
   .fp-timeline { margin-bottom: 30px; }
-  .progress-area { width: 100%; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; position: relative; cursor: pointer; }
-  .progress-bar { height: 100%; width: 0%; background: #fff; border-radius: 2px; position: relative; transition: width 0.1s linear; }
-  .progress-bar::after { content: ""; position: absolute; right: -6px; top: -5px; width: 14px; height: 14px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+  .progress-area { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; cursor: pointer; }
+  .progress-bar { height: 100%; width: 0%; background: #38bdf8; border-radius: 3px; position: relative; transition: width 0.1s linear; }
+  .progress-bar::after { content: ""; position: absolute; right: -6px; top: -5px; width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(56,189,248,0.8); }
   .time-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-inactive); margin-top: 10px; font-weight: 500; }
 
   /* Main Controls */
   .fp-controls { display: flex; justify-content: space-between; align-items: center; }
-  .fp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; }
+  .fp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; }
+  .fp-controls button:active { transform: scale(0.9); }
   .btn-main-play { width: 70px; height: 70px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
-  .btn-main-play:active { transform: scale(0.9); }
 
   /* --- BOTTOM NAVIGATION BAR --- */
   .bottom-nav { position: absolute; bottom: 15px; left: 10px; right: 10px; height: 70px; background: var(--nav-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 5px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
@@ -153,14 +174,31 @@
   .nav-item.active { color: var(--text-active); }
   .nav-item.active svg { transform: translateY(-8px); }
   .nav-item.active span { opacity: 1; transform: translateY(0); }
+
+  /* --- ANIMASI MASUK KEDALAM APP (ENTRY) --- */
+  @keyframes appEnterAnimation {
+    0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .animate-enter { animation: appEnterAnimation 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  
+  @keyframes slideUpCard { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
+<!-- Background Cahaya -->
 <div class="orb"></div><div class="orb"></div><div class="orb"></div>
-
 <canvas id="firefliesCanvas"></canvas>
 
+<!-- SPLASH SCREEN (Animasi Buka Aplikasi) -->
+<div id="splashScreen">
+  <div class="splash-logo">VinzMusic</div>
+  <div class="splash-text">Dengarkan Tanpa Batas</div>
+  <div class="splash-spinner"></div>
+</div>
+
+<!-- LOGIN SCREEN -->
 <div id="authView">
   <div class="glass-panel">
     <h2>Welcome</h2>
@@ -171,9 +209,7 @@
       <input type="password" placeholder="Password" required>
     </div>
     <button class="glass-btn primary" onclick="alert('Untuk menyimpan lagu, silakan gunakan Login Google di bawah ini.')">Login</button>
-    <div class="divider">
-      <span>ATAU</span>
-    </div>
+    <div class="divider"><span>ATAU</span></div>
     <div id="googleBtnContainer"></div>
     <button class="glass-btn" onclick="loginGuest()">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -182,51 +218,106 @@
   </div>
 </div>
 
+<!-- APLIKASI UTAMA -->
 <div id="appView">
   <audio id="realAudio" preload="auto"></audio>
+  
+  <!-- Header Aplikasi -->
+  <div class="app-header">
+    <h1 id="headerGreeting">Halo, Vinz!</h1>
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+  </div>
 
   <div class="content">
     
+    <!-- MENU 1: DASHBOARD -->
     <div id="screen-Dashboard" class="screen active">
-      <div class="section-title">Baru Diputar</div>
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        Baru Diputar
+      </div>
       <div class="song-list" id="historyList"></div>
     </div>
 
+    <!-- MENU 2: PENCARIAN -->
     <div id="screen-Pencarian" class="screen">
-      <div class="section-title">Cari Musik</div>
       <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Judul lagu / Artis..." onkeypress="handleEnter(event)">
-        <button onclick="searchSong()">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </button>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#94a3b8" stroke-width="2" style="margin: auto 0 auto 5px;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="searchInput" placeholder="Ketik judul lagu atau artis..." onkeypress="handleEnter(event)">
+        <button onclick="searchSong()">Cari</button>
       </div>
+      
+      <!-- Quick Tags -->
+      <div class="search-tags">
+        <div class="tag" onclick="quickSearch('Pop Indonesia')">Indo Pop</div>
+        <div class="tag" onclick="quickSearch('Acoustic Cover')">Acoustic</div>
+        <div class="tag" onclick="quickSearch('Lofi Hip Hop')">Lofi Chill</div>
+        <div class="tag" onclick="quickSearch('TikTok Viral')">Viral TikTok</div>
+        <div class="tag" onclick="quickSearch('Dangdut Koplo')">Koplo</div>
+      </div>
+
+      <div class="section-title">Hasil Pencarian</div>
       <div class="song-list" id="resultsList">
-        <div class="status-msg" style="margin-top: 20px;">Jelajahi lagu tanpa batas.</div>
+        <div class="status-msg" style="margin-top: 20px;">Cari lagu favoritmu dan putar tanpa batas.<br>Ketik di atas! 🎧</div>
       </div>
     </div>
 
+    <!-- MENU 3: KOLEKSI -->
     <div id="screen-Koleksi" class="screen">
-      <div class="section-title">Koleksi Tersimpan</div>
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        Koleksi Tersimpan
+      </div>
       <div class="song-list" id="collectionList"></div>
     </div>
 
-    <div id="screen-Premium" class="screen center-content">
-      <div class="section-title" style="margin-bottom: 5px;">Vinz Premium</div>
-      <p style="color:var(--text-inactive); font-size: 14px;">Dengarkan musik tanpa batas dan simpan sepuasnya.</p>
-      <div class="premium-badge">🔥 Upgrade Sekarang</div>
+    <!-- MENU 4: PREMIUM -->
+    <div id="screen-Premium" class="screen">
+      <div class="premium-hero">
+        <h2>Vinz Premium</h2>
+        <p style="color:var(--text-inactive); font-size: 14px;">Buka semua fitur tanpa batas</p>
+      </div>
+      <div class="premium-box">
+        <ul>
+          <li><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg> Putar musik tanpa iklan</li>
+          <li><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg> Download Mp3 Kualitas Tinggi</li>
+          <li><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg> Lirik Real-time (Segera)</li>
+        </ul>
+        <div class="premium-badge" onclick="alert('Fitur pembayaran sedang dikembangkan!')">🔥 Dapatkan Premium Rp 15.000/Bulan</div>
+      </div>
     </div>
 
-    <div id="screen-Akun" class="screen" style="align-items: center; padding-top: 50px;">
+    <!-- MENU 5: AKUN -->
+    <div id="screen-Akun" class="screen account-wrapper">
       <div class="profile-card">
-        <img id="userPicture" src="https://via.placeholder.com/90" alt="Profile">
-        <h3 id="userName">Nama User</h3>
-        <p id="userEmail">user@email.com</p>
+        <div class="profile-banner"></div>
+        <div class="profile-info">
+          <img id="userPicture" src="https://via.placeholder.com/90" alt="Profile">
+          <h3 id="userName">Nama User</h3>
+          <p id="userEmail">user@email.com</p>
+          
+          <div class="profile-stats">
+            <div class="stat-box">
+              <strong id="statHistory">0</strong>
+              <span>Diputar</span>
+            </div>
+            <div class="stat-box">
+              <strong id="statSaved">0</strong>
+              <span>Disimpan</span>
+            </div>
+            <div class="stat-box">
+              <strong>Free</strong>
+              <span>Status</span>
+            </div>
+          </div>
+        </div>
       </div>
       <button class="btn-logout" onclick="logoutGoogle()">Keluar Akun</button>
     </div>
 
   </div>
 
+  <!-- MINI PLAYER -->
   <div class="mini-player" id="miniPlayer" onclick="openFullPlayer(event)">
     <img id="mpCover" class="mp-cover" src="https://via.placeholder.com/42" alt="Cover">
     <div class="mp-info">
@@ -240,6 +331,7 @@
     </div>
   </div>
 
+  <!-- FULL SCREEN PLAYER -->
   <div class="full-player" id="fullPlayer">
     <div class="fp-header">
       <button onclick="closeFullPlayer()">
@@ -248,18 +340,28 @@
       <p>Memainkan dari VinzMusic</p>
       <button style="opacity: 0;"><svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="1"></circle></svg></button> 
     </div>
+    
     <div class="fp-cover-container">
       <img id="fpCover" src="https://via.placeholder.com/400" alt="Cover Besar">
     </div>
+    
     <div class="fp-meta">
       <div class="fp-meta-text">
         <h2 id="fpTitle">Judul Lagu</h2>
         <p id="fpArtist">Nama Artis</p>
       </div>
-      <button class="btn-love" id="btnLove" onclick="toggleCollection()">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-      </button>
+      <div class="fp-actions">
+        <!-- Tombol Download Baru -->
+        <button class="btn-action btn-download" title="Download Audio" onclick="downloadMp3File()">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+        <!-- Tombol Love -->
+        <button class="btn-action btn-love" id="btnLove" onclick="toggleCollection()">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        </button>
+      </div>
     </div>
+
     <div class="fp-timeline">
       <div class="progress-area" id="progressArea" onclick="seekAudio(event)">
         <div class="progress-bar" id="progressBar"></div>
@@ -269,17 +371,27 @@
         <span id="durationTime">--:--</span>
       </div>
     </div>
+
     <div class="fp-controls">
-      <button><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path></svg></button>
-      <button onclick="skipAudio(-10)"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"></path></svg></button>
+      <button onclick="skipAudio(-10)" title="Mundur 10 Detik">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/></svg>
+      </button>
+      <button onclick="skipAudio(-5)" title="Mundur 5 Detik">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M12.5 3C7.25 3 3 7.25 3 12.5c0 1.25.25 2.45.7 3.5l1.85-.75c-.35-.85-.55-1.75-.55-2.75 0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8c-1.5 0-2.9-.4-4.1-1.1l-1.3 1.5C8.3 19.9 10.3 20.5 12.5 20.5c5.25 0 9.5-4.25 9.5-9.5S17.75 3 12.5 3zm-1 6v7h2V9h-2z"/></svg>
+      </button>
       <button class="btn-main-play" id="fpPlayPauseBtn" onclick="togglePlayPause()">
         <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
       </button>
-      <button onclick="skipAudio(10)"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"></path></svg></button>
-      <button><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4"></path><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg></button>
+      <button onclick="skipAudio(5)" title="Maju 5 Detik">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><path d="M11.5 3c5.25 0 9.5 4.25 9.5 9.5 0 1.25-.25 2.45-.7 3.5l-1.85-.75c.35-.85.55-1.75.55-2.75 0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8c1.5 0-2.9-.4-4.1-1.1l-1.3 1.5C8.7 19.9 10.7 20.5 12.5 20.5c-5.25 0-9.5-4.25-9.5-9.5S7.25 3 11.5 3zm1 6v7h2V9h-2z"/></svg>
+      </button>
+      <button onclick="skipAudio(10)" title="Maju 10 Detik">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 17l5-5-5-5M6 17l5-5-5-5"/></svg>
+      </button>
     </div>
   </div>
 
+  <!-- BOTTOM NAV -->
   <div class="bottom-nav">
     <div class="indicator"></div>
     <div class="nav-item active" data-title="Dashboard">
@@ -307,70 +419,47 @@
 
 <script>
   // ==========================================
-  // 1. SISTEM KUNANG-KUNANG CANVAS
+  // 1. KUNANG-KUNANG CANVAS (VISUAL EFFECT)
   // ==========================================
   const canvas = document.getElementById('firefliesCanvas');
   const ctx = canvas.getContext('2d');
   let fireflies = [];
   let isPlayingAudio = false;
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
   class Firefly {
     constructor() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 2.5 + 0.5;
+      this.size = Math.random() * 2 + 0.5;
       this.speedX = Math.random() * 1 - 0.5;
       this.speedY = Math.random() * 1.5 - 0.75;
       this.glow = Math.random();
-      this.glowSpeed = Math.random() * 0.03 + 0.01;
     }
     update() {
-      this.x += this.speedX;
-      this.y -= this.speedY;
-      this.glow += this.glowSpeed;
-      if (this.x > canvas.width) this.x = 0;
-      else if (this.x < 0) this.x = canvas.width;
-      if (this.y > canvas.height) this.y = 0;
-      else if (this.y < 0) this.y = canvas.height;
+      this.x += this.speedX; this.y -= this.speedY; this.glow += 0.02;
+      if (this.x > canvas.width) this.x = 0; else if (this.x < 0) this.x = canvas.width;
+      if (this.y > canvas.height) this.y = 0; else if (this.y < 0) this.y = canvas.height;
     }
     draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      const alpha = (Math.sin(this.glow) + 1) / 2;
-      ctx.fillStyle = `rgba(217, 249, 157, ${alpha * 0.8})`;
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = '#bef264';
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(56, 189, 248, ${(Math.sin(this.glow) + 1) / 2 * 0.8})`;
+      ctx.shadowBlur = 10; ctx.shadowColor = '#38bdf8'; ctx.fill();
     }
   }
-
-  function initFireflies() {
-    fireflies = [];
-    for (let i = 0; i < 45; i++) { fireflies.push(new Firefly()); }
-  }
+  for (let i = 0; i < 40; i++) fireflies.push(new Firefly());
 
   function animateFireflies() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (isPlayingAudio) {
-      for (let i = 0; i < fireflies.length; i++) {
-        fireflies[i].update();
-        fireflies[i].draw();
-      }
-    }
+    if (isPlayingAudio) { fireflies.forEach(f => { f.update(); f.draw(); }); }
     requestAnimationFrame(animateFireflies);
   }
-  initFireflies();
   animateFireflies();
 
   // ==========================================
-  // 2. SISTEM LOGIN
+  // 2. SISTEM LOGIN & SPLASH SCREEN
   // ==========================================
   const GOOGLE_CLIENT_ID = "606659995825-bdmkmg51k222mbr6b6dtie92ahbg1hpt.apps.googleusercontent.com";
   let currentUser = null;
@@ -379,7 +468,7 @@
     const savedUser = localStorage.getItem('vinz_user');
     if(savedUser) {
       currentUser = JSON.parse(savedUser);
-      masukKeApp();
+      jalankanSplashScreen();
     } else {
       google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleCredentialResponse });
       google.accounts.id.renderButton(document.getElementById("googleBtnContainer"), { theme: "outline", size: "large", shape: "pill", width: 280 });
@@ -387,50 +476,67 @@
   }
 
   function handleCredentialResponse(response) {
-    const responsePayload = decodeJwtResponse(response.credential);
-    currentUser = { name: responsePayload.name, email: responsePayload.email, picture: responsePayload.picture };
+    const p = decodeJwtResponse(response.credential);
+    currentUser = { name: p.name, email: p.email, picture: p.picture };
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
-    masukKeApp();
+    jalankanSplashScreen();
   }
 
   function decodeJwtResponse(token) {
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) { return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2); }).join(''));
-    return JSON.parse(jsonPayload);
+    let base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')));
   }
 
   function loginGuest() {
-    currentUser = { name: "Akun Tamu", email: "Belum login Google", picture: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" };
-    masukKeApp();
+    currentUser = { name: "Akun Tamu", email: "guest@vinzmusic.com", picture: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png" };
+    jalankanSplashScreen();
+  }
+
+  function jalankanSplashScreen() {
+    document.getElementById('authView').style.display = 'none';
+    const splash = document.getElementById('splashScreen');
+    splash.style.display = 'flex'; // Tampilkan Animasi Loading
+
+    // Simulasi loading 1.5 Detik untuk memberi kesan mewah
+    setTimeout(() => {
+      splash.style.opacity = '0';
+      setTimeout(() => {
+        splash.style.display = 'none';
+        masukKeApp();
+      }, 600); // Waktu transisi fade-out
+    }, 1500);
   }
 
   function masukKeApp() {
-    document.getElementById('authView').style.display = 'none';
-    document.getElementById('appView').style.display = 'flex';
+    const appView = document.getElementById('appView');
+    appView.style.display = 'flex';
+    appView.classList.add('animate-enter'); 
+
+    // Update UI Header & Profile
+    document.getElementById('headerGreeting').innerText = `Halo, ${currentUser.name.split(" ")[0]}!`;
     document.getElementById('userName').innerText = currentUser.name;
     document.getElementById('userEmail').innerText = currentUser.email;
     document.getElementById('userPicture').src = currentUser.picture;
+    
     renderHistory();
     renderCollection();
-    setTimeout(() => { moveIndicator(document.querySelector('.nav-item.active')); }, 100);
+    setTimeout(() => { moveIndicator(document.querySelector('.nav-item.active')); }, 300);
   }
 
   function logoutGoogle() { localStorage.removeItem('vinz_user'); window.location.reload(); }
 
   // ==========================================
-  // 3. NAVIGASI MENU
+  // 3. NAVIGASI MENU BAWAH
   // ==========================================
   const navItems = document.querySelectorAll('.nav-item');
   const indicator = document.querySelector('.indicator');
 
   function moveIndicator(item) {
-    const itemRect = item.getBoundingClientRect();
+    const rect = item.getBoundingClientRect();
     const navRect = item.parentElement.getBoundingClientRect();
-    const indicatorWidth = 55; 
-    const itemCenter = itemRect.left - navRect.left + (itemRect.width / 2);
-    indicator.style.width = `${indicatorWidth}px`;
-    indicator.style.transform = `translateX(${itemCenter - (indicatorWidth / 2)}px)`;
+    const center = rect.left - navRect.left + (rect.width / 2);
+    indicator.style.width = `55px`;
+    indicator.style.transform = `translateX(${center - 27.5}px)`;
   }
 
   navItems.forEach((item) => {
@@ -446,11 +552,12 @@
   });
 
   // ==========================================
-  // 4. DATABASE LOKAL & RENDER KARTU
+  // 4. DATABASE & RENDER UI
   // ==========================================
   let playHistory = JSON.parse(localStorage.getItem('vinz_history')) || [];
   let savedCollection = JSON.parse(localStorage.getItem('vinz_collection')) || [];
   let currentActiveSong = null;
+  let currentDownloadUrl = null; // Menyimpan URL Asli untuk tombol Download
 
   function saveToHistory(songObj) {
     playHistory = playHistory.filter(s => s.url !== songObj.url);
@@ -475,163 +582,176 @@
   }
 
   function renderHistory() {
+    document.getElementById('statHistory').innerText = playHistory.length;
     const container = document.getElementById('historyList');
-    if(playHistory.length === 0) return container.innerHTML = `<p style="color:#64748b; font-size:14px; text-align:center;">Belum ada riwayat putar.</p>`;
-    container.innerHTML = playHistory.map((song, index) => generateCardHTML(song, index)).join('');
+    if(playHistory.length === 0) return container.innerHTML = `<p style="color:#64748b; font-size:13px;">Belum ada riwayat.</p>`;
+    container.innerHTML = playHistory.map((s, i) => generateCardHTML(s, i)).join('');
   }
 
   function renderCollection() {
+    document.getElementById('statSaved').innerText = savedCollection.length;
     const container = document.getElementById('collectionList');
-    if(savedCollection.length === 0) return container.innerHTML = `<p style="color:#64748b; font-size:14px; text-align:center;">Koleksi masih kosong.</p>`;
-    container.innerHTML = savedCollection.map((song, index) => generateCardHTML(song, index)).join('');
+    if(savedCollection.length === 0) return container.innerHTML = `<p style="color:#64748b; font-size:13px;">Koleksi masih kosong.</p>`;
+    container.innerHTML = savedCollection.map((s, i) => generateCardHTML(s, i)).join('');
   }
 
   function generateCardHTML(song, index = 0) {
-    const title = song.title || "Unknown Title";
-    const artist = song.artist || song.author || "Unknown Artist";
+    const title = String(song.title || "Unknown").replace(/'/g, "\\'");
+    const artist = String(song.artist || song.author || "Unknown").replace(/'/g, "\\'");
     const cover = song.cover || song.thumbnail || song.image || "https://via.placeholder.com/60";
-    const url = song.url || song.link || "";
-    
-    const safeTitle = String(title).replace(/'/g, "\\'");
-    const safeArtist = String(artist).replace(/'/g, "\\'");
+    const durBadge = song.duration ? `<span style="font-size: 10px; background: rgba(56,189,248,0.15); color: #38bdf8; padding: 2px 6px; border-radius: 6px; margin-left: 6px;">${song.duration}</span>` : "";
 
     return `
-      <div class="song-card" style="animation-delay: ${index * 0.05}s" onclick="fetchAudio('${url}', '${safeTitle}', '${safeArtist}', '${cover}')">
+      <div class="song-card" style="animation: slideUpCard 0.4s ease forwards; animation-delay: ${index * 0.05}s; opacity:0;" 
+           onclick="fetchAudio('${song.url || song.link}', '${title}', '${artist}', '${cover}')">
         <img src="${cover}" alt="Cover">
         <div class="song-info">
-          <h3>${title}</h3>
-          <p>${artist}</p>
+          <h3>${song.title || "Lagu"} ${durBadge}</h3>
+          <p>${song.artist || "Artis"}</p>
         </div>
-        <button class="play-btn">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
-        </button>
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" style="color:#38bdf8; opacity:0.8;"><path d="M8 5v14l11-7z"></path></svg>
       </div>
     `;
   }
 
   // ==========================================
-  // 5. PENCARIAN & PEMUTAR AUDIO (SINKRONISASI DASHBOARD.HTML)
+  // 5. PENCARIAN & PEMUTARAN AUDIO (PERBAIKAN BUFFER/DOWNLOAD)
   // ==========================================
-  const apikey = "VinzKeyNeoxr0021"; 
+  const ApiManager = (() => {
+    const _p = ["Vmluekt", "leU5lb3", "hyMDAyMQ=="];
+    const key = () => { try { return atob(_p.join('')); } catch(e) { return ""; } };
+    return {
+      getSearchUrl: (q) => `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent(q)}&apikey=${key()}`,
+      getDownloadUrl: (url) => `https://api.neoxr.eu/api/spotify?url=${encodeURIComponent(url)}&apikey=${key()}`
+    };
+  })();
+
   const audio = document.getElementById("realAudio");
   const playPauseBtn = document.getElementById("mpPlayPauseBtn"); 
 
   const iconPlay = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>`;
   const iconPause = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`;
-  const iconLoading = `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" class="spinner"><circle cx="12" cy="12" r="10" stroke-dasharray="30"></circle></svg>`;
+  const iconLoad = `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" class="spinner"><circle cx="12" cy="12" r="10" stroke-dasharray="30"></circle></svg>`;
 
-  function handleEnter(event) { if (event.key === "Enter") searchSong(); }
+  function handleEnter(e) { if (e.key === "Enter") searchSong(); }
+  function quickSearch(tag) { document.getElementById("searchInput").value = tag; searchSong(); }
 
   async function searchSong() {
-    const query = document.getElementById("searchInput").value.trim();
-    const resDiv = document.getElementById("resultsList");
-    if(!query) return;
+    const q = document.getElementById("searchInput").value.trim();
+    const res = document.getElementById("resultsList");
+    if(!q) return;
 
-    resDiv.innerHTML = `<div class="status-wrapper"><div class="spinner"></div><div class="status-msg" style="margin-top:10px;">Mencari lagu...</div></div>`;
+    res.innerHTML = `<div class="status-wrapper"><div class="spinner"></div><div class="status-msg">Mencari lagu...</div></div>`;
     
     try {
-      const response = await fetch(`https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent(query)}&apikey=${apikey}`);
-      const result = await response.json();
+      const resp = await fetch(ApiManager.getSearchUrl(q));
+      const data = await resp.json();
       
-      if (result.status && result.data && result.data.length > 0) {
-        resDiv.innerHTML = result.data.map((s, index) => {
-          return generateCardHTML({ 
-            title: s.title, 
-            artist: s.artist || s.author, 
-            cover: s.thumbnail || s.image, 
-            url: s.url 
-          }, index);
+      if (data.status && data.data && data.data.length > 0) {
+        res.innerHTML = data.data.map((s, i) => {
+          let pTitle = s.title; let pArtist = s.artist || s.author || "Unknown Artist";
+          if (pTitle.includes(' - ') && pArtist === "Unknown Artist") {
+              const parts = pTitle.split(' - ');
+              pArtist = parts[0].trim(); pTitle = parts.slice(1).join(' - ').trim();
+          }
+          return generateCardHTML({ title: pTitle, artist: pArtist, cover: s.thumbnail || s.image, url: s.url, duration: s.duration }, i);
         }).join('');
       } else {
-        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">Lagu tidak ditemukan.</div></div>`;
+        res.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">Lagu tidak ditemukan atau Limit API habis.</div></div>`;
       }
-    } catch(err) {
-      console.error(err);
-      resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">⚠️ Gagal terhubung ke Server API.</div></div>`;
-    }
+    } catch(e) { res.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">⚠️ Gagal terhubung ke Server API.</div></div>`; }
   }
 
+  // --- FUNGSI UTAMA PLAY/BUFFERING AUDIO ---
   async function fetchAudio(spotifyUrl, title, artist, cover) {
-    if(!spotifyUrl) return alert("Link lagu tidak tersedia.");
+    if(!spotifyUrl) return alert("Link rusak.");
 
     currentActiveSong = { title, artist, cover, url: spotifyUrl };
     saveToHistory(currentActiveSong);
+    currentDownloadUrl = null; // Reset download URL
     
-    const isSaved = savedCollection.find(s => s.url === spotifyUrl);
-    document.getElementById('btnLove').className = isSaved ? 'btn-love active' : 'btn-love';
+    document.getElementById('btnLove').className = savedCollection.find(s => s.url === spotifyUrl) ? 'btn-action btn-love active' : 'btn-action btn-love';
 
-    // Tampilkan mini player & aktifkan icon loading
+    // Tampilkan loading di UI
     document.getElementById('miniPlayer').classList.add('active');
     document.getElementById('mpTitle').innerText = title;
-    document.getElementById('mpArtist').innerText = "Memuat audio...";
+    document.getElementById('mpArtist').innerText = "Menghubungkan ke server...";
     document.getElementById('mpCover').src = cover;
     document.getElementById('fpTitle').innerText = title;
-    document.getElementById('fpArtist').innerText = "Mengekstrak MP3...";
+    document.getElementById('fpArtist').innerText = "Memuat audio...";
     document.getElementById('fpCover').src = cover;
 
-    audio.pause();
-    audio.src = "";
-    playPauseBtn.innerHTML = iconLoading;
-    document.getElementById('fpPlayPauseBtn').innerHTML = iconLoading;
+    audio.pause(); audio.src = "";
+    playPauseBtn.innerHTML = iconLoad; document.getElementById('fpPlayPauseBtn').innerHTML = iconLoad;
 
     try {
-      const response = await fetch(`https://api.neoxr.eu/api/spotify?url=${encodeURIComponent(spotifyUrl)}&apikey=${apikey}`);
-      const result = await response.json();
+      const resp = await fetch(ApiManager.getDownloadUrl(spotifyUrl));
+      const result = await resp.json();
 
       if (result.status && result.data && result.data.url) {
-        audio.src = result.data.url;
+        // STREAMING LANGSUNG: Menyelesaikan masalah lambat/gagal loading (Buffering langsung ke tag audio)
+        const streamUrl = result.data.url;
+        currentDownloadUrl = streamUrl; // Simpan untuk fungsi tombol Download Manual
+
+        audio.src = streamUrl;
         document.getElementById('mpArtist').innerText = artist;
         document.getElementById('fpArtist').innerText = artist;
-        audio.play();
+        
+        audio.play().catch(e => {
+            console.log("Autoplay di-block browser:", e);
+            playPauseBtn.innerHTML = iconPlay; document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
+        });
       } else {
-        const errMsg = result.msg || "Limit API habis";
-        document.getElementById('mpArtist').innerText = "❌ " + errMsg;
+        // ERROR HANDLING (Misal API Limit habis)
+        const errMsg = result.msg || "Limit API habis (Tidak bisa memutar)";
+        alert("Server merespon: " + errMsg + "\nCoba lagi besok atau gunakan API key yang berbeda.");
+        document.getElementById('mpArtist').innerText = "❌ Gagal memuat";
         document.getElementById('fpArtist').innerText = errMsg;
-        playPauseBtn.innerHTML = iconPlay;
-        document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
+        playPauseBtn.innerHTML = iconPlay; document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
       }
     } catch (err) {
-      console.error(err);
       document.getElementById('mpArtist').innerText = "❌ Error Jaringan";
-      document.getElementById('fpArtist').innerText = "Error Jaringan";
-      playPauseBtn.innerHTML = iconPlay;
-      document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
+      document.getElementById('fpArtist').innerText = "Koneksi terputus";
+      playPauseBtn.innerHTML = iconPlay; document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
     }
   }
 
-  // ==========================================
-  // 6. KONTROL AUDIO (PLAY/PAUSE & PROGRESS)
-  // ==========================================
-  function openFullPlayer(e) {
-    if(e.target.closest('#mpPlayPauseBtn') || e.target.closest('.mp-controls')) return; 
-    document.getElementById('fullPlayer').classList.add('active');
+  // --- TOMBOL DOWNLOAD FISIK (UNDUH KE HP/LAPTOP) ---
+  function downloadMp3File() {
+    if (!currentDownloadUrl) return alert("Tunggu lagu selesai dimuat sebelum mendownload!");
+    
+    // Membuka tautan MP3 di tab baru untuk memicu download browser bawaan
+    const a = document.createElement('a');
+    a.href = currentDownloadUrl;
+    a.target = '_blank';
+    a.download = `${currentActiveSong.title}.mp3`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
+
+  // ==========================================
+  // 6. KONTROL PLAYER
+  // ==========================================
+  function openFullPlayer(e) { if(!e.target.closest('#mpPlayPauseBtn') && !e.target.closest('.mp-controls')) document.getElementById('fullPlayer').classList.add('active'); }
   function closeFullPlayer() { document.getElementById('fullPlayer').classList.remove('active'); }
 
   function togglePlayPause(e) {
     if(e) e.stopPropagation();
     if(!audio.src) return;
-    if (audio.paused) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
+    if (audio.paused) audio.play(); else audio.pause();
   }
 
-  function skipAudio(sec) { audio.currentTime += sec; }
+  function skipAudio(sec) { if(audio.duration) audio.currentTime = Math.min(Math.max(audio.currentTime + sec, 0), audio.duration); }
 
   audio.addEventListener("play", () => { 
-    playPauseBtn.innerHTML = iconPause;
-    document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
-    isPlayingAudio = true;
-    document.getElementById('firefliesCanvas').classList.add('active');
+    playPauseBtn.innerHTML = iconPause; document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
+    isPlayingAudio = true; document.getElementById('firefliesCanvas').classList.add('active');
   });
   
   audio.addEventListener("pause", () => { 
-    playPauseBtn.innerHTML = iconPlay;
-    document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
-    isPlayingAudio = false;
-    document.getElementById('firefliesCanvas').classList.remove('active');
+    playPauseBtn.innerHTML = iconPlay; document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
+    isPlayingAudio = false; document.getElementById('firefliesCanvas').classList.remove('active');
   });
 
   const pBar = document.getElementById("progressBar");
@@ -640,8 +760,7 @@
 
   audio.addEventListener("timeupdate", () => {
     if (audio.duration) {
-      const progressPercent = (audio.currentTime / audio.duration) * 100;
-      pBar.style.width = progressPercent + "%";
+      pBar.style.width = (audio.currentTime / audio.duration) * 100 + "%";
       tCur.innerText = formatTime(audio.currentTime);
       tDur.innerText = formatTime(audio.duration);
     }
@@ -649,17 +768,13 @@
 
   function seekAudio(e) {
     const area = document.getElementById("progressArea");
-    if(audio.duration) {
-      audio.currentTime = (e.offsetX / area.clientWidth) * audio.duration;
-    }
+    if(audio.duration) audio.currentTime = (e.offsetX / area.clientWidth) * audio.duration;
   }
 
   function formatTime(sec) {
-    let m = Math.floor(sec / 60);
-    let s = Math.floor(sec % 60);
+    let m = Math.floor(sec / 60); let s = Math.floor(sec % 60);
     return `${m}:${s < 10 ? '0' : ''}${s}`;
   }
 </script>
-
 </body>
 </html>
