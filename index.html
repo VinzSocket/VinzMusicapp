@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Melofy (Demo)</title>
+<title>Melofy - Music & Offline Player</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   :root {
     --bg-darker: #02040a;
-    --nav-bg: rgba(10, 15, 26, 0.85);
+    --nav-bg: rgba(10, 15, 26, 0.88);
     --glass-indicator: linear-gradient(135deg, rgba(56, 189, 248, 0.4) 0%, rgba(129, 140, 248, 0.2) 100%);
     --text-active: #ffffff;
     --text-inactive: #94a3b8;
     --primary: #38bdf8;
+    --primary-gradient: linear-gradient(135deg, #0284c7, #38bdf8);
     --glass-bg: rgba(255, 255, 255, 0.03);
     --glass-border: rgba(255, 255, 255, 0.08);
   }
@@ -67,24 +68,40 @@
   .tab-btn.active { background: rgba(56, 189, 248, 0.2); color: #fff; border: 1px solid rgba(56, 189, 248, 0.3); }
 
   .input-group { width: 100%; margin-bottom: 12px; position: relative; }
-  .input-group input { width: 100%; padding: 12px 14px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 13px; outline: none; transition: 0.3s ease; }
-  .input-group input:focus { border-color: #00eaff; box-shadow: 0 0 12px rgba(0, 234, 255, 0.2); }
+  .input-group input, .select-group select { width: 100%; padding: 12px 14px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: white; font-size: 13px; outline: none; transition: 0.3s ease; }
+  .input-group input:focus, .select-group select:focus { border-color: #00eaff; box-shadow: 0 0 12px rgba(0, 234, 255, 0.2); }
   .email-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 12px; color: #38bdf8; pointer-events: none; font-weight: 600; }
 
   .glass-btn { position: relative; width: 100%; padding: 12px 0; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; gap: 8px; color: white; font-size: 14px; font-weight: 600; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px; cursor: pointer; transition: 0.3s ease; }
   .glass-btn.primary { background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(129, 140, 248, 0.3)); border-color: rgba(56, 189, 248, 0.5); }
   .glass-btn:active { transform: scale(0.97); }
+  .glass-btn svg { width: 18px; height: 18px; stroke-width: 2.5; }
 
   .divider { width: 100%; display: flex; align-items: center; margin: 10px 0 15px 0; color: rgba(255,255,255,0.3); font-size: 11px; }
   .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.1); }
   .divider span { margin: 0 10px; }
   #googleBtnContainer { margin-bottom: 10px; width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; }
 
+  /* --- HEADER LOGO PADA APLIKASI --- */
+  .app-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 20px 10px 20px; z-index: 30;
+    background: rgba(2, 4, 10, 0.7); backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .brand-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 900; font-size: 20px; letter-spacing: 1.5px;
+    background: linear-gradient(135deg, #38bdf8, #818cf8, #ff2d75);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .brand-logo svg { stroke: #38bdf8; filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.5)); }
+
   /* --- APP SCREENS --- */
   #appView { display: none; background: radial-gradient(circle at top right, rgba(30,41,59,0.3), transparent); flex-direction: column; z-index: 5; }
   .content { flex: 1; position: relative; overflow: hidden; }
   
-  .screen { position: absolute; inset: 0; padding: 30px 20px 180px 20px; display: none; opacity: 0; overflow-y: auto; flex-direction: column; }
+  .screen { position: absolute; inset: 0; padding: 20px 20px 180px 20px; display: none; opacity: 0; overflow-y: auto; flex-direction: column; }
   .screen.active { display: flex; animation: smoothFadeIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; z-index: 20; }
   .screen.center-content { justify-content: flex-start; align-items: center; text-align: center; }
   
@@ -93,8 +110,73 @@
     100% { opacity: 1; transform: translateY(0) scale(1); }
   }
   
-  .section-title { font-size: 26px; font-weight: 800; margin-bottom: 25px; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .section-title { font-size: 24px; font-weight: 800; margin-bottom: 20px; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   
+  /* --- UI LIMIT & PLATFORM MENU VERTIKAL --- */
+  .limit-card {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.05));
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 14px;
+    padding: 15px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  .limit-label { font-size: 13px; color: var(--text-inactive); font-weight: 500; }
+  .limit-value { font-size: 15px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; }
+  
+  .platform-menu-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 190px;
+    overflow-y: auto;
+    margin-bottom: 25px;
+    padding-right: 5px;
+  }
+  .platform-menu-vertical::-webkit-scrollbar { width: 5px; }
+  .platform-menu-vertical::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; }
+  
+  .platform-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 14px 18px;
+    border-radius: 16px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    backdrop-filter: blur(10px);
+  }
+  .platform-btn:active { transform: scale(0.97); }
+  .platform-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
+  .platform-btn svg { width: 26px; height: 26px; }
+  .platform-btn.yt svg { color: #ff0000; }
+  .platform-btn.ig svg { stroke: #e1306c; }
+  .platform-btn.tt svg { color: #00f2fe; }
+
+  /* --- MODAL DOWNLOAD STYLE SNAPTIK --- */
+  .downloader-modal {
+    position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px);
+    z-index: 500; display: none; justify-content: center; align-items: center; padding: 20px;
+  }
+  .downloader-modal.active { display: flex; }
+  .modal-box {
+    background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 24px; width: 100%; max-width: 400px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    position: relative; max-height: 90vh; overflow-y: auto;
+  }
+  .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+  .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 5px; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .modal-sub { font-size: 12px; color: var(--text-inactive); margin-bottom: 20px; }
+
   /* --- UI LIST LAGU --- */
   .song-list { display: flex; flex-direction: column; gap: 12px; width: 100%; }
   .song-card { display: flex; align-items: center; gap: 14px; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 10px; border-radius: 16px; backdrop-filter: blur(10px); transition: 0.3s; animation: slideUp 0.3s ease forwards; opacity: 0; transform: translateY(15px); cursor: pointer; }
@@ -107,16 +189,28 @@
 
   @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
 
-  /* --- SEARCH BOX --- */
-  .search-box { display: flex; gap: 10px; margin-bottom: 25px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(15px); }
+  /* --- SEARCH BOX & ANIMASI KACA PEMBESAR PULSE --- */
+  .search-box { display: flex; gap: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(15px); align-items: center; }
   .search-box input { flex: 1; padding: 12px 15px; background: transparent; border: none; color: #fff; outline: none; font-size: 14px; }
-  .search-box button { padding: 0 20px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary); border-radius: 15px; cursor: pointer; transition: 0.2s; }
+  .search-box button { padding: 10px 20px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary); border-radius: 15px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
   .search-box button:active { transform: scale(0.9); }
+
+  .pulse-search-icon {
+    animation: searchPulse 1.6s infinite ease-in-out;
+    transform-origin: center;
+    color: var(--primary);
+  }
+
+  @keyframes searchPulse {
+    0% { transform: scale(1); opacity: 0.7; filter: drop-shadow(0 0 2px var(--primary)); }
+    50% { transform: scale(1.35); opacity: 1; filter: drop-shadow(0 0 8px var(--primary)); }
+    100% { transform: scale(1); opacity: 0.7; filter: drop-shadow(0 0 2px var(--primary)); }
+  }
 
   /* --- STATUS & LOADING --- */
   .status-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; }
   .spinner { width: 30px; height: 30px; border: 3px solid rgba(56, 189, 248, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; }
+  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; margin-top: 10px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* --- DOWNLOAD PROGRESS BAR TOAST --- */
@@ -152,11 +246,11 @@
   .btn-logout { width: 100%; max-width: 360px; padding: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; }
 
   /* --- PREMIUM PRICING SCREEN --- */
-  .pricing-grid { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 380px; margin-top: 15px; }
+  .pricing-grid { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 380px; margin-top: 10px; }
   .price-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: left; backdrop-filter: blur(15px); position: relative; overflow: hidden; transition: 0.3s; }
   .price-card.featured { border-color: #f59e0b; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%); }
   .price-badge { position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .price-title { font-size: 18px; font-weight: 700; margin: 0 0 5px 0; display: flex; align-items: center; gap: 8px; }
+  .price-title { font-size: 18px; font-weight: 700; margin: 0 0 5px 0; display: flex; align-items: center; gap: 10px; }
   .price-cost { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
   .price-cost span { font-size: 12px; font-weight: 400; color: var(--text-inactive); }
   .old-price { font-size: 14px; text-decoration: line-through; color: #ef4444; margin-right: 6px; }
@@ -165,8 +259,19 @@
   .btn-subscribe { width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.2s; }
   .price-card.featured .btn-subscribe { background: linear-gradient(135deg, #f59e0b, #ea580c); border: none; color: #fff; box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4); }
 
+  .audio-quality-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--primary); font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 8px; margin-bottom: 10px;
+  }
+  .audio-quality-badge.gold {
+    background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+  }
+
   /* --- MINI PLAYER --- */
-  .mini-player { position: absolute; bottom: -100px; left: 10px; right: 10px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 8px 12px; gap: 12px; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+  .mini-player { position: absolute; bottom: -100px; left: 15px; right: 15px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 8px 12px; gap: 12px; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
   .mini-player.active { bottom: 95px; }
   .mp-cover { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
   .mp-info { flex: 1; overflow: hidden; }
@@ -182,11 +287,16 @@
   .fp-header p { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-inactive); text-transform: uppercase; }
   .fp-cover-container { width: 100%; aspect-ratio: 1/1; margin-bottom: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; }
   .fp-cover-container img { width: 100%; height: 100%; object-fit: cover; }
+  
   .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
   .fp-meta-text { flex: 1; overflow: hidden; }
   .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 24px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); }
-  .btn-love { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; position: relative; }
+  
+  .fp-meta-actions { display: flex; align-items: center; gap: 15px; }
+  .btn-download { background: transparent; border: none; color: var(--text-inactive); cursor: pointer; transition: 0.2s; padding: 5px; }
+  .btn-download:active { transform: scale(0.9); color: var(--primary); }
+  .btn-love { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; position: relative; padding: 5px; }
   .btn-love.active svg { fill: #1db954; stroke: #1db954; } 
 
   /* Timeline */
@@ -202,12 +312,12 @@
   .fp-controls button:active { transform: scale(0.9); }
   .btn-main-play { width: 70px; height: 70px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
 
-  /* --- BOTTOM NAVIGATION BAR --- */
-  .bottom-nav { position: absolute; bottom: 15px; left: 10px; right: 10px; height: 70px; background: var(--nav-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 5px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-  .indicator { position: absolute; left: 0; top: 10px; height: 50px; background: var(--glass-indicator); border-radius: 20px; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
+  /* --- BOTTOM NAVIGATION BAR LIQUID GLASS --- */
+  .bottom-nav { position: fixed; bottom: 15px; left: 10px; right: 10px; height: 70px; background: var(--nav-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 5px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+  .indicator { position: absolute; left: 0; top: 10px; height: 50px; background: var(--glass-indicator); border-radius: 20px; transition: transform 0.4s cubic-bezier(0.5, 1.2, 0.3, 1.1), width 0.4s ease; z-index: 0; }
   .nav-item { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; cursor: pointer; color: var(--text-inactive); transition: 0.3s; }
   .nav-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; transition: 0.4s; }
-  .nav-item span { font-size: 0.65rem; font-weight: 600; opacity: 0; transform: translateY(15px); transition: 0.4s; position: absolute; bottom: 6px; }
+  .nav-item span { font-size: 10px; font-weight: 600; opacity: 0; transform: translateY(15px); transition: 0.4s; position: absolute; bottom: 8px; }
   .nav-item.active { color: var(--text-active); }
   .nav-item.active svg { transform: translateY(-8px); }
   .nav-item.active span { opacity: 1; transform: translateY(0); }
@@ -227,14 +337,60 @@
 <div class="orb"></div><div class="orb"></div><div class="orb"></div>
 <canvas id="firefliesCanvas"></canvas>
 
-<!-- PROGRESS BAR PROSES DOWLOAD LOKAL -->
+<!-- PROGRESS BAR PROSES DOWNLOAD -->
 <div id="downloadToast" class="download-toast">
   <div class="dl-info">
-    <span id="dlTitle">Mengunduh Lagu Offline...</span>
+    <span id="dlTitle">Mengunduh...</span>
     <span id="dlPercent">0%</span>
   </div>
   <div class="dl-bar-bg">
     <div id="dlBarFill" class="dl-bar-fill"></div>
+  </div>
+</div>
+
+<!-- MODAL INPUT & PILIHAN UNDUH (GAYA SNAPTIK) -->
+<div class="downloader-modal" id="downloaderModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeDownloaderModal()">&times;</button>
+    <div class="modal-title" id="modalTitle">Unduh Platform</div>
+    <div class="modal-sub" id="modalSub">Tempel tautan video di bawah ini</div>
+
+    <!-- Tampilan Form Input Tautan -->
+    <div id="modalInputSection">
+      <div class="search-box" style="margin-bottom: 15px;">
+        <input type="text" id="targetUrlInput" placeholder="Tempel tautan disini...">
+      </div>
+      
+      <!-- PILIHAN RESOLUSI KHUSUS YOUTUBE -->
+      <div id="ytQualityGroup" style="display: none; margin-bottom: 15px; width: 100%;">
+        <label style="font-size: 12px; color: var(--text-inactive); margin-bottom: 8px; display: block; text-align: left;">Resolusi YouTube:</label>
+        <div class="select-group">
+          <select id="ytQualitySelect">
+            <option value="360p">360p</option>
+            <option value="480p">480p</option>
+            <option value="720p">720p</option>
+            <option value="1080p" selected>1080p</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="glass-btn primary" id="btnProsesDL" onclick="processDownloader()">Proses Tautan</button>
+    </div>
+
+    <!-- Tampilan Hasil Pilihan Unduh Setelah Klik Tombol Unduh -->
+    <div id="modalResultSection" style="display: none;">
+      <div id="resultPreviewContainer" style="display: flex; gap: 12px; align-items: center; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px;">
+        <img id="resThumbnail" src="" referrerpolicy="no-referrer" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" alt="Thumbnail">
+        <div style="flex: 1; overflow: hidden; text-align: left;">
+          <h4 id="resTitle" style="margin: 0 0 4px 0; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Judul Konten</h4>
+          <p id="resAuthor" style="margin: 0; font-size: 11px; color: var(--text-inactive);">Author</p>
+        </div>
+      </div>
+
+      <div id="downloadOptionsContainer" style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- Tombol Pilihan Unduh Dinamis -->
+      </div>
+    </div>
   </div>
 </div>
 
@@ -275,10 +431,61 @@
 </div>
 
 <div id="appView">
+  <!-- LOGO MELOFY DI HEADER ATAS MENU -->
+  <div class="app-header">
+    <div class="brand-logo">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <span>MELOFY</span>
+    </div>
+  </div>
+
   <audio id="realAudio" preload="auto"></audio>
 
   <div class="content">
     <div id="screen-Dashboard" class="screen active">
+      
+      <!-- LIMIT HARIAN -->
+      <div class="limit-card" id="limitCard">
+        <span class="limit-label">Limit Harian Anda:</span>
+        <span class="limit-value" id="dailyLimitDisplay">Memuat...</span>
+      </div>
+
+      <!-- MENU PLATFORM VERTIKAL DENGAN SVG YANG DIPERBAIKI -->
+      <div class="section-title">Platform Tersedia</div>
+      <div class="platform-menu-vertical">
+        <button class="platform-btn yt" onclick="openDownloaderModal('youtube')">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z" fill="#FF0000"/>
+            <path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#FFFFFF"/>
+          </svg>
+          YouTube Downloader
+        </button>
+        <button class="platform-btn ig" onclick="openDownloaderModal('instagram')">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#ig-grad)"/>
+            <circle cx="12" cy="12" r="4.5" stroke="#FFFFFF" stroke-width="2"/>
+            <circle cx="17.5" cy="6.5" r="1.2" fill="#FFFFFF"/>
+            <defs>
+              <linearGradient id="ig-grad" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#FFDC80"/>
+                <stop offset="25%" stop-color="#F77737"/>
+                <stop offset="50%" stop-color="#F56040"/>
+                <stop offset="75%" stop-color="#FD1D1D"/>
+                <stop offset="100%" stop-color="#C13584"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          Instagram Downloader
+        </button>
+        <button class="platform-btn tt" onclick="openDownloaderModal('tiktok')">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 1 1-2.896-2.896c.394 0 .767.078 1.107.218V9.43a6.353 6.353 0 1 0 5.234 6.242V9.013c1.39.996 3.09 1.583 4.928 1.625V7.195a4.796 4.796 0 0 1-1.158-.509z" fill="#00F2FE"/>
+            <path d="M16.637 5.109a4.793 4.793 0 0 1-3.263-2.668V2h-1.045v.441a4.793 4.793 0 0 0 3.77 4.245V5.109z" fill="#FF0050"/>
+          </svg>
+          TikTok Downloader
+        </button>
+      </div>
+
       <div class="section-title">Baru Diputar</div>
       <div class="song-list" id="historyList"></div>
     </div>
@@ -288,7 +495,7 @@
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Judul lagu / Artis..." onkeypress="handleEnter(event)">
         <button onclick="searchSong()">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <svg class="pulse-search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </button>
       </div>
       <div class="song-list" id="resultsList">
@@ -303,44 +510,63 @@
 
     <div id="screen-Premium" class="screen center-content">
       <div class="section-title" style="margin-bottom: 5px;">Melofy Premium</div>
-      <p style="color:var(--text-inactive); font-size: 13px; margin: 0 0 20px 0;">Dengarkan musik tanpa batas, kualitas ultra-HD & offline mode.</p>
+      <p style="color:var(--text-inactive); font-size: 13px; margin: 0 0 20px 0;">Dengarkan musik tanpa batas, kualitas ultra-HD 320 Kbps & offline mode.</p>
       
       <div class="pricing-grid">
         <div class="price-card">
-          <div class="price-title">🎓 Paket Pelajar</div>
+          <div class="price-title">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Paket Pelajar
+          </div>
           <div class="price-cost">Rp 18.000 <span>/ bulan</span></div>
-          <p class="price-desc">Khusus siswa & mahasiswa aktif. Akses lagu tanpa iklan dan download offline.</p>
-          <button class="btn-subscribe" onclick="alert('Silakan hubungi admin untuk aktivasi Paket Pelajar!')">Pilih Pelajar</button>
+          <p class="price-desc">Limit harian 200 unduhan. Khusus siswa & mahasiswa aktif.</p>
+          <button class="btn-subscribe" onclick="upgradePlan('pelajar')">Pilih Pelajar (200 Limit)</button>
         </div>
 
         <div class="price-card">
-          <div class="price-title">⚡ Paket Pro</div>
+          <div class="price-title">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Paket Pro
+          </div>
           <div class="price-cost">Rp 25.000 <span>/ bulan</span></div>
-          <p class="price-desc">Akses penuh ke semua fitur, pemutaran latar belakang, dan lirik terjemahan otomatis.</p>
-          <button class="btn-subscribe" onclick="alert('Silakan hubungi admin untuk berlangganan Paket Pro!')">Pilih Pro</button>
+          <div class="audio-quality-badge">🎧 Audio HQ 320 Kbps</div>
+          <p class="price-desc">Limit harian 500 unduhan. Akses penuh ke semua fitur & audio kualitas tinggi.</p>
+          <button class="btn-subscribe" onclick="upgradePlan('pro')">Pilih Pro (500 Limit)</button>
         </div>
 
         <div class="price-card featured">
           <div class="price-badge">PALING HEMAT</div>
-          <div class="price-title">👑 Flagship Annual</div>
+          <div class="price-title">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+            Flagship Annual
+          </div>
           <div class="price-cost">
             <span class="old-price">Rp 420.000</span> Rp 380.000 <span>/ tahun</span>
             <span class="discount-tag">Diskon 9.5%</span>
           </div>
-          <p class="price-desc">Akses VIP 1 Tahun penuh Melofy. Hemat Rp 40.000 dibanding harga normal!</p>
-          <button class="btn-subscribe" onclick="alert('Selamat! Anda memilih Paket Flagship!')">Beli Flagship</button>
+          <div class="audio-quality-badge gold">🎧 Ultra Audio Studio 320 Kbps</div>
+          <p class="price-desc">Unlimited Limit Harian! Akses VIP 1 Tahun penuh tanpa batas kompresi.</p>
+          <button class="btn-subscribe" onclick="upgradePlan('flagship')">Beli Flagship (Unlimited)</button>
         </div>
       </div>
     </div>
 
-    <div id="screen-Akun" class="screen" style="align-items: center; padding-top: 30px;">
+    <div id="screen-Akun" class="screen" style="align-items: center; padding-top: 20px;">
       <div class="profile-card">
         <div class="profile-img-container">
-          <img id="userPicture" src="https://via.placeholder.com/90" alt="Profile">
+          <img id="userPicture" src="https://via.placeholder.com/90" alt="Profile" referrerpolicy="no-referrer">
           <button class="change-avatar-btn" onclick="triggerAvatarUpload()" title="Ganti Foto">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
           </button>
           <input type="file" id="avatarFileInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+        </div>
+
+        <!-- BADGE VIP FLAGSHIP -->
+        <div id="flagshipBadge" style="margin-bottom: 15px; display: none;">
+          <span style="background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:text-bottom; margin-right:2px;"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+            Flagship Permanent
+          </span>
         </div>
 
         <div class="edit-field">
@@ -365,22 +591,23 @@
     </div>
   </div>
 
+  <!-- BOTTOM NAVIGATION BAR (LIQUID GLASS ANIMATED) -->
   <div class="bottom-nav">
     <div class="indicator"></div>
     <div class="nav-item active" data-title="Dashboard">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/></svg>
       <span>Home</span>
     </div>
     <div class="nav-item" data-title="Pencarian">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
       <span>Cari</span>
     </div>
     <div class="nav-item" data-title="Koleksi">
-      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
       <span>Koleksi</span>
     </div>
     <div class="nav-item" data-title="Premium">
-      <svg viewBox="0 0 24 24"><path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5z"/><path d="M5 19h14"/></svg>
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
       <span>Premium</span>
     </div>
     <div class="nav-item" data-title="Akun">
@@ -390,7 +617,7 @@
   </div>
 
   <div class="mini-player" id="miniPlayer" onclick="openFullPlayer(event)">
-    <img id="mpCover" class="mp-cover" src="https://via.placeholder.com/42" alt="Cover">
+    <img id="mpCover" class="mp-cover" src="https://via.placeholder.com/42" alt="Cover" referrerpolicy="no-referrer">
     <div class="mp-info">
       <h4 id="mpTitle">Memuat lagu...</h4>
       <p id="mpArtist">Mohon tunggu</p>
@@ -411,16 +638,21 @@
       <button style="opacity: 0;"><svg viewBox="0 0 24 24" width="28" height="28"><circle cx="12" cy="12" r="1"></circle></svg></button> 
     </div>
     <div class="fp-cover-container">
-      <img id="fpCover" src="https://via.placeholder.com/400" alt="Cover Besar">
+      <img id="fpCover" src="https://via.placeholder.com/400" alt="Cover Besar" referrerpolicy="no-referrer">
     </div>
     <div class="fp-meta">
       <div class="fp-meta-text">
         <h2 id="fpTitle">Judul Lagu</h2>
         <p id="fpArtist">Nama Artis</p>
       </div>
-      <button class="btn-love" id="btnLove" onclick="toggleCollection()">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-      </button>
+      <div class="fp-meta-actions">
+        <button class="btn-download" id="btnDownload" onclick="downloadToDevice()" title="Simpan file MP3">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+        <button class="btn-love" id="btnLove" onclick="toggleCollection()" title="Simpan ke Koleksi Offline">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        </button>
+      </div>
     </div>
     <div class="fp-timeline">
       <div class="progress-area" id="progressArea" onclick="seekAudio(event)">
@@ -444,6 +676,18 @@
 
 <script>
   // ==========================================
+  // KUNCI API DOWNLOADER & ENGINE MUSIK
+  // ==========================================
+  const NEOXR_API_KEY = "VinzKeyNeoxr0021"; 
+  const BOTCAHX_API_KEY = "VinzKey0110";
+
+  // SVG ICONS
+  const dlIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+  const musicIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>`;
+  // SVG Tanda Tanya untuk Tombol Masukkan Tautan Lain
+  const questionSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
+
+  // ==========================================
   // 1. DATABASE LOKAL OFFLINE (INDEXEDDB)
   // ==========================================
   let db;
@@ -460,26 +704,21 @@
         db = e.target.result; 
         resolve(true);
       };
-      request.onerror = (e) => {
-        console.error("IndexedDB error:", e);
-        resolve(false);
-      };
+      request.onerror = (e) => { resolve(false); };
     });
   }
 
   function saveAudioToOffline(url, blob) {
     if (!db) return;
     const tx = db.transaction("offline_audio", "readwrite");
-    const store = tx.objectStore("offline_audio");
-    store.put(blob, url);
+    tx.objectStore("offline_audio").put(blob, url);
   }
 
   function getOfflineAudio(url) {
     return new Promise((resolve) => {
       if (!db) return resolve(null);
       const tx = db.transaction("offline_audio", "readonly");
-      const store = tx.objectStore("offline_audio");
-      const req = store.get(url);
+      const req = tx.objectStore("offline_audio").get(url);
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => resolve(null);
     });
@@ -488,23 +727,56 @@
   function deleteOfflineAudio(url) {
     if (!db) return;
     const tx = db.transaction("offline_audio", "readwrite");
-    const store = tx.objectStore("offline_audio");
-    store.delete(url);
+    tx.objectStore("offline_audio").delete(url);
   }
 
   // ==========================================
-  // 2. ANIMASI SPLASH SCREEN & CEK DATABASE
+  // 2. SISTEM LIMIT HARIAN API (GRATIS = 10)
+  // ==========================================
+  function getLimitMax(plan) {
+    if (plan === 'flagship') return 'Unlimited';
+    if (plan === 'pro') return 500;
+    if (plan === 'pelajar') return 200;
+    return 10; 
+  }
+
+  function checkAndReduceLimit() {
+    if (!currentUser) return false;
+    if (currentUser.plan === 'flagship' || currentUser.isFlagship) return true; 
+
+    const today = new Date().toDateString();
+    if (currentUser.lastReset !== today) {
+        currentUser.limit = getLimitMax(currentUser.plan);
+        currentUser.lastReset = today;
+    }
+
+    if (currentUser.limit <= 0) {
+        alert("⚠️ Limit Harian Anda telah habis (0). Silakan Upgrade ke Premium!");
+        return false;
+    }
+
+    currentUser.limit -= 1;
+    localStorage.setItem('vinz_user', JSON.stringify(currentUser));
+    updateLimitDisplay();
+    return true;
+  }
+
+  function updateLimitDisplay() {
+    if (!currentUser) return;
+    const limitVal = currentUser.plan === 'flagship' || currentUser.isFlagship ? 'UNLIMITED (FLAGSHIP)' : `${currentUser.limit} / ${getLimitMax(currentUser.plan)}`;
+    document.getElementById('dailyLimitDisplay').innerText = limitVal;
+  }
+
+  // ==========================================
+  // 3. SPLASH SCREEN & INIT
   // ==========================================
   window.addEventListener('load', async () => {
     const splashStatus = document.getElementById('splashStatus');
-    
-    // Step 1: Cek IndexedDB
     splashStatus.innerText = "Memeriksa database audio lokal...";
     await initIndexedDB();
     
-    // Step 2: Cek Sesi Pengguna
     splashStatus.innerText = "Memeriksa akun pengguna...";
-    await new Promise(r => setTimeout(r, 800)); // Animasi visual halus
+    await new Promise(r => setTimeout(r, 800));
 
     const savedUser = localStorage.getItem('vinz_user');
     if(savedUser) {
@@ -516,13 +788,11 @@
       initGoogleClient();
     }
 
-    // Fadeout Splash Screen
-    const splash = document.getElementById('splashScreen');
-    splash.classList.add('fade-out');
+    document.getElementById('splashScreen').classList.add('fade-out');
   });
 
   // ==========================================
-  // 3. FIREFLIES CANVAS LOGIC
+  // 4. FIREFLIES CANVAS LOGIC
   // ==========================================
   const canvas = document.getElementById('firefliesCanvas');
   const ctx = canvas.getContext('2d');
@@ -569,7 +839,7 @@
   initFireflies(); animateFireflies();
 
   // ==========================================
-  // 4. AUTENTIKASI: GOOGLE & MELOFY LOKAL
+  // 5. AUTENTIKASI
   // ==========================================
   const GOOGLE_CLIENT_ID = "606659995825-bdmkmg51k222mbr6b6dtie92ahbg1hpt.apps.googleusercontent.com";
   let currentUser = null;
@@ -591,10 +861,9 @@
   function handleCredentialResponse(response) {
     const payload = decodeJwtResponse(response.credential);
     currentUser = { 
-      name: payload.name, 
-      email: payload.email, 
-      picture: payload.picture,
-      nickname: payload.name.split(' ')[0] || payload.name
+      name: payload.name, email: payload.email, picture: payload.picture,
+      nickname: payload.name.split(' ')[0] || payload.name,
+      plan: 'free', limit: 10, lastReset: new Date().toDateString()
     };
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
     masukKeApp();
@@ -607,40 +876,41 @@
     return JSON.parse(jsonPayload);
   }
 
-  /* LOGIK AKUN MELOFY LOKAL (TANPA OTP) */
   function handleMelofyAuth(type) {
     const userInp = document.getElementById('melofyUsername').value.trim();
     const passInp = document.getElementById('melofyPassword').value.trim();
-
     if (!userInp || !passInp) return alert("Sila isi Username dan Kata Sandi!");
     
     const fullEmail = userInp.toLowerCase() + "@melofy.com";
     let melofyUsers = JSON.parse(localStorage.getItem('melofy_db_users')) || [];
 
     if (type === 'register') {
-      const exists = melofyUsers.find(u => u.email === fullEmail);
-      if (exists) return alert("Username Melofy ini sudah terdaftar!");
-
-      const newUser = {
-        name: userInp,
-        email: fullEmail,
-        password: passInp,
-        nickname: userInp,
-        picture: "https://api.dicebear.com/7.x/bottts/svg?seed=" + userInp
-      };
-      melofyUsers.push(newUser);
+      if (melofyUsers.find(u => u.email === fullEmail)) return alert("Username Melofy ini sudah terdaftar!");
+      melofyUsers.push({
+        name: userInp, email: fullEmail, password: passInp, nickname: userInp,
+        picture: "https://api.dicebear.com/7.x/bottts/svg?seed=" + userInp,
+        plan: 'free', limit: 10, lastReset: new Date().toDateString()
+      });
       localStorage.setItem('melofy_db_users', JSON.stringify(melofyUsers));
-      alert("Akun Melofy Berhasil Dibuat! Silakan klik 'Masuk Melofy'");
-    } 
-    else if (type === 'login') {
+      alert("Akun Melofy Berhasil Dibuat! Silakan masuk.");
+    } else if (type === 'login') {
+      if (userInp.toLowerCase() === "vinzhosting" && passInp === "Alvin2010#") {
+        currentUser = {
+          name: "Vinz Hosting", email: "VinzHosting@melofy.com",
+          picture: "https://api.dicebear.com/7.x/bottts/svg?seed=VinzHosting",
+          nickname: "Vinz (VIP)", isFlagship: true, plan: 'flagship', limit: 'Unlimited', lastReset: new Date().toDateString()
+        };
+        localStorage.setItem('vinz_user', JSON.stringify(currentUser));
+        return masukKeApp();
+      }
+
       const validUser = melofyUsers.find(u => u.email === fullEmail && u.password === passInp);
       if (!validUser) return alert("Username atau Kata Sandi Melofy salah!");
 
       currentUser = {
-        name: validUser.name,
-        email: validUser.email,
-        picture: validUser.picture,
-        nickname: validUser.nickname
+        name: validUser.name, email: validUser.email, picture: validUser.picture,
+        nickname: validUser.nickname, plan: validUser.plan || 'free',
+        limit: validUser.limit || 10, lastReset: validUser.lastReset || new Date().toDateString()
       };
       localStorage.setItem('vinz_user', JSON.stringify(currentUser));
       masukKeApp();
@@ -649,11 +919,20 @@
 
   function loginGuest() {
     currentUser = { 
-      name: "Akun Tamu", 
-      email: "guest@melofy.com", 
+      name: "Akun Tamu", email: "guest@melofy.com", 
       picture: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
-      nickname: "Tamu"
+      nickname: "Tamu", plan: 'free', limit: 10, lastReset: new Date().toDateString()
     };
+    masukKeApp();
+  }
+
+  function upgradePlan(newPlan) {
+    if (!currentUser) return;
+    currentUser.plan = newPlan;
+    if(newPlan === 'flagship') currentUser.isFlagship = true;
+    currentUser.limit = getLimitMax(newPlan);
+    localStorage.setItem('vinz_user', JSON.stringify(currentUser));
+    alert("Berhasil mengaktifkan Paket " + newPlan.toUpperCase() + "!");
     masukKeApp();
   }
 
@@ -666,6 +945,20 @@
     document.getElementById('inputNickname').value = currentUser.nickname || currentUser.name;
     document.getElementById('inputEmail').value = currentUser.email;
 
+    if (currentUser.isFlagship || currentUser.plan === 'flagship') {
+      document.getElementById('flagshipBadge').style.display = 'block';
+    } else {
+      document.getElementById('flagshipBadge').style.display = 'none';
+    }
+
+    const today = new Date().toDateString();
+    if (currentUser.lastReset !== today && !currentUser.isFlagship) {
+        currentUser.limit = getLimitMax(currentUser.plan);
+        currentUser.lastReset = today;
+        localStorage.setItem('vinz_user', JSON.stringify(currentUser));
+    }
+    updateLimitDisplay();
+
     renderHistory();
     renderCollection();
     setTimeout(() => { moveIndicator(document.querySelector('.nav-item.active')); }, 100);
@@ -677,7 +970,196 @@
   }
 
   // ==========================================
-  // 5. EDIT PROFIL & NAVIGASI MENU
+  // 6. MODAL DOWNLOAD PLATFORM (FIXED IG THUMBNAIL & SVG TANYA)
+  // ==========================================
+  let activePlatformType = '';
+
+  function openDownloaderModal(platform) {
+    activePlatformType = platform;
+    const modal = document.getElementById('downloaderModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSub = document.getElementById('modalSub');
+    const ytGroup = document.getElementById('ytQualityGroup');
+    
+    document.getElementById('targetUrlInput').value = '';
+    document.getElementById('modalInputSection').style.display = 'block';
+    document.getElementById('modalResultSection').style.display = 'none';
+    document.getElementById('btnProsesDL').innerText = "Proses Tautan";
+
+    if (platform === 'tiktok') {
+      modalTitle.innerText = "Pengunduh TikTok";
+      modalSub.innerText = "Unduh video & audio TikTok Full HD tanpa watermark";
+      ytGroup.style.display = 'none';
+    } else if (platform === 'youtube') {
+      modalTitle.innerText = "Pengunduh YouTube";
+      modalSub.innerText = "Unduh video MP4 berbagai resolusi & MP3 Audio";
+      ytGroup.style.display = 'block'; 
+    } else if (platform === 'instagram') {
+      modalTitle.innerText = "Pengunduh Instagram";
+      modalSub.innerText = "Unduh Reels, Foto & Ekstrak Audio Instagram";
+      ytGroup.style.display = 'none';
+    }
+
+    modal.classList.add('active');
+  }
+
+  function closeDownloaderModal() {
+    document.getElementById('downloaderModal').classList.remove('active');
+  }
+
+  async function processDownloader() {
+    const urlVal = document.getElementById('targetUrlInput').value.trim();
+    if(!urlVal) return alert("Silakan masukkan atau tempel tautan terlebih dahulu!");
+
+    if(!checkAndReduceLimit()) return;
+
+    const btn = document.getElementById('btnProsesDL');
+    btn.innerText = "Menghubungi Server...";
+    btn.disabled = true;
+
+    try {
+      let endpoint = '';
+      if (activePlatformType === 'youtube') {
+        const quality = document.getElementById('ytQualitySelect').value || '1080p';
+        endpoint = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(urlVal)}&type=video&quality=${quality}&apikey=${NEOXR_API_KEY}`;
+      } else if (activePlatformType === 'tiktok') {
+        endpoint = `https://api.neoxr.eu/api/tiktok?url=${encodeURIComponent(urlVal)}&apikey=${NEOXR_API_KEY}`;
+      } else if (activePlatformType === 'instagram') {
+        endpoint = `https://api.neoxr.eu/api/ig?url=${encodeURIComponent(urlVal)}&apikey=${NEOXR_API_KEY}`;
+      }
+
+      const resData = await fetch(endpoint).then(r => r.json());
+      if (!resData.status) throw new Error(resData.message || "Gagal merespon. Pastikan tautan valid!");
+
+      document.getElementById('modalInputSection').style.display = 'none';
+      document.getElementById('modalResultSection').style.display = 'block';
+      const optionsContainer = document.getElementById('downloadOptionsContainer');
+      optionsContainer.innerHTML = '';
+
+      // --- YOUTUBE ---
+      if (activePlatformType === 'youtube') {
+        document.getElementById('resThumbnail').src = resData.thumbnail;
+        document.getElementById('resTitle').innerText = resData.title;
+        document.getElementById('resAuthor').innerText = `${resData.channel} • ${resData.duration}`;
+
+        optionsContainer.innerHTML = `
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #22c55e;" 
+                  onclick="triggerDirectDownload('${resData.data.url}', '${resData.data.filename}')">
+            ${dlIcon} Unduh MP4 (${resData.data.quality} | ${resData.data.size})
+          </button>
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-color: #8b5cf6;" 
+                  onclick="downloadYouTubeAudio('${urlVal}')">
+            ${musicIcon} Unduh Audio (MP3)
+          </button>
+        `;
+      } 
+      // --- TIKTOK ---
+      else if (activePlatformType === 'tiktok') {
+        const data = resData.data;
+        let coverUrl = (data.author && data.author.avatar_thumb && data.author.avatar_thumb.url_list) ? data.author.avatar_thumb.url_list[0] : "https://via.placeholder.com/60";
+        if(data.music && data.music.cover) coverUrl = data.music.cover;
+        
+        document.getElementById('resThumbnail').src = coverUrl;
+        document.getElementById('resTitle').innerText = data.caption || "TikTok Media";
+        document.getElementById('resAuthor').innerText = `@${data.author.nickname}`;
+
+        optionsContainer.innerHTML = `
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #22c55e;" 
+                  onclick="triggerDirectDownload('${data.video}', 'TikTok_NoWatermark.mp4')">
+            ${dlIcon} Unduh MP4 (No Watermark)
+          </button>
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #0284c7, #38bdf8);" 
+                  onclick="triggerDirectDownload('${data.videoWM}', 'TikTok_Watermark.mp4')">
+            ${dlIcon} Unduh MP4 (With Watermark)
+          </button>
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-color: #8b5cf6;" 
+                  onclick="triggerDirectDownload('${data.audio}', 'TikTok_Audio.mp3')">
+            ${musicIcon} Unduh MP3 Audio
+          </button>
+        `;
+      } 
+      // --- INSTAGRAM (FIXED THUMBNAIL) ---
+      else if (activePlatformType === 'instagram') {
+        const firstMedia = resData.data[0];
+        // Jika media pertama berformat gambar, pakai url tersebut sebagai thumbnail. Jika video, gunakan thumbnail default IG vector
+        let igThumb = (firstMedia && firstMedia.type === 'image') ? firstMedia.url : "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg";
+
+        document.getElementById('resThumbnail').src = igThumb;
+        document.getElementById('resTitle').innerText = "Konten Media Instagram";
+        document.getElementById('resAuthor').innerText = "@melofy_engine";
+
+        resData.data.forEach((item, idx) => {
+          optionsContainer.innerHTML += `
+            <button class="glass-btn primary" onclick="triggerDirectDownload('${item.url}', 'IG_Media_${idx+1}.${item.type}')">
+              ${dlIcon} Unduh Media #${idx+1} (${item.type.toUpperCase()})
+            </button>
+          `;
+        });
+        
+        if(resData.data.length > 0) {
+          optionsContainer.innerHTML += `
+            <button class="glass-btn primary" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-color: #8b5cf6;" 
+                    onclick="triggerDirectDownload('${resData.data[0].url}', 'IG_Audio.mp3')">
+              ${musicIcon} Unduh Audio (MP3)
+            </button>
+          `;
+        }
+      }
+
+      // Tombol Tautan Lain dengan SVG Tanda Tanya
+      optionsContainer.innerHTML += `
+        <button class="glass-btn" onclick="openDownloaderModal('${activePlatformType}')" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+          ${questionSvg} Masukkan Tautan Lain
+        </button>`;
+
+    } catch (err) {
+      alert("⚠️ Terjadi Kesalahan API: " + err.message);
+    } finally {
+      btn.innerText = "Proses Tautan";
+      btn.disabled = false;
+    }
+  }
+
+  async function downloadYouTubeAudio(ytUrl) {
+    if(!checkAndReduceLimit()) return;
+    
+    const toast = document.getElementById('downloadToast');
+    document.getElementById('dlTitle').innerText = "Mengonversi ke MP3...";
+    document.getElementById('dlBarFill').style.width = '50%';
+    document.getElementById('dlPercent').innerText = 'Proses';
+    toast.classList.add('active');
+
+    try {
+      const endpointAudio = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(ytUrl)}&type=audio&apikey=${NEOXR_API_KEY}`;
+      const resData = await fetch(endpointAudio).then(r => r.json());
+      
+      if(resData.status && resData.data && resData.data.url) {
+         toast.classList.remove('active');
+         triggerDirectDownload(resData.data.url, resData.title + '.mp3');
+      } else {
+         throw new Error("Gagal mengekstrak MP3 dari YouTube");
+      }
+    } catch(e) {
+      toast.classList.remove('active');
+      alert(e.message);
+    }
+  }
+
+  function triggerDirectDownload(fileUrl, fileName) {
+    const toast = document.getElementById('downloadToast');
+    document.getElementById('dlTitle').innerText = "Membuka tautan unduhan...";
+    document.getElementById('dlBarFill').style.width = '100%';
+    document.getElementById('dlPercent').innerText = '100%';
+    toast.classList.add('active');
+
+    setTimeout(() => {
+      toast.classList.remove('active');
+      window.open(fileUrl, '_blank');
+    }, 1500);
+  }
+
+  // ==========================================
+  // 7. EDIT PROFIL & NAVIGASI
   // ==========================================
   function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
   function handleAvatarUpload(e) {
@@ -705,18 +1187,13 @@
   const indicator = document.querySelector('.indicator');
 
   function moveIndicator(item) {
+    if (!item) return;
     const itemRect = item.getBoundingClientRect();
     const navRect = item.parentElement.getBoundingClientRect();
-    const fullWidth = 65; const squishWidth = 32;
+    const indicatorWidth = 55; 
     const itemCenter = itemRect.left - navRect.left + (itemRect.width / 2);
-
-    indicator.style.width = `${squishWidth}px`;
-    indicator.style.transform = `translateX(${itemCenter - (squishWidth / 2)}px)`;
-
-    setTimeout(() => {
-      indicator.style.width = `${fullWidth}px`;
-      indicator.style.transform = `translateX(${itemCenter - (fullWidth / 2)}px)`;
-    }, 180);
+    indicator.style.width = `${indicatorWidth}px`;
+    indicator.style.transform = `translateX(${itemCenter - (indicatorWidth / 2)}px)`;
   }
 
   navItems.forEach((item) => {
@@ -732,7 +1209,7 @@
   });
 
   // ==========================================
-  // 6. FAVORITE AUTOMATIC DOWNLOAD & PROGRESS BAR
+  // 8. FAVORITE OFFLINE MODE & HISTORY
   // ==========================================
   let playHistory = JSON.parse(localStorage.getItem('vinz_history')) || [];
   let savedCollection = JSON.parse(localStorage.getItem('vinz_collection')) || [];
@@ -748,24 +1225,105 @@
       savedCollection = savedCollection.filter(s => s.url !== currentActiveSong.url);
       loveBtn.classList.remove('active');
       deleteOfflineAudio(currentActiveSong.url);
-      alert("Dihapus dari Koleksi & Penyimpanan Offline.");
+      alert("Lagu dihapus dari Koleksi & Penyimpanan Offline.");
     } else {
-      loveBtn.classList.add('active');
-      
-      if(currentAudioStreamUrl) {
-        // Mulai Download dengan Bar Progres
-        await downloadAudioWithProgress(currentActiveSong.url, currentAudioStreamUrl, currentActiveSong.title);
-        currentActiveSong.isOfflineReady = true;
+      if(!currentAudioStreamUrl) {
+        alert("Mohon tunggu sebentar, file stream belum siap. Coba lagi saat lagu sudah terputar.");
+        return;
       }
       
-      savedCollection.unshift(currentActiveSong);
+      loveBtn.classList.add('active');
+      let success = await downloadAudioWithProgress(currentActiveSong.url, currentAudioStreamUrl, currentActiveSong.title);
+      
+      if (success) {
+        currentActiveSong.isOfflineReady = true;
+        savedCollection.unshift(currentActiveSong);
+      } else {
+        alert("Oops, gagal menyimpan untuk Mode Offline. Terjadi kesalahan jaringan.");
+        loveBtn.classList.remove('active');
+        return;
+      }
     }
 
     localStorage.setItem('vinz_collection', JSON.stringify(savedCollection));
     renderCollection();
   }
 
-  /* FUNGSI DOWLOAD DENGAN PROGRES BAR REALTIME */
+  async function downloadToDevice() {
+    if (!currentActiveSong || !currentAudioStreamUrl) {
+        return alert("Mohon tunggu hingga lagu selesai dimuat sebelum mengunduh.");
+    }
+    
+    if(!checkAndReduceLimit()) return;
+
+    const toast = document.getElementById('downloadToast');
+    const titleText = document.getElementById('dlTitle');
+    const percentText = document.getElementById('dlPercent');
+    const fill = document.getElementById('dlBarFill');
+    
+    toast.classList.add('active');
+    titleText.innerText = `Menyimpan file: ${currentActiveSong.title}`;
+    fill.style.width = '0%';
+    percentText.innerText = '0%';
+
+    try {
+        if (currentAudioStreamUrl.startsWith('blob:')) {
+            const a = document.createElement('a');
+            a.href = currentAudioStreamUrl;
+            a.download = `${currentActiveSong.title} - ${currentActiveSong.artist}.mp3`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            percentText.innerText = '100% (Selesai)';
+            fill.style.width = '100%';
+            setTimeout(() => { toast.classList.remove('active'); }, 2000);
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', currentAudioStreamUrl, true);
+        xhr.responseType = 'blob';
+
+        xhr.onprogress = (event) => {
+            if (event.lengthComputable) {
+                const percent = Math.round((event.loaded / event.total) * 100);
+                fill.style.width = percent + '%';
+                percentText.innerText = percent + '%';
+            }
+        };
+
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                const blob = xhr.response;
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `${currentActiveSong.title} - ${currentActiveSong.artist}.mp3`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+                percentText.innerText = '100% (Selesai)';
+                fill.style.width = '100%';
+                setTimeout(() => { toast.classList.remove('active'); }, 2000);
+            } else {
+                throw new Error("Gagal mengunduh file.");
+            }
+        };
+
+        xhr.onerror = () => {
+            toast.classList.remove('active');
+            window.open(currentAudioStreamUrl, '_blank');
+        };
+        
+        xhr.send();
+    } catch (err) {
+        toast.classList.remove('active');
+        alert("Kesalahan saat mengunduh.");
+    }
+  }
+
   function downloadAudioWithProgress(songKeyUrl, audioStreamUrl, title) {
     return new Promise((resolve) => {
       const toast = document.getElementById('downloadToast');
@@ -774,7 +1332,7 @@
       const titleText = document.getElementById('dlTitle');
 
       toast.classList.add('active');
-      titleText.innerText = `Mengunduh: ${title}`;
+      titleText.innerText = `Menyimpan Mode Offline...`;
       fill.style.width = '0%';
       percentText.innerText = '0%';
 
@@ -792,9 +1350,8 @@
 
       xhr.onload = () => {
         if (xhr.status === 200) {
-          const blob = xhr.response;
-          saveAudioToOffline(songKeyUrl, blob);
-          percentText.innerText = '100% (Selesai)';
+          saveAudioToOffline(songKeyUrl, xhr.response);
+          percentText.innerText = '100% (Tersimpan)';
           fill.style.width = '100%';
           setTimeout(() => { toast.classList.remove('active'); }, 2000);
           resolve(true);
@@ -804,11 +1361,7 @@
         }
       };
 
-      xhr.onerror = () => {
-        toast.classList.remove('active');
-        resolve(false);
-      };
-
+      xhr.onerror = () => { toast.classList.remove('active'); resolve(false); };
       xhr.send();
     });
   }
@@ -847,7 +1400,7 @@
 
     return `
       <div class="song-card" style="animation-delay: ${index * 0.05}s" onclick="fetchAudio('${url}', '${safeTitle}', '${safeArtist}', '${cover}')">
-        <img src="${cover}" alt="Cover">
+        <img src="${cover}" alt="Cover" referrerpolicy="no-referrer">
         <div class="song-info">
           <h3>${title} ${durationBadge} ${offlineBadge}</h3>
           <p>${artist}</p>
@@ -860,11 +1413,8 @@
   }
 
   // ==========================================
-  // 7. API MANAGER & PLAYBACK ENGINE
+  // 9. API MANAGER & MUSIC ENGINE
   // ==========================================
-  const NEOXR_API_KEY = "VinzKeyNeoxr0021";
-  const BOTCAHX_API_KEY = "VinzKey0110";
-
   async function fetchWithProxyFallback(targetUrl) {
     const proxies = [
       targetUrl,
@@ -890,7 +1440,7 @@
 
   const iconPlay = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>`;
   const iconPause = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`;
-  const iconLoading = `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" class="spinner"><circle cx="12" cy="12" r="10" stroke-dasharray="30"></circle></svg>`;
+  const iconLoading = `<svg class="pulse-search-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`;
 
   function handleEnter(e) { if (e.key === "Enter") searchSong(); }
 
@@ -899,7 +1449,16 @@
     const resDiv = document.getElementById("resultsList");
     if(!query) return;
 
-    resDiv.innerHTML = `<div class="status-wrapper"><div class="spinner"></div><div class="status-msg" style="margin-top:10px;">Mencari di Melofy Engine...</div></div>`;
+    if(!checkAndReduceLimit()) {
+        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">❌ Limit harian Anda habis.</div></div>`;
+        return;
+    }
+
+    resDiv.innerHTML = `
+      <div class="status-wrapper">
+        <svg class="pulse-search-icon" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <div class="status-msg" style="margin-top:10px;">Mencari di Melofy Engine...</div>
+      </div>`;
     
     try {
       const result = await fetchWithProxyFallback(ApiManager.getSearchUrl(query));
@@ -941,10 +1500,9 @@
 
     audio.pause();
     audio.src = "";
+    currentAudioStreamUrl = null;
 
-    // Cek Audio Offline di Memory lokal (IndexedDB)
     const offlineBlob = await getOfflineAudio(spotifyUrl);
-    
     if (offlineBlob) {
       currentAudioStreamUrl = URL.createObjectURL(offlineBlob);
       audio.src = currentAudioStreamUrl;
@@ -953,6 +1511,12 @@
       playPauseBtn.innerHTML = iconPause;
       document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
       audio.play();
+      return;
+    }
+
+    if(!checkAndReduceLimit()) {
+      document.getElementById('mpArtist').innerText = "❌ Limit Habis";
+      document.getElementById('fpArtist').innerText = "Limit Audio Engine Habis";
       return;
     }
 
@@ -980,7 +1544,7 @@
   }
 
   // ==========================================
-  // 8. PLAYER CONTROLS
+  // 10. PLAYER CONTROLS
   // ==========================================
   function openFullPlayer(e) {
     if(e.target.closest('#mpPlayPauseBtn') || e.target.closest('.mp-controls')) return; 
