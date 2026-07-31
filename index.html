@@ -245,6 +245,75 @@
 
   .btn-logout { width: 100%; max-width: 360px; padding: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; }
 
+  /* --- TEST SERVER CARD UI DENGAN WIFI ANIMATION --- */
+  .server-test-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(15px);
+  }
+  .server-test-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #fff;
+  }
+  .ping-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
+  .ping-item {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; padding: 10px 14px; background: rgba(0,0,0,0.4);
+    border-radius: 12px; color: var(--text-inactive);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .ping-item .platform-name { display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 600; }
+  
+  .ping-ms { 
+    display: flex; align-items: center; justify-content: flex-end; 
+    font-weight: 800; font-family: monospace; font-size: 13px; 
+  }
+  
+  /* SVG WiFi Base Styles & Bar Kontrol */
+  .wifi-icon { width: 16px; height: 16px; margin-right: 6px; }
+  .wifi-dot { opacity: 0.2; transition: opacity 0.3s ease; stroke: currentColor; }
+  .wifi-1, .wifi-2, .wifi-3 { opacity: 0; transition: opacity 0.3s ease; stroke: currentColor; }
+
+  /* Warna Berdasarkan Status Threshold Baru */
+  .ping-ms.good { color: #4ade80; text-shadow: 0 0 5px rgba(74, 222, 128, 0.4); }
+  .ping-ms.good .wifi-dot, .ping-ms.good .wifi-1, .ping-ms.good .wifi-2, .ping-ms.good .wifi-3 { opacity: 1; }
+
+  .ping-ms.mid { color: #facc15; text-shadow: 0 0 5px rgba(250, 204, 21, 0.4); }
+  .ping-ms.mid .wifi-dot, .ping-ms.mid .wifi-1 { opacity: 1; } /* Kuning (150-600ms): Titik + 1 Baris */
+
+  .ping-ms.bad { color: #ef4444; text-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
+  .ping-ms.bad .wifi-dot { opacity: 1; } /* Merah (>600ms): Titik Saja */
+
+  /* Animasi Sinyal Naik Turun Saat Testing Bersamaan */
+  .ping-ms.testing { color: var(--text-inactive); }
+  .ping-ms.testing .wifi-dot { animation: wifiPulse 1.2s infinite 0s; }
+  .ping-ms.testing .wifi-1 { animation: wifiPulse 1.2s infinite 0.2s; }
+  .ping-ms.testing .wifi-2 { animation: wifiPulse 1.2s infinite 0.4s; }
+  .ping-ms.testing .wifi-3 { animation: wifiPulse 1.2s infinite 0.6s; }
+
+  @keyframes wifiPulse {
+    0%, 100% { opacity: 0.15; transform: translateY(2px); }
+    50% { opacity: 1; transform: translateY(-2px); }
+  }
+
+  .btn-test-server {
+    width: 100%; padding: 12px; background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa;
+    border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s;
+  }
+  .btn-test-server:active { transform: scale(0.97); }
+
   /* --- PREMIUM PRICING SCREEN --- */
   .pricing-grid { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 380px; margin-top: 10px; }
   .price-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: left; backdrop-filter: blur(15px); position: relative; overflow: hidden; transition: 0.3s; }
@@ -355,13 +424,11 @@
     <div class="modal-title" id="modalTitle">Unduh Platform</div>
     <div class="modal-sub" id="modalSub">Tempel tautan video di bawah ini</div>
 
-    <!-- Tampilan Form Input Tautan -->
     <div id="modalInputSection">
       <div class="search-box" style="margin-bottom: 15px;">
         <input type="text" id="targetUrlInput" placeholder="Tempel tautan disini...">
       </div>
       
-      <!-- PILIHAN RESOLUSI KHUSUS YOUTUBE -->
       <div id="ytQualityGroup" style="display: none; margin-bottom: 15px; width: 100%;">
         <label style="font-size: 12px; color: var(--text-inactive); margin-bottom: 8px; display: block; text-align: left;">Resolusi YouTube:</label>
         <div class="select-group">
@@ -377,7 +444,6 @@
       <button class="glass-btn primary" id="btnProsesDL" onclick="processDownloader()">Proses Tautan</button>
     </div>
 
-    <!-- Tampilan Hasil Pilihan Unduh Setelah Klik Tombol Unduh -->
     <div id="modalResultSection" style="display: none;">
       <div id="resultPreviewContainer" style="display: flex; gap: 12px; align-items: center; margin-bottom: 15px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px;">
         <img id="resThumbnail" src="" referrerpolicy="no-referrer" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;" alt="Thumbnail">
@@ -387,9 +453,7 @@
         </div>
       </div>
 
-      <div id="downloadOptionsContainer" style="display: flex; flex-direction: column; gap: 10px;">
-        <!-- Tombol Pilihan Unduh Dinamis -->
-      </div>
+      <div id="downloadOptionsContainer" style="display: flex; flex-direction: column; gap: 10px;"></div>
     </div>
   </div>
 </div>
@@ -399,13 +463,11 @@
     <div class="auth-title">Melofy</div>
     <div class="auth-sub">Nikmati Musik Favoritmu Dimana Saja</div>
 
-    <!-- TAB PILIHAN AKUN -->
     <div class="auth-tabs">
       <button class="tab-btn active" id="tabMelofy" onclick="switchAuthMode('melofy')">Melofy ID</button>
       <button class="tab-btn" id="tabGoogle" onclick="switchAuthMode('google')">Google & Guest</button>
     </div>
 
-    <!-- FORM MELOFY LOKAL -->
     <div id="formMelofy" style="width: 100%;">
       <div class="input-group">
         <input type="text" id="melofyUsername" placeholder="username" required>
@@ -418,7 +480,6 @@
       <button class="glass-btn" onclick="handleMelofyAuth('register')">Buat Akun Melofy</button>
     </div>
 
-    <!-- FORM GOOGLE & GUEST -->
     <div id="formGoogle" style="width: 100%; display: none;">
       <div id="googleBtnContainer"></div>
       <div class="divider"><span>ATAU</span></div>
@@ -431,7 +492,6 @@
 </div>
 
 <div id="appView">
-  <!-- LOGO MELOFY DI HEADER ATAS MENU -->
   <div class="app-header">
     <div class="brand-logo">
       <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
@@ -443,14 +503,11 @@
 
   <div class="content">
     <div id="screen-Dashboard" class="screen active">
-      
-      <!-- LIMIT HARIAN -->
       <div class="limit-card" id="limitCard">
         <span class="limit-label">Limit Harian Anda:</span>
         <span class="limit-value" id="dailyLimitDisplay">Memuat...</span>
       </div>
 
-      <!-- MENU PLATFORM VERTIKAL DENGAN SVG YANG DIPERBAIKI -->
       <div class="section-title">Platform Tersedia</div>
       <div class="platform-menu-vertical">
         <button class="platform-btn yt" onclick="openDownloaderModal('youtube')">
@@ -551,6 +608,7 @@
       </div>
     </div>
 
+    <!-- LAYAR AKUN DENGAN UJI API REAL BERSAMAAN & MELOFY ENGINE -->
     <div id="screen-Akun" class="screen" style="align-items: center; padding-top: 20px;">
       <div class="profile-card">
         <div class="profile-img-container">
@@ -561,7 +619,6 @@
           <input type="file" id="avatarFileInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
         </div>
 
-        <!-- BADGE VIP FLAGSHIP -->
         <div id="flagshipBadge" style="margin-bottom: 15px; display: none;">
           <span style="background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);">
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:text-bottom; margin-right:2px;"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
@@ -587,7 +644,53 @@
         <button class="btn-save-profile" onclick="saveProfileChanges()">Simpan Perubahan</button>
       </div>
 
-      <button class="btn-logout" onclick="logoutAccount()">Keluar Akun</button>
+      <!-- KARTU TEST SERVER REAL API BERSAMAAN -->
+      <div class="server-test-card">
+        <div class="server-test-header">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#a78bfa" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Uji Latency
+        </div>
+        <div class="ping-list">
+          <div class="ping-item">
+            <span class="platform-name">Melofy Engine</span> 
+            <span class="ping-ms" id="ping-melofy">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
+          </div>
+          <div class="ping-item">
+            <span class="platform-name">YouTube API</span> 
+            <span class="ping-ms" id="res-yt">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
+          </div>
+          <div class="ping-item">
+            <span class="platform-name">TikTok API</span> 
+            <span class="ping-ms" id="res-tt">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
+          </div>
+          <div class="ping-item">
+            <span class="platform-name">Instagram API</span> 
+            <span class="ping-ms" id="res-ig">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
+          </div>
+          <div class="ping-item">
+            <span class="platform-name">Spotify Search</span> 
+            <span class="ping-ms" id="res-sp">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
+          </div>
+        </div>
+        <button class="btn-test-server" onclick="runRealApiTestsConcurrent()" id="btnTestServer">JALANKAN</button>
+      </div>
+
+      <button class="btn-logout" onclick="logoutAccount()" style="margin-bottom: 20px;">Keluar Akun</button>
     </div>
   </div>
 
@@ -684,7 +787,6 @@
   // SVG ICONS
   const dlIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
   const musicIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>`;
-  // SVG Tanda Tanya untuk Tombol Masukkan Tautan Lain
   const questionSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
 
   // ==========================================
@@ -970,7 +1072,7 @@
   }
 
   // ==========================================
-  // 6. MODAL DOWNLOAD PLATFORM (FIXED IG THUMBNAIL & SVG TANYA)
+  // 6. MODAL DOWNLOAD PLATFORM 
   // ==========================================
   let activePlatformType = '';
 
@@ -1036,7 +1138,6 @@
       const optionsContainer = document.getElementById('downloadOptionsContainer');
       optionsContainer.innerHTML = '';
 
-      // --- YOUTUBE ---
       if (activePlatformType === 'youtube') {
         document.getElementById('resThumbnail').src = resData.thumbnail;
         document.getElementById('resTitle').innerText = resData.title;
@@ -1052,9 +1153,7 @@
             ${musicIcon} Unduh Audio (MP3)
           </button>
         `;
-      } 
-      // --- TIKTOK ---
-      else if (activePlatformType === 'tiktok') {
+      } else if (activePlatformType === 'tiktok') {
         const data = resData.data;
         let coverUrl = (data.author && data.author.avatar_thumb && data.author.avatar_thumb.url_list) ? data.author.avatar_thumb.url_list[0] : "https://via.placeholder.com/60";
         if(data.music && data.music.cover) coverUrl = data.music.cover;
@@ -1077,11 +1176,8 @@
             ${musicIcon} Unduh MP3 Audio
           </button>
         `;
-      } 
-      // --- INSTAGRAM (FIXED THUMBNAIL) ---
-      else if (activePlatformType === 'instagram') {
+      } else if (activePlatformType === 'instagram') {
         const firstMedia = resData.data[0];
-        // Jika media pertama berformat gambar, pakai url tersebut sebagai thumbnail. Jika video, gunakan thumbnail default IG vector
         let igThumb = (firstMedia && firstMedia.type === 'image') ? firstMedia.url : "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg";
 
         document.getElementById('resThumbnail').src = igThumb;
@@ -1106,7 +1202,6 @@
         }
       }
 
-      // Tombol Tautan Lain dengan SVG Tanda Tanya
       optionsContainer.innerHTML += `
         <button class="glass-btn" onclick="openDownloaderModal('${activePlatformType}')" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
           ${questionSvg} Masukkan Tautan Lain
@@ -1597,6 +1692,84 @@
     let m = Math.floor(sec / 60);
     let s = Math.floor(sec % 60);
     return `${m}:${s < 10 ? '0' : ''}${s}`;
+  }
+
+  // ==========================================
+  // 11. SISTEM UJI API REAL (SERENTAK / CONCURRENT)
+  // ==========================================
+  const realTests = [
+    {
+      id: 'ping-melofy',
+      url: `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent('Melofy Engine Test')}&apikey=${NEOXR_API_KEY}`
+    },
+    {
+      id: 'res-yt',
+      url: `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent('https://youtube.com/shorts/T_dezacRD1E?si=tVHrNlVr4K779sPW')}&type=video&quality=1080p&apikey=${NEOXR_API_KEY}`
+    },
+    {
+      id: 'res-tt',
+      url: `https://api.neoxr.eu/api/tiktok?url=${encodeURIComponent('https://vt.tiktok.com/ZS4Mpn2BD/')}&apikey=${NEOXR_API_KEY}`
+    },
+    {
+      id: 'res-ig',
+      url: `https://api.neoxr.eu/api/ig?url=${encodeURIComponent('https://www.instagram.com/reel/DbCoQaWxmTB/?igsh=eWNqZm5rZDhwcmVz')}&apikey=${NEOXR_API_KEY}`
+    },
+    {
+      id: 'res-sp',
+      url: `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent('Separuh Aku')}&apikey=${NEOXR_API_KEY}`
+    }
+  ];
+
+  const wifiSvgMarkup = `
+    <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path>
+      <path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path>
+      <path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path>
+      <line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line>
+    </svg>
+  `;
+
+  async function measureRealApiPing(testObj) {
+    const el = document.getElementById(testObj.id);
+    el.className = "ping-ms testing";
+    el.innerHTML = wifiSvgMarkup + "<span>Testing...</span>";
+
+    const startTime = performance.now();
+    try {
+      const response = await fetch(testObj.url);
+      const data = await response.json();
+      const endTime = performance.now();
+      const timeMs = Math.round(endTime - startTime);
+
+      if (data.status) {
+        let stateClass = "";
+        // Threshold baru sesuai permintaan: 0-150 Hijau, 150-600 Kuning, >600 Merah
+        if (timeMs <= 150) stateClass = "good";      // Hijau: 0 - 150 ms
+        else if (timeMs <= 600) stateClass = "mid";  // Kuning: 150 - 600 ms
+        else stateClass = "bad";                     // Merah: > 600 ms
+
+        el.className = `ping-ms ${stateClass}`;
+        el.innerHTML = wifiSvgMarkup + `<span>${timeMs}ms</span>`;
+      } else {
+        el.className = "ping-ms bad";
+        el.innerHTML = wifiSvgMarkup + "<span>Error</span>";
+      }
+    } catch (e) {
+      el.className = "ping-ms bad";
+      el.innerHTML = wifiSvgMarkup + "<span>Gagal</span>";
+    }
+  }
+
+  async function runRealApiTestsConcurrent() {
+    const btn = document.getElementById('btnTestServer');
+    btn.innerText = "Sedang Menguji";
+    btn.disabled = true;
+
+    // Menjalankan seluruh tes secara bersamaan (concurrent) menggunakan Promise.all
+    await Promise.all(realTests.map(test => measureRealApiPing(test)));
+
+    btn.innerText = "JALANKAN";
+    btn.disabled = false;
   }
 </script>
 
