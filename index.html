@@ -20,8 +20,16 @@
 
   * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
 
-  /* Penyesuaian viewport khusus mobile agar tidak terpotong address bar */
-  body { margin: 0; height: 100vh; height: 100dvh; background-color: var(--bg-darker); overflow: hidden; color: #fff; position: relative; }
+  /* FIX: Menggunakan 100vh dan 100dvh agar tidak tertutup navigation/URL bar browser di HP */
+  body { 
+    margin: 0; 
+    height: 100vh; 
+    height: 100dvh; 
+    background-color: var(--bg-darker); 
+    overflow: hidden; 
+    color: #fff; 
+    position: relative; 
+  }
 
   /* --- SPLASH SCREEN ANIMATED --- */
   #splashScreen {
@@ -83,7 +91,7 @@
   .divider span { margin: 0 10px; }
   #googleBtnContainer { margin-bottom: 10px; width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; }
 
-  /* --- HEADER LOGO PADA APLIKASI --- */
+  /* --- HEADER LOGO --- */
   .app-header {
     display: flex; align-items: center; justify-content: space-between;
     padding: 15px 20px 10px 20px; z-index: 30;
@@ -186,12 +194,7 @@
   .song-info { flex: 1; overflow: hidden; }
   .song-info h3 { margin: 0 0 4px 0; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
   .song-info p { margin: 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  
-  .offline-tag { 
-    font-size: 10px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); 
-    color: #4ade80; padding: 2px 6px; border-radius: 6px; margin-left: 5px; 
-    display: inline-flex; align-items: center; gap: 3px;
-  }
+  .offline-tag { font-size: 10px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #4ade80; padding: 2px 6px; border-radius: 6px; margin-left: 5px; }
 
   @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
 
@@ -216,7 +219,7 @@
   /* --- STATUS & LOADING --- */
   .status-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; }
   .spinner { width: 30px; height: 30px; border: 3px solid rgba(56, 189, 248, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; margin-top: 10px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* --- DOWNLOAD PROGRESS BAR TOAST --- */
@@ -349,24 +352,27 @@
   .mp-cover { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
   .mp-info { flex: 1; overflow: hidden; }
   .mp-info h4 { margin: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; }
+  .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
 
-  /* --- FULL SCREEN PLAYER (RESPONSIF DARI CONTOH.HTML) --- */
+  /* --- FULL SCREEN PLAYER (TENGGELAM FIX & RESPONSIF) --- */
+  /* FIX: Kita gunakan 100dvh dan space-evenly agar layout menyesuaikan tinggi layar hp yang kecil */
   .full-player { 
-    position: fixed; inset: 0; 
-    height: 100vh; height: 100dvh;
+    position: fixed; top: 0; left: 0; right: 0; 
+    height: 100vh; height: 100dvh; /* Dynamic Height */
     background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,0.98) 100%); 
-    backdrop-filter: blur(30px); z-index: 200; display: flex; flex-direction: column; 
-    justify-content: space-evenly;
-    padding: 3vh 25px 4vh 25px; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    backdrop-filter: blur(30px); z-index: 200; 
+    display: flex; flex-direction: column; justify-content: space-evenly; /* Mengatur jarak secara otomatis */
+    padding: 3vh 25px 4vh 25px; 
+    transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    overflow-y: auto;
   }
   .full-player.active { transform: translateY(0); }
-  
   .fp-header { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
   .fp-header button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
   .fp-header p { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-inactive); text-transform: uppercase; }
   
+  /* FIX: Ukuran cover dinamis menyesuaikan tinggi layar (vh) agar tidak menekan tombol play ke bawah */
   .fp-cover-container { 
     width: 100%; max-width: 42vh; margin: 0 auto; aspect-ratio: 1/1; 
     box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; flex-shrink: 1; 
@@ -376,7 +382,7 @@
   .fp-meta { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
   .fp-meta-text { flex: 1; overflow: hidden; }
   .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 24px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); display: flex; align-items: center; gap: 5px; }
+  .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); }
   
   .fp-meta-actions { display: flex; align-items: center; gap: 15px; }
   .btn-download { background: transparent; border: none; color: var(--text-inactive); cursor: pointer; transition: 0.2s; padding: 5px; }
@@ -384,12 +390,14 @@
   .btn-love { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; position: relative; padding: 5px; }
   .btn-love.active svg { fill: #1db954; stroke: #1db954; } 
 
+  /* Timeline */
   .fp-timeline { flex-shrink: 0; }
   .progress-area { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; cursor: pointer; }
   .progress-bar { height: 100%; width: 0%; background: #38bdf8; border-radius: 3px; position: relative; transition: width 0.1s linear; }
   .progress-bar::after { content: ""; position: absolute; right: -6px; top: -5px; width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(56,189,248,0.8); }
   .time-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-inactive); margin-top: 10px; font-weight: 500; }
 
+  /* Main Controls */
   .fp-controls { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
   .fp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; }
   .fp-controls button:active { transform: scale(0.9); }
@@ -409,23 +417,35 @@
   /* MEDIA QUERIES (DESKTOP & LAPTOP ADAPTATION)               */
   /* ========================================================= */
   @media (min-width: 768px) {
+    /* Mencegah UI Nav dan Player meregang aneh ke seluruh layar lebar */
     .bottom-nav { max-width: 500px; margin: 0 auto; left: 0; right: 0; }
     .mini-player { max-width: 500px; margin: 0 auto; left: 0; right: 0; }
+    
+    /* Full Player bergaya popup rapih di tengah layar */
     .full-player { max-width: 500px; margin: 0 auto; left: 0; right: 0; border-radius: 24px 24px 0 0; }
+    
+    /* Layout Utama & Header */
     .content { max-width: 900px; margin: 0 auto; width: 100%; }
     .app-header { max-width: 900px; margin: 0 auto; border-radius: 0 0 20px 20px; }
+    
+    /* Ubah list menjadi Grid (Kotak-Kotak) di Laptop */
     .song-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+    
+    /* Menu Downloader berjajar kesamping */
     .platform-menu-vertical { flex-direction: row; flex-wrap: wrap; }
     .platform-btn { flex: 1; min-width: 220px; justify-content: center; }
+    
+    /* Kartu harga berjajar rapih */
     .pricing-grid { flex-direction: row; max-width: 100%; justify-content: center; align-items: stretch; }
     .price-card { flex: 1; max-width: 300px; }
+    
+    /* Center Card di Layar Akun */
     .server-test-card, .profile-card, .btn-logout { max-width: 500px; margin-left: auto; margin-right: auto; }
   }
 </style>
 </head>
 <body>
 
-<!-- SPLASH SCREEN DEPAN -->
 <div id="splashScreen">
   <div class="splash-content">
     <div class="melofy-logo-anim">MELOFY</div>
@@ -437,7 +457,6 @@
 <div class="orb"></div><div class="orb"></div><div class="orb"></div>
 <canvas id="firefliesCanvas"></canvas>
 
-<!-- PROGRESS BAR PROSES DOWNLOAD -->
 <div id="downloadToast" class="download-toast">
   <div class="dl-info">
     <span id="dlTitle">Mengunduh...</span>
@@ -448,7 +467,6 @@
   </div>
 </div>
 
-<!-- MODAL INPUT & PILIHAN UNDUH -->
 <div class="downloader-modal" id="downloaderModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeDownloaderModal()">&times;</button>
@@ -617,10 +635,7 @@
             Paket Pro
           </div>
           <div class="price-cost">Rp 25.000 <span>/ bulan</span></div>
-          <div class="audio-quality-badge">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1v-3a2 2 0 0 1 2-2h1zM3 19a2 2 0 0 0 2 2h1v-3a2 2 0 0 0-2-2H3z"></path></svg>
-            Audio HQ 320 Kbps
-          </div>
+          <div class="audio-quality-badge">🎧 Audio HQ 320 Kbps</div>
           <p class="price-desc">Limit harian 500 unduhan. Akses penuh ke semua fitur & audio kualitas tinggi.</p>
           <button class="btn-subscribe" onclick="upgradePlan('pro')">Pilih Pro (500 Limit)</button>
         </div>
@@ -635,17 +650,13 @@
             <span class="old-price">Rp 420.000</span> Rp 380.000 <span>/ tahun</span>
             <span class="discount-tag">Diskon 9.5%</span>
           </div>
-          <div class="audio-quality-badge gold">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1v-3a2 2 0 0 1 2-2h1zM3 19a2 2 0 0 0 2 2h1v-3a2 2 0 0 0-2-2H3z"></path></svg>
-            Ultra Audio Studio 320 Kbps
-          </div>
+          <div class="audio-quality-badge gold">🎧 Ultra Audio Studio 320 Kbps</div>
           <p class="price-desc">Unlimited Limit Harian! Akses VIP 1 Tahun penuh tanpa batas kompresi.</p>
           <button class="btn-subscribe" onclick="upgradePlan('flagship')">Beli Flagship (Unlimited)</button>
         </div>
       </div>
     </div>
 
-    <!-- LAYAR AKUN DENGAN UJI API REAL BERSAMAAN & MELOFY ENGINE -->
     <div id="screen-Akun" class="screen" style="align-items: center; padding-top: 20px;">
       <div class="profile-card">
         <div class="profile-img-container">
@@ -681,7 +692,6 @@
         <button class="btn-save-profile" onclick="saveProfileChanges()">Simpan Perubahan</button>
       </div>
       
-      <!-- KARTU REDEEM CODE (BARU) -->
       <div class="server-test-card">
         <div class="server-test-header">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#38bdf8" stroke-width="2.5">
@@ -697,7 +707,6 @@
         <button class="btn-save-profile" onclick="processRedeemCode()" style="margin-top: 0;">Klaim Kode</button>
       </div>
 
-      <!-- KARTU TEST SERVER REAL API BERSAMAAN -->
       <div class="server-test-card">
         <div class="server-test-header">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#a78bfa" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
@@ -747,7 +756,6 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAVIGATION BAR (LIQUID GLASS ANIMATED) -->
   <div class="bottom-nav">
     <div class="indicator"></div>
     <div class="nav-item active" data-title="Dashboard">
@@ -837,14 +845,10 @@
   const NEOXR_API_KEY = "VinzKeyNeoxr0021"; 
   const BOTCAHX_API_KEY = "VinzKey0110";
 
-  // SVG ICONS & SVG HELPER UTK JAVASCRIPT REPLACING EMOJIS
+  // SVG ICONS
   const dlIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
   const musicIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>`;
   const questionSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
-  
-  // Custom SVG Variables for Alerting inside HTML
-  const errSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:4px; transform:translateY(-1px);"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
-  const warnSvg = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
 
   // ==========================================
   // 1. DATABASE LOKAL OFFLINE (INDEXEDDB)
@@ -910,7 +914,7 @@
     }
 
     if (currentUser.limit <= 0) {
-        alert("Limit Harian Anda telah habis (0). Silakan Upgrade ke Premium!");
+        alert("⚠️ Limit Harian Anda telah habis (0). Silakan Upgrade ke Premium!");
         return false;
     }
 
@@ -1265,7 +1269,7 @@
         </button>`;
 
     } catch (err) {
-      alert("Terjadi Kesalahan API: " + err.message);
+      alert("⚠️ Terjadi Kesalahan API: " + err.message);
     } finally {
       btn.innerText = "Proses Tautan";
       btn.disabled = false;
@@ -1352,9 +1356,9 @@
       const reward = validCodes[codeInput];
       upgradePlan(reward.plan); 
       document.getElementById('inputRedeemCode').value = '';
-      alert(`Selamat! Anda berhasil menukarkan kode untuk ${reward.name}.`);
+      alert(`🎉 Selamat! Anda berhasil menukarkan kode untuk ${reward.name}.`);
     } else {
-      alert("Kode redeem tidak valid atau sudah kedaluwarsa.");
+      alert("❌ Kode redeem tidak valid atau sudah kedaluwarsa.");
     }
   }
 
@@ -1568,9 +1572,7 @@
     const url = song.url || song.link || "";
     
     const durationBadge = song.duration ? `<span style="font-size: 10px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 2px 6px; border-radius: 6px;">${song.duration}</span>` : "";
-    
-    // Ganti emoji flash offline dengan inline SVG
-    const offlineBadge = (isCollection || song.isOfflineReady) ? `<span class="offline-tag" style="display:inline-flex; align-items:center; gap:3px;"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Offline</span>` : "";
+    const offlineBadge = (isCollection || song.isOfflineReady) ? `<span class="offline-tag">⚡ Offline</span>` : "";
 
     const safeTitle = String(title).replace(/'/g, "\\'");
     const safeArtist = String(artist).replace(/'/g, "\\'");
@@ -1627,7 +1629,7 @@
     if(!query) return;
 
     if(!checkAndReduceLimit()) {
-        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center; gap:5px;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg> Limit harian Anda habis.</div></div>`;
+        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">❌ Limit harian Anda habis.</div></div>`;
         return;
     }
 
@@ -1653,10 +1655,10 @@
           return generateCardHTML({ title: parsedTitle, artist: parsedArtist, cover: s.thumbnail || s.image, url: s.url, duration: s.duration }, index);
         }).join('');
       } else {
-        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center; gap:5px;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Lagu tidak ditemukan.</div></div>`;
+        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">Lagu tidak ditemukan.</div></div>`;
       }
     } catch(err) {
-      resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center; gap:5px;"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> Gagal terhubung ke Server.</div></div>`;
+      resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">⚠️ Gagal terhubung ke Server.</div></div>`;
     }
   }
 
@@ -1683,8 +1685,8 @@
     if (offlineBlob) {
       currentAudioStreamUrl = URL.createObjectURL(offlineBlob);
       audio.src = currentAudioStreamUrl;
-      document.getElementById('mpArtist').innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:3px; transform:translateY(-1px);"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> ` + artist;
-      document.getElementById('fpArtist').innerText = artist + " (Offline)";
+      document.getElementById('mpArtist').innerText = artist + " (Koleksi Offline)";
+      document.getElementById('fpArtist').innerText = artist + " (Koleksi Offline)";
       playPauseBtn.innerHTML = iconPause;
       document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
       audio.play();
@@ -1692,8 +1694,8 @@
     }
 
     if(!checkAndReduceLimit()) {
-      document.getElementById('mpArtist').innerHTML = errSvg + " Limit Habis";
-      document.getElementById('fpArtist').innerHTML = errSvg + " Limit Habis";
+      document.getElementById('mpArtist').innerText = "❌ Limit Habis";
+      document.getElementById('fpArtist').innerText = "Limit Audio Engine Habis";
       return;
     }
 
@@ -1711,11 +1713,11 @@
         document.getElementById('fpArtist').innerText = artist;
         audio.play();
       } else {
-        document.getElementById('mpArtist').innerHTML = errSvg + " Stream Gagal Dimuat";
+        document.getElementById('mpArtist').innerText = "❌ Stream Gagal Dimuat";
         playPauseBtn.innerHTML = iconPlay;
       }
     } catch (err) {
-      document.getElementById('mpArtist').innerHTML = errSvg + " Kesalahan Jaringan";
+      document.getElementById('mpArtist').innerText = "❌ Kesalahan Jaringan";
       playPauseBtn.innerHTML = iconPlay;
     }
   }
