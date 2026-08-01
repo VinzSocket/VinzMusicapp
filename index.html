@@ -20,8 +20,7 @@
 
   * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
 
-  /* Penggunaan 100dvh (Dynamic Viewport Height) agar tidak tertutup bar browser di HP */
-  body { margin: 0; height: 100vh; height: 100dvh; background-color: var(--bg-darker); overflow: hidden; color: #fff; position: relative; }
+  body { margin: 0; height: 100vh; background-color: var(--bg-darker); overflow: hidden; color: #fff; position: relative; }
 
   /* --- SPLASH SCREEN ANIMATED --- */
   #splashScreen {
@@ -83,7 +82,7 @@
   .divider span { margin: 0 10px; }
   #googleBtnContainer { margin-bottom: 10px; width: 100%; display: flex; justify-content: center; overflow: hidden; border-radius: 12px; }
 
-  /* --- HEADER LOGO --- */
+  /* --- HEADER LOGO PADA APLIKASI --- */
   .app-header {
     display: flex; align-items: center; justify-content: space-between;
     padding: 15px 20px 10px 20px; z-index: 30;
@@ -113,24 +112,48 @@
   
   .section-title { font-size: 24px; font-weight: 800; margin-bottom: 20px; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   
-  /* --- UI LIMIT & PLATFORM MENU --- */
+  /* --- UI LIMIT & PLATFORM MENU VERTIKAL --- */
   .limit-card {
     background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.05));
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 14px;
     padding: 15px 18px;
     margin-bottom: 20px;
-    display: flex; justify-content: space-between; align-items: center;
-    backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   }
   .limit-label { font-size: 13px; color: var(--text-inactive); font-weight: 500; }
   .limit-value { font-size: 15px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; }
   
-  .platform-menu-vertical { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
+  .platform-menu-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 190px;
+    overflow-y: auto;
+    margin-bottom: 25px;
+    padding-right: 5px;
+  }
+  .platform-menu-vertical::-webkit-scrollbar { width: 5px; }
+  .platform-menu-vertical::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; }
+  
   .platform-btn {
-    display: flex; align-items: center; gap: 15px; background: var(--glass-bg);
-    border: 1px solid var(--glass-border); padding: 14px 18px; border-radius: 16px;
-    color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 14px 18px;
+    border-radius: 16px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    backdrop-filter: blur(10px);
   }
   .platform-btn:active { transform: scale(0.97); }
   .platform-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
@@ -140,16 +163,23 @@
   .platform-btn.tt svg { color: #00f2fe; }
 
   /* --- MODAL DOWNLOAD STYLE SNAPTIK --- */
-  .downloader-modal { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px); z-index: 500; display: none; justify-content: center; align-items: center; padding: 20px; }
+  .downloader-modal {
+    position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px);
+    z-index: 500; display: none; justify-content: center; align-items: center; padding: 20px;
+  }
   .downloader-modal.active { display: flex; }
-  .modal-box { background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 24px; width: 100%; max-width: 400px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); position: relative; max-height: 90vh; overflow-y: auto; }
+  .modal-box {
+    background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 24px; width: 100%; max-width: 400px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    position: relative; max-height: 90vh; overflow-y: auto;
+  }
   .modal-close { position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer; }
   .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 5px; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .modal-sub { font-size: 12px; color: var(--text-inactive); margin-bottom: 20px; }
 
   /* --- UI LIST LAGU --- */
   .song-list { display: flex; flex-direction: column; gap: 12px; width: 100%; }
-  .song-card { display: flex; align-items: center; gap: 14px; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 10px; border-radius: 16px; backdrop-filter: blur(10px); transition: 0.3s; cursor: pointer; }
+  .song-card { display: flex; align-items: center; gap: 14px; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 10px; border-radius: 16px; backdrop-filter: blur(10px); transition: 0.3s; animation: slideUp 0.3s ease forwards; opacity: 0; transform: translateY(15px); cursor: pointer; }
   .song-card:active { transform: scale(0.98); background: rgba(255,255,255,0.08); }
   .song-card img { width: 55px; height: 55px; border-radius: 12px; object-fit: cover; }
   .song-info { flex: 1; overflow: hidden; }
@@ -157,13 +187,31 @@
   .song-info p { margin: 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .offline-tag { font-size: 10px; background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #4ade80; padding: 2px 6px; border-radius: 6px; margin-left: 5px; }
 
-  /* --- SEARCH BOX --- */
+  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+
+  /* --- SEARCH BOX & ANIMASI KACA PEMBESAR PULSE --- */
   .search-box { display: flex; gap: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.5); padding: 6px; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(15px); align-items: center; }
   .search-box input { flex: 1; padding: 12px 15px; background: transparent; border: none; color: #fff; outline: none; font-size: 14px; }
   .search-box button { padding: 10px 20px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary); border-radius: 15px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+  .search-box button:active { transform: scale(0.9); }
 
+  .pulse-search-icon {
+    animation: searchPulse 1.6s infinite ease-in-out;
+    transform-origin: center;
+    color: var(--primary);
+  }
+
+  @keyframes searchPulse {
+    0% { transform: scale(1); opacity: 0.7; filter: drop-shadow(0 0 2px var(--primary)); }
+    50% { transform: scale(1.35); opacity: 1; filter: drop-shadow(0 0 8px var(--primary)); }
+    100% { transform: scale(1); opacity: 0.7; filter: drop-shadow(0 0 2px var(--primary)); }
+  }
+
+  /* --- STATUS & LOADING --- */
   .status-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; }
-  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; margin-top: 10px; }
+  .spinner { width: 30px; height: 30px; border: 3px solid rgba(56, 189, 248, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; margin-top: 10px; display: flex; align-items: center; gap: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* --- DOWNLOAD PROGRESS BAR TOAST --- */
   .download-toast {
@@ -171,7 +219,8 @@
     width: 90%; max-width: 380px; background: rgba(15, 23, 42, 0.95);
     border: 1px solid var(--primary); backdrop-filter: blur(20px);
     padding: 12px 16px; border-radius: 16px; z-index: 1000;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.7); transition: transform 0.4s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   .download-toast.active { transform: translateX(-50%) translateY(0); }
   .dl-info { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; font-weight: 600; }
@@ -181,72 +230,142 @@
   .dl-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8); border-radius: 3px; transition: width 0.15s ease; }
 
   /* --- AKUN SCREEN --- */
-  .profile-card { text-align: center; padding: 25px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; margin-bottom: 20px; width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
+  .profile-card { text-align: center; padding: 25px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; margin-bottom: 20px; backdrop-filter: blur(15px); width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
   .profile-img-container { position: relative; width: 90px; height: 90px; margin-bottom: 15px; }
   .profile-img-container img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; padding: 3px; }
-  .change-avatar-btn { position: absolute; bottom: 0; right: 0; background: var(--primary); border: none; border-radius: 50%; width: 28px; height: 28px; color: #000; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+  .change-avatar-btn { position: absolute; bottom: 0; right: 0; background: var(--primary); border: none; border-radius: 50%; width: 28px; height: 28px; color: #000; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
   
   .edit-field { width: 100%; text-align: left; margin-bottom: 12px; }
   .edit-field label { font-size: 11px; color: var(--text-inactive); margin-bottom: 4px; display: block; }
   .edit-field input { width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); border-radius: 10px; color: #fff; font-size: 13px; outline: none; }
-  
+  .edit-field input:focus { border-color: var(--primary); }
+
   .btn-save-profile { width: 100%; padding: 12px; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: var(--primary); border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 5px; transition: 0.2s; }
-  .btn-logout { width: 100%; max-width: 360px; padding: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; margin-top: 10px;}
+  .btn-save-profile:active { transform: scale(0.97); }
+
+  .btn-logout { width: 100%; max-width: 360px; padding: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; }
 
   /* --- KARTU REDEEM & TEST SERVER CARD UI --- */
-  .server-test-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; width: 100%; max-width: 360px; margin-bottom: 20px; }
-  .server-test-header { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; font-weight: 700; margin-bottom: 15px; color: #fff; }
+  .server-test-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(15px);
+  }
+  .server-test-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #fff;
+  }
   .ping-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-  .ping-item { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 10px 14px; background: rgba(0,0,0,0.4); border-radius: 12px; color: var(--text-inactive); border: 1px solid rgba(255,255,255,0.05); }
-  .ping-ms { font-weight: 800; font-family: monospace; font-size: 13px; display: flex; align-items: center;}
+  .ping-item {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; padding: 10px 14px; background: rgba(0,0,0,0.4);
+    border-radius: 12px; color: var(--text-inactive);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .ping-item .platform-name { display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 600; }
   
-  .btn-test-server { width: 100%; padding: 12px; background: rgba(139, 92, 246, 0.15); border: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa; border-radius: 12px; font-weight: 600; cursor: pointer; }
+  .ping-ms { 
+    display: flex; align-items: center; justify-content: flex-end; 
+    font-weight: 800; font-family: monospace; font-size: 13px; 
+  }
+  
+  /* SVG WiFi Base Styles & Bar Kontrol */
+  .wifi-icon { width: 16px; height: 16px; margin-right: 6px; }
+  .wifi-dot { opacity: 0.2; transition: opacity 0.3s ease; stroke: currentColor; }
+  .wifi-1, .wifi-2, .wifi-3 { opacity: 0; transition: opacity 0.3s ease; stroke: currentColor; }
+
+  .ping-ms.good { color: #4ade80; text-shadow: 0 0 5px rgba(74, 222, 128, 0.4); }
+  .ping-ms.good .wifi-dot, .ping-ms.good .wifi-1, .ping-ms.good .wifi-2, .ping-ms.good .wifi-3 { opacity: 1; }
+
+  .ping-ms.mid { color: #facc15; text-shadow: 0 0 5px rgba(250, 204, 21, 0.4); }
+  .ping-ms.mid .wifi-dot, .ping-ms.mid .wifi-1 { opacity: 1; } 
+
+  .ping-ms.bad { color: #ef4444; text-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
+  .ping-ms.bad .wifi-dot { opacity: 1; } 
+
+  .ping-ms.testing { color: var(--text-inactive); }
+  .ping-ms.testing .wifi-dot { animation: wifiPulse 1.2s infinite 0s; }
+  .ping-ms.testing .wifi-1 { animation: wifiPulse 1.2s infinite 0.2s; }
+  .ping-ms.testing .wifi-2 { animation: wifiPulse 1.2s infinite 0.4s; }
+  .ping-ms.testing .wifi-3 { animation: wifiPulse 1.2s infinite 0.6s; }
+
+  @keyframes wifiPulse {
+    0%, 100% { opacity: 0.15; transform: translateY(2px); }
+    50% { opacity: 1; transform: translateY(-2px); }
+  }
+
+  .btn-test-server {
+    width: 100%; padding: 12px; background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3); color: #a78bfa;
+    border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s;
+  }
+  .btn-test-server:active { transform: scale(0.97); }
 
   /* --- PREMIUM PRICING SCREEN --- */
   .pricing-grid { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 380px; margin-top: 10px; }
-  .price-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: left; }
-  .price-card.featured { border-color: #f59e0b; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%); position: relative;}
-  .price-badge { position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; }
+  .price-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: left; backdrop-filter: blur(15px); position: relative; overflow: hidden; transition: 0.3s; }
+  .price-card.featured { border-color: #f59e0b; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%); }
+  .price-badge { position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
   .price-title { font-size: 18px; font-weight: 700; margin: 0 0 5px 0; display: flex; align-items: center; gap: 10px; }
   .price-cost { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 8px; }
   .price-cost span { font-size: 12px; font-weight: 400; color: var(--text-inactive); }
-  .btn-subscribe { width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #fff; font-weight: 600; cursor: pointer; }
-  .price-card.featured .btn-subscribe { background: linear-gradient(135deg, #f59e0b, #ea580c); border: none; color: #fff; }
+  .old-price { font-size: 14px; text-decoration: line-through; color: #ef4444; margin-right: 6px; }
+  .discount-tag { font-size: 11px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
+  .price-desc { font-size: 12px; color: var(--text-inactive); margin: 0 0 15px 0; line-height: 1.4; }
+  .btn-subscribe { width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .price-card.featured .btn-subscribe { background: linear-gradient(135deg, #f59e0b, #ea580c); border: none; color: #fff; box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4); }
+
+  .audio-quality-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3);
+    color: var(--primary); font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 8px; margin-bottom: 10px;
+  }
+  .audio-quality-badge.gold {
+    background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+  }
 
   /* --- MINI PLAYER --- */
   .mini-player { position: absolute; bottom: -100px; left: 15px; right: 15px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 8px 12px; gap: 12px; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-  .mini-player.active { bottom: 95px; }
+  .mini-player.active { bottom: 100px; } /* Mencegah saling tumpuk dengan bar navigasi */
   .mp-cover { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
   .mp-info { flex: 1; overflow: hidden; }
   .mp-info h4 { margin: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center;}
   .mp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
 
-  /* --- FULL SCREEN PLAYER (TENGGELAM FIX & RESPONSIF) --- */
-  /* Kita gunakan 100dvh dan space-evenly agar layout menyesuaikan tinggi layar hp yang kecil */
+  /* --- FULL SCREEN PLAYER (TENGGELAM FIX) --- */
   .full-player { 
-    position: fixed; top: 0; left: 0; right: 0; 
-    height: 100vh; height: 100dvh; /* Dynamic Height */
-    background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,0.98) 100%); 
-    backdrop-filter: blur(30px); z-index: 200; 
-    display: flex; flex-direction: column; justify-content: space-evenly; /* Mengatur jarak secara otomatis */
-    padding: 3vh 25px 4vh 25px; 
+    position: fixed; inset: 0; background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,0.98) 100%); 
+    backdrop-filter: blur(30px); z-index: 200; display: flex; flex-direction: column; 
+    padding: 40px 25px 130px 25px; /* Tambahan jarak bawah (130px) agar panel tidak tertutup bar */
     transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    overflow-y: auto; 
   }
   .full-player.active { transform: translateY(0); }
-  
-  .fp-header { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+  .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-shrink: 0; }
   .fp-header button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
   .fp-header p { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-inactive); text-transform: uppercase; }
   
-  /* Ukuran cover dinamis menyesuaikan tinggi layar (vh) agar tidak menekan tombol play ke bawah */
   .fp-cover-container { 
-    width: 100%; max-width: 42vh; margin: 0 auto; aspect-ratio: 1/1; 
-    box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; flex-shrink: 1; 
+    width: 100%; max-width: 350px; margin: 0 auto 35px auto; aspect-ratio: 1/1; 
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; flex-shrink: 0; 
   }
   .fp-cover-container img { width: 100%; height: 100%; object-fit: cover; }
   
-  .fp-meta { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-shrink: 0; }
   .fp-meta-text { flex: 1; overflow: hidden; }
   .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 24px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); }
@@ -254,21 +373,21 @@
   .fp-meta-actions { display: flex; align-items: center; gap: 15px; }
   .btn-download { background: transparent; border: none; color: var(--text-inactive); cursor: pointer; transition: 0.2s; padding: 5px; }
   .btn-download:active { transform: scale(0.9); color: var(--primary); }
-  .btn-love { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; padding: 5px; }
+  .btn-love { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; position: relative; padding: 5px; }
   .btn-love.active svg { fill: #1db954; stroke: #1db954; } 
 
   /* Timeline */
-  .fp-timeline { flex-shrink: 0; }
+  .fp-timeline { margin-bottom: 30px; flex-shrink: 0; }
   .progress-area { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; cursor: pointer; }
   .progress-bar { height: 100%; width: 0%; background: #38bdf8; border-radius: 3px; position: relative; transition: width 0.1s linear; }
   .progress-bar::after { content: ""; position: absolute; right: -6px; top: -5px; width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(56,189,248,0.8); }
   .time-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-inactive); margin-top: 10px; font-weight: 500; }
 
   /* Main Controls */
-  .fp-controls { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+  .fp-controls { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; padding-bottom: 20px; }
   .fp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; }
   .fp-controls button:active { transform: scale(0.9); }
-  .btn-main-play { width: 70px; height: 70px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
+  .btn-main-play { width: 70px; height: 70px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
 
   /* --- BOTTOM NAVIGATION BAR LIQUID GLASS --- */
   .bottom-nav { position: fixed; bottom: 15px; left: 10px; right: 10px; height: 70px; background: var(--nav-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 5px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
@@ -279,36 +398,6 @@
   .nav-item.active { color: var(--text-active); }
   .nav-item.active svg { transform: translateY(-8px); }
   .nav-item.active span { opacity: 1; transform: translateY(0); }
-
-  /* ========================================================= */
-  /* MEDIA QUERIES (DESKTOP & LAPTOP ADAPTATION)               */
-  /* ========================================================= */
-  @media (min-width: 768px) {
-    /* Mencegah UI Nav dan Player meregang aneh ke seluruh layar lebar */
-    .bottom-nav { max-width: 500px; margin: 0 auto; left: 0; right: 0; }
-    .mini-player { max-width: 500px; margin: 0 auto; left: 0; right: 0; }
-    
-    /* Full Player bergaya popup rapih di tengah layar */
-    .full-player { max-width: 500px; margin: 0 auto; left: 0; right: 0; border-radius: 24px 24px 0 0; }
-    
-    /* Layout Utama & Header */
-    .content { max-width: 900px; margin: 0 auto; width: 100%; }
-    .app-header { max-width: 900px; margin: 0 auto; border-radius: 0 0 20px 20px; }
-    
-    /* Ubah list menjadi Grid (Kotak-Kotak) di Laptop */
-    .song-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-    
-    /* Menu Downloader berjajar kesamping */
-    .platform-menu-vertical { flex-direction: row; flex-wrap: wrap; }
-    .platform-btn { flex: 1; min-width: 220px; justify-content: center; }
-    
-    /* Kartu harga berjajar rapih */
-    .pricing-grid { flex-direction: row; max-width: 100%; justify-content: center; align-items: stretch; }
-    .price-card { flex: 1; max-width: 300px; }
-    
-    /* Center Card di Layar Akun */
-    .server-test-card, .profile-card, .btn-logout { max-width: 500px; margin-left: auto; margin-right: auto; }
-  }
 </style>
 </head>
 <body>
@@ -336,7 +425,7 @@
   </div>
 </div>
 
-<!-- MODAL INPUT & PILIHAN UNDUH -->
+<!-- MODAL INPUT & PILIHAN UNDUH (GAYA SNAPTIK) -->
 <div class="downloader-modal" id="downloaderModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeDownloaderModal()">&times;</button>
@@ -371,20 +460,21 @@
           <p id="resAuthor" style="margin: 0; font-size: 11px; color: var(--text-inactive);">Author</p>
         </div>
       </div>
+
       <div id="downloadOptionsContainer" style="display: flex; flex-direction: column; gap: 10px;"></div>
     </div>
   </div>
 </div>
 
-<!-- AUTH VIEW -->
 <div id="authView">
   <div class="glass-panel">
     <div class="auth-title">Melofy</div>
     <div class="auth-sub">Nikmati Musik Favoritmu Dimana Saja</div>
 
+    <!-- Hanya Ada Melofy ID & Google -->
     <div class="auth-tabs">
       <button class="tab-btn active" id="tabMelofy" onclick="switchAuthMode('melofy')">Melofy ID</button>
-      <button class="tab-btn" id="tabGoogle" onclick="switchAuthMode('google')">Google & Guest</button>
+      <button class="tab-btn" id="tabGoogle" onclick="switchAuthMode('google')">Google</button>
     </div>
 
     <div id="formMelofy" style="width: 100%;">
@@ -401,16 +491,10 @@
 
     <div id="formGoogle" style="width: 100%; display: none;">
       <div id="googleBtnContainer"></div>
-      <div class="divider"><span>ATAU</span></div>
-      <button class="glass-btn" onclick="loginGuest()">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        Masuk sebagai Tamu
-      </button>
     </div>
   </div>
 </div>
 
-<!-- APP VIEW -->
 <div id="appView">
   <div class="app-header">
     <div class="brand-logo">
@@ -496,8 +580,8 @@
             Paket Pelajar
           </div>
           <div class="price-cost">Rp 18.000 <span>/ bulan</span></div>
-          <p style="font-size: 12px; color: var(--text-inactive); margin: 0 0 15px 0;">Limit harian 200 unduhan. Khusus siswa & mahasiswa aktif.</p>
-          <button class="btn-subscribe" onclick="upgradePlan('pelajar')">Pilih Pelajar</button>
+          <p class="price-desc">Limit harian 200 unduhan. Khusus siswa & mahasiswa aktif.</p>
+          <button class="btn-subscribe" onclick="upgradePlan('pelajar')">Pilih Pelajar (200 Limit)</button>
         </div>
 
         <div class="price-card">
@@ -506,8 +590,9 @@
             Paket Pro
           </div>
           <div class="price-cost">Rp 25.000 <span>/ bulan</span></div>
-          <p style="font-size: 12px; color: var(--text-inactive); margin: 0 0 15px 0;">Limit harian 500 unduhan. Akses penuh fitur kualitas tinggi.</p>
-          <button class="btn-subscribe" onclick="upgradePlan('pro')">Pilih Pro</button>
+          <div class="audio-quality-badge">🎧 Audio HQ 320 Kbps</div>
+          <p class="price-desc">Limit harian 500 unduhan. Akses penuh ke semua fitur & audio kualitas tinggi.</p>
+          <button class="btn-subscribe" onclick="upgradePlan('pro')">Pilih Pro (500 Limit)</button>
         </div>
 
         <div class="price-card featured">
@@ -518,14 +603,16 @@
           </div>
           <div class="price-cost">
             <span class="old-price">Rp 420.000</span> Rp 380.000 <span>/ tahun</span>
+            <span class="discount-tag">Diskon 9.5%</span>
           </div>
-          <p style="font-size: 12px; color: var(--text-inactive); margin: 0 0 15px 0;">Unlimited Limit! Akses VIP 1 Tahun penuh tanpa kompresi.</p>
-          <button class="btn-subscribe" onclick="upgradePlan('flagship')">Beli Flagship</button>
+          <div class="audio-quality-badge gold">🎧 Ultra Audio Studio 320 Kbps</div>
+          <p class="price-desc">Unlimited Limit Harian! Akses VIP 1 Tahun penuh tanpa batas kompresi.</p>
+          <button class="btn-subscribe" onclick="upgradePlan('flagship')">Beli Flagship (Unlimited)</button>
         </div>
       </div>
     </div>
 
-    <!-- LAYAR AKUN -->
+    <!-- LAYAR AKUN DENGAN UJI API REAL BERSAMAAN & MELOFY ENGINE -->
     <div id="screen-Akun" class="screen" style="align-items: center; padding-top: 20px;">
       <div class="profile-card">
         <div class="profile-img-container">
@@ -537,7 +624,7 @@
         </div>
 
         <div id="flagshipBadge" style="margin-bottom: 15px; display: none;">
-          <span style="background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase;">
+          <span style="background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.4);">
             <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" style="vertical-align:text-bottom; margin-right:2px;"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
             Flagship Permanent
           </span>
@@ -547,10 +634,12 @@
           <label>Username / Account ID</label>
           <input type="text" id="inputUsername" placeholder="Username">
         </div>
+
         <div class="edit-field">
           <label>Nama Panggilan</label>
           <input type="text" id="inputNickname" placeholder="Nama Panggilan">
         </div>
+
         <div class="edit-field">
           <label>Email Terdaftar</label>
           <input type="text" id="inputEmail" readonly style="opacity: 0.6; cursor: not-allowed;">
@@ -575,42 +664,57 @@
         <button class="btn-save-profile" onclick="processRedeemCode()" style="margin-top: 0;">Klaim Kode</button>
       </div>
 
-      <!-- KARTU TEST SERVER -->
+      <!-- KARTU TEST SERVER REAL API BERSAMAAN -->
       <div class="server-test-card">
         <div class="server-test-header">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#a78bfa" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Uji Latency API
+          Uji Latency
         </div>
         <div class="ping-list">
           <div class="ping-item">
-            <span>Melofy Engine</span> 
-            <span class="ping-ms" id="ping-melofy">-- ms</span>
+            <span class="platform-name">Melofy Engine</span> 
+            <span class="ping-ms" id="ping-melofy">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
           </div>
           <div class="ping-item">
-            <span>YouTube API</span> 
-            <span class="ping-ms" id="res-yt">-- ms</span>
+            <span class="platform-name">YouTube API</span> 
+            <span class="ping-ms" id="res-yt">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
           </div>
           <div class="ping-item">
-            <span>TikTok API</span> 
-            <span class="ping-ms" id="res-tt">-- ms</span>
+            <span class="platform-name">TikTok API</span> 
+            <span class="ping-ms" id="res-tt">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
           </div>
           <div class="ping-item">
-            <span>Instagram API</span> 
-            <span class="ping-ms" id="res-ig">-- ms</span>
+            <span class="platform-name">Instagram API</span> 
+            <span class="ping-ms" id="res-ig">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
           </div>
           <div class="ping-item">
-            <span>Spotify Search</span> 
-            <span class="ping-ms" id="res-sp">-- ms</span>
+            <span class="platform-name">Spotify Search</span> 
+            <span class="ping-ms" id="res-sp">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
           </div>
         </div>
-        <button class="btn-test-server" onclick="runRealApiTestsConcurrent()" id="btnTestServer">JALANKAN UJI</button>
+        <button class="btn-test-server" onclick="runRealApiTestsConcurrent()" id="btnTestServer">JALANKAN</button>
       </div>
 
       <button class="btn-logout" onclick="logoutAccount()" style="margin-bottom: 20px;">Keluar Akun</button>
     </div>
   </div>
 
-  <!-- BOTTOM NAVIGATION BAR -->
+  <!-- BOTTOM NAVIGATION BAR (LIQUID GLASS ANIMATED) -->
   <div class="bottom-nav">
     <div class="indicator"></div>
     <div class="nav-item active" data-title="Dashboard">
@@ -694,7 +798,9 @@
   </div>
 
 <script>
-  // KUNCI API
+  // ==========================================
+  // KUNCI API DOWNLOADER & ENGINE MUSIK
+  // ==========================================
   const NEOXR_API_KEY = "VinzKeyNeoxr0021"; 
   const BOTCAHX_API_KEY = "VinzKey0110";
 
@@ -702,8 +808,11 @@
   const dlIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
   const musicIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>`;
   const questionSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
+  const errSvg = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444; margin-right: 4px; vertical-align: middle;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
 
-  // INDEXEDDB LOKAL
+  // ==========================================
+  // 1. DATABASE LOKAL OFFLINE (INDEXEDDB)
+  // ==========================================
   let db;
   function initIndexedDB() {
     return new Promise((resolve) => {
@@ -714,8 +823,11 @@
           db.createObjectStore("offline_audio");
         }
       };
-      request.onsuccess = (e) => { db = e.target.result; resolve(true); };
-      request.onerror = () => { resolve(false); };
+      request.onsuccess = (e) => { 
+        db = e.target.result; 
+        resolve(true);
+      };
+      request.onerror = (e) => { resolve(false); };
     });
   }
 
@@ -741,7 +853,9 @@
     tx.objectStore("offline_audio").delete(url);
   }
 
-  // LIMIT HARIAN
+  // ==========================================
+  // 2. SISTEM LIMIT HARIAN API (GRATIS = 10)
+  // ==========================================
   function getLimitMax(plan) {
     if (plan === 'flagship') return 'Unlimited';
     if (plan === 'pro') return 500;
@@ -760,7 +874,7 @@
     }
 
     if (currentUser.limit <= 0) {
-        alert("⚠️ Limit Harian habis. Silakan Upgrade!");
+        alert("Limit Harian Anda telah habis (0). Silakan Upgrade ke Premium!");
         return false;
     }
 
@@ -772,11 +886,13 @@
 
   function updateLimitDisplay() {
     if (!currentUser) return;
-    const limitVal = currentUser.plan === 'flagship' || currentUser.isFlagship ? 'UNLIMITED' : `${currentUser.limit} / ${getLimitMax(currentUser.plan)}`;
+    const limitVal = currentUser.plan === 'flagship' || currentUser.isFlagship ? 'UNLIMITED (FLAGSHIP)' : `${currentUser.limit} / ${getLimitMax(currentUser.plan)}`;
     document.getElementById('dailyLimitDisplay').innerText = limitVal;
   }
 
-  // INIT
+  // ==========================================
+  // 3. SPLASH SCREEN & INIT
+  // ==========================================
   window.addEventListener('load', async () => {
     const splashStatus = document.getElementById('splashStatus');
     splashStatus.innerText = "Memeriksa database audio lokal...";
@@ -794,10 +910,13 @@
     } else {
       initGoogleClient();
     }
+
     document.getElementById('splashScreen').classList.add('fade-out');
   });
 
-  // CANVAS FIREFLIES
+  // ==========================================
+  // 4. FIREFLIES CANVAS LOGIC
+  // ==========================================
   const canvas = document.getElementById('firefliesCanvas');
   const ctx = canvas.getContext('2d');
   let fireflies = [];
@@ -842,7 +961,9 @@
   }
   initFireflies(); animateFireflies();
 
-  // AUTH
+  // ==========================================
+  // 5. AUTENTIKASI
+  // ==========================================
   const GOOGLE_CLIENT_ID = "606659995825-bdmkmg51k222mbr6b6dtie92ahbg1hpt.apps.googleusercontent.com";
   let currentUser = null;
 
@@ -865,7 +986,8 @@
     currentUser = { 
       name: payload.name, email: payload.email, picture: payload.picture,
       nickname: payload.name.split(' ')[0] || payload.name,
-      plan: 'free', limit: 10, lastReset: new Date().toDateString()
+      plan: 'free', limit: 10, lastReset: new Date().toDateString(),
+      redeemedCodes: []
     };
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
     masukKeApp();
@@ -891,15 +1013,18 @@
       melofyUsers.push({
         name: userInp, email: fullEmail, password: passInp, nickname: userInp,
         picture: "https://api.dicebear.com/7.x/bottts/svg?seed=" + userInp,
-        plan: 'free', limit: 10, lastReset: new Date().toDateString()
+        plan: 'free', limit: 10, lastReset: new Date().toDateString(),
+        redeemedCodes: []
       });
       localStorage.setItem('melofy_db_users', JSON.stringify(melofyUsers));
       alert("Akun Melofy Berhasil Dibuat! Silakan masuk.");
     } else if (type === 'login') {
       if (userInp.toLowerCase() === "vinzhosting" && passInp === "Alvin2010#") {
         currentUser = {
-          name: "Vinz Hosting", email: "VinzHosting@melofy.com", picture: "https://api.dicebear.com/7.x/bottts/svg?seed=VinzHosting",
-          nickname: "Vinz (VIP)", isFlagship: true, plan: 'flagship', limit: 'Unlimited', lastReset: new Date().toDateString()
+          name: "Vinz Hosting", email: "VinzHosting@melofy.com",
+          picture: "https://api.dicebear.com/7.x/bottts/svg?seed=VinzHosting",
+          nickname: "Vinz (VIP)", isFlagship: true, plan: 'flagship', limit: 'Unlimited', lastReset: new Date().toDateString(),
+          redeemedCodes: []
         };
         localStorage.setItem('vinz_user', JSON.stringify(currentUser));
         return masukKeApp();
@@ -909,20 +1034,14 @@
       if (!validUser) return alert("Username atau Kata Sandi Melofy salah!");
 
       currentUser = {
-        name: validUser.name, email: validUser.email, picture: validUser.picture, nickname: validUser.nickname,
-        plan: validUser.plan || 'free', limit: validUser.limit || 10, lastReset: validUser.lastReset || new Date().toDateString()
+        name: validUser.name, email: validUser.email, picture: validUser.picture,
+        nickname: validUser.nickname, plan: validUser.plan || 'free',
+        limit: validUser.limit || 10, lastReset: validUser.lastReset || new Date().toDateString(),
+        redeemedCodes: validUser.redeemedCodes || []
       };
       localStorage.setItem('vinz_user', JSON.stringify(currentUser));
       masukKeApp();
     }
-  }
-
-  function loginGuest() {
-    currentUser = { 
-      name: "Akun Tamu", email: "guest@melofy.com", picture: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
-      nickname: "Tamu", plan: 'free', limit: 10, lastReset: new Date().toDateString()
-    };
-    masukKeApp();
   }
 
   function upgradePlan(newPlan) {
@@ -931,6 +1050,19 @@
     if(newPlan === 'flagship') currentUser.isFlagship = true;
     currentUser.limit = getLimitMax(newPlan);
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
+    
+    // Perbarui profil Melofy jika ia bukan pengguna Google
+    if (currentUser.email && currentUser.email.endsWith("@melofy.com") && currentUser.email !== "VinzHosting@melofy.com") {
+        let melofyUsers = JSON.parse(localStorage.getItem('melofy_db_users')) || [];
+        let userIndex = melofyUsers.findIndex(u => u.email === currentUser.email);
+        if (userIndex !== -1) {
+            melofyUsers[userIndex].plan = newPlan;
+            melofyUsers[userIndex].limit = currentUser.limit;
+            melofyUsers[userIndex].redeemedCodes = currentUser.redeemedCodes;
+            localStorage.setItem('melofy_db_users', JSON.stringify(melofyUsers));
+        }
+    }
+    
     alert("Berhasil mengaktifkan Paket " + newPlan.toUpperCase() + "!");
     masukKeApp();
   }
@@ -943,7 +1075,12 @@
     document.getElementById('inputUsername').value = currentUser.name;
     document.getElementById('inputNickname').value = currentUser.nickname || currentUser.name;
     document.getElementById('inputEmail').value = currentUser.email;
-    document.getElementById('flagshipBadge').style.display = (currentUser.isFlagship || currentUser.plan === 'flagship') ? 'block' : 'none';
+
+    if (currentUser.isFlagship || currentUser.plan === 'flagship') {
+      document.getElementById('flagshipBadge').style.display = 'block';
+    } else {
+      document.getElementById('flagshipBadge').style.display = 'none';
+    }
 
     const today = new Date().toDateString();
     if (currentUser.lastReset !== today && !currentUser.isFlagship) {
@@ -952,6 +1089,7 @@
         localStorage.setItem('vinz_user', JSON.stringify(currentUser));
     }
     updateLimitDisplay();
+
     renderHistory();
     renderCollection();
     setTimeout(() => { moveIndicator(document.querySelector('.nav-item.active')); }, 100);
@@ -962,23 +1100,48 @@
     window.location.reload();
   }
 
-  // MODAL DOWNLOAD
+  // ==========================================
+  // 6. MODAL DOWNLOAD PLATFORM 
+  // ==========================================
   let activePlatformType = '';
+
   function openDownloaderModal(platform) {
     activePlatformType = platform;
-    document.getElementById('downloaderModal').classList.add('active');
+    const modal = document.getElementById('downloaderModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSub = document.getElementById('modalSub');
+    const ytGroup = document.getElementById('ytQualityGroup');
+    
     document.getElementById('targetUrlInput').value = '';
     document.getElementById('modalInputSection').style.display = 'block';
     document.getElementById('modalResultSection').style.display = 'none';
     document.getElementById('btnProsesDL').innerText = "Proses Tautan";
-    document.getElementById('ytQualityGroup').style.display = (platform === 'youtube') ? 'block' : 'none';
+
+    if (platform === 'tiktok') {
+      modalTitle.innerText = "Pengunduh TikTok";
+      modalSub.innerText = "Unduh video & audio TikTok Full HD tanpa watermark";
+      ytGroup.style.display = 'none';
+    } else if (platform === 'youtube') {
+      modalTitle.innerText = "Pengunduh YouTube";
+      modalSub.innerText = "Unduh video MP4 berbagai resolusi & MP3 Audio";
+      ytGroup.style.display = 'block'; 
+    } else if (platform === 'instagram') {
+      modalTitle.innerText = "Pengunduh Instagram";
+      modalSub.innerText = "Unduh Reels, Foto & Ekstrak Audio Instagram";
+      ytGroup.style.display = 'none';
+    }
+
+    modal.classList.add('active');
   }
 
-  function closeDownloaderModal() { document.getElementById('downloaderModal').classList.remove('active'); }
+  function closeDownloaderModal() {
+    document.getElementById('downloaderModal').classList.remove('active');
+  }
 
   async function processDownloader() {
     const urlVal = document.getElementById('targetUrlInput').value.trim();
-    if(!urlVal) return alert("Silakan masukkan tautan terlebih dahulu!");
+    if(!urlVal) return alert("Silakan masukkan atau tempel tautan terlebih dahulu!");
+
     if(!checkAndReduceLimit()) return;
 
     const btn = document.getElementById('btnProsesDL');
@@ -1008,31 +1171,73 @@
         document.getElementById('resThumbnail').src = resData.thumbnail;
         document.getElementById('resTitle').innerText = resData.title;
         document.getElementById('resAuthor').innerText = `${resData.channel} • ${resData.duration}`;
+
         optionsContainer.innerHTML = `
-          <button class="glass-btn primary" onclick="triggerDirectDownload('${resData.data.url}', '${resData.data.filename}')">${dlIcon} Unduh MP4</button>
-          <button class="glass-btn primary" onclick="downloadYouTubeAudio('${urlVal}')">${musicIcon} Unduh Audio (MP3)</button>
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #22c55e;" 
+                  onclick="triggerDirectDownload('${resData.data.url}', '${resData.data.filename}')">
+            ${dlIcon} Unduh MP4 (${resData.data.quality} | ${resData.data.size})
+          </button>
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-color: #8b5cf6;" 
+                  onclick="downloadYouTubeAudio('${urlVal}')">
+            ${musicIcon} Unduh Audio (MP3)
+          </button>
         `;
       } else if (activePlatformType === 'tiktok') {
         const data = resData.data;
-        document.getElementById('resThumbnail').src = data.music.cover || "https://via.placeholder.com/60";
+        let coverUrl = (data.author && data.author.avatar_thumb && data.author.avatar_thumb.url_list) ? data.author.avatar_thumb.url_list[0] : "https://via.placeholder.com/60";
+        if(data.music && data.music.cover) coverUrl = data.music.cover;
+        
+        document.getElementById('resThumbnail').src = coverUrl;
         document.getElementById('resTitle').innerText = data.caption || "TikTok Media";
         document.getElementById('resAuthor').innerText = `@${data.author.nickname}`;
+
         optionsContainer.innerHTML = `
-          <button class="glass-btn primary" onclick="triggerDirectDownload('${data.video}', 'TikTok_NoWM.mp4')">${dlIcon} Unduh MP4 No WM</button>
-          <button class="glass-btn primary" onclick="triggerDirectDownload('${data.audio}', 'TikTok_Audio.mp3')">${musicIcon} Unduh MP3 Audio</button>
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #22c55e, #16a34a); border-color: #22c55e;" 
+                  onclick="triggerDirectDownload('${data.video}', 'TikTok_NoWatermark.mp4')">
+            ${dlIcon} Unduh MP4 (No Watermark)
+          </button>
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #0284c7, #38bdf8);" 
+                  onclick="triggerDirectDownload('${data.videoWM}', 'TikTok_Watermark.mp4')">
+            ${dlIcon} Unduh MP4 (With Watermark)
+          </button>
+          <button class="glass-btn primary" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-color: #8b5cf6;" 
+                  onclick="triggerDirectDownload('${data.audio}', 'TikTok_Audio.mp3')">
+            ${musicIcon} Unduh MP3 Audio
+          </button>
         `;
       } else if (activePlatformType === 'instagram') {
         const firstMedia = resData.data[0];
-        document.getElementById('resThumbnail').src = (firstMedia && firstMedia.type === 'image') ? firstMedia.url : "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg";
+        let igThumb = (firstMedia && firstMedia.type === 'image') ? firstMedia.url : "https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg";
+
+        document.getElementById('resThumbnail').src = igThumb;
         document.getElementById('resTitle').innerText = "Konten Media Instagram";
         document.getElementById('resAuthor').innerText = "@melofy_engine";
+
         resData.data.forEach((item, idx) => {
-          optionsContainer.innerHTML += `<button class="glass-btn primary" onclick="triggerDirectDownload('${item.url}', 'IG_${idx+1}.${item.type}')">${dlIcon} Unduh Media #${idx+1}</button>`;
+          optionsContainer.innerHTML += `
+            <button class="glass-btn primary" onclick="triggerDirectDownload('${item.url}', 'IG_Media_${idx+1}.${item.type}')">
+              ${dlIcon} Unduh Media #${idx+1} (${item.type.toUpperCase()})
+            </button>
+          `;
         });
+        
+        if(resData.data.length > 0) {
+          optionsContainer.innerHTML += `
+            <button class="glass-btn primary" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-color: #8b5cf6;" 
+                    onclick="triggerDirectDownload('${resData.data[0].url}', 'IG_Audio.mp3')">
+              ${musicIcon} Unduh Audio (MP3)
+            </button>
+          `;
+        }
       }
-      optionsContainer.innerHTML += `<button class="glass-btn" onclick="openDownloaderModal('${activePlatformType}')">${questionSvg} Masukkan Tautan Lain</button>`;
+
+      optionsContainer.innerHTML += `
+        <button class="glass-btn" onclick="openDownloaderModal('${activePlatformType}')" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+          ${questionSvg} Masukkan Tautan Lain
+        </button>`;
+
     } catch (err) {
-      alert("⚠️ Kesalahan API: " + err.message);
+      alert("Terjadi Kesalahan API: " + err.message);
     } finally {
       btn.innerText = "Proses Tautan";
       btn.disabled = false;
@@ -1041,19 +1246,26 @@
 
   async function downloadYouTubeAudio(ytUrl) {
     if(!checkAndReduceLimit()) return;
+    
     const toast = document.getElementById('downloadToast');
     document.getElementById('dlTitle').innerText = "Mengonversi ke MP3...";
     document.getElementById('dlBarFill').style.width = '50%';
     document.getElementById('dlPercent').innerText = 'Proses';
     toast.classList.add('active');
+
     try {
-      const resData = await fetch(`https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(ytUrl)}&type=audio&apikey=${NEOXR_API_KEY}`).then(r => r.json());
+      const endpointAudio = `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent(ytUrl)}&type=audio&apikey=${NEOXR_API_KEY}`;
+      const resData = await fetch(endpointAudio).then(r => r.json());
+      
       if(resData.status && resData.data && resData.data.url) {
          toast.classList.remove('active');
          triggerDirectDownload(resData.data.url, resData.title + '.mp3');
-      } else { throw new Error("Gagal"); }
+      } else {
+         throw new Error("Gagal mengekstrak MP3 dari YouTube");
+      }
     } catch(e) {
-      toast.classList.remove('active'); alert("Gagal mengekstrak audio");
+      toast.classList.remove('active');
+      alert(e.message);
     }
   }
 
@@ -1063,16 +1275,25 @@
     document.getElementById('dlBarFill').style.width = '100%';
     document.getElementById('dlPercent').innerText = '100%';
     toast.classList.add('active');
-    setTimeout(() => { toast.classList.remove('active'); window.open(fileUrl, '_blank'); }, 1500);
+
+    setTimeout(() => {
+      toast.classList.remove('active');
+      window.open(fileUrl, '_blank');
+    }, 1500);
   }
 
-  // REDEEM & PROFIL
+  // ==========================================
+  // 7. EDIT PROFIL & REDEEM CODE (1x USE)
+  // ==========================================
   function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
   function handleAvatarUpload(e) {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (evt) => { currentUser.picture = evt.target.result; document.getElementById('userPicture').src = currentUser.picture; };
+      reader.onload = (evt) => {
+        currentUser.picture = evt.target.result;
+        document.getElementById('userPicture').src = currentUser.picture;
+      };
       reader.readAsDataURL(file);
     }
   }
@@ -1083,28 +1304,45 @@
     if(!newName || !newNick) return alert("Username & Nama Panggilan wajib diisi!");
     currentUser.name = newName; currentUser.nickname = newNick;
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
-    alert("Profil diperbarui!");
+    alert("Profil berhasil diperbarui!");
   }
   
   function processRedeemCode() {
     const codeInput = document.getElementById('inputRedeemCode').value.trim().toUpperCase();
     if(!codeInput) return alert("Silakan masukkan kode redeem!");
+
     if(!currentUser) return alert("Silakan login terlebih dahulu!");
+
+    // Daftar Kode Redeem Rahasia
     const validCodes = {
       'MELOFYPRO': { plan: 'pro', name: 'Paket Pro' },
       'FLAGSHIPVIP': { plan: 'flagship', name: 'Flagship Annual' },
-      'PELAJAR100': { plan: 'pelajar', name: 'Paket Pelajar' }
+      'PELAJAR100': { plan: 'pelajar', name: 'Paket Pelajar' },
+      'MELOFYPELAJAR': { plan: 'pelajar', name: 'Paket Pelajar (7 Hari)' }
     };
+
     if(validCodes[codeInput]) {
-      upgradePlan(validCodes[codeInput].plan); 
+      // Pastikan ada property redeemedCodes
+      if (!currentUser.redeemedCodes) currentUser.redeemedCodes = [];
+      
+      // Jika kode ini sudah pernah ada dalam histori akun
+      if (currentUser.redeemedCodes.includes(codeInput)) {
+          return alert("Maaf, Anda sudah pernah mengaktivasi kode ini sebelumnya!");
+      }
+
+      const reward = validCodes[codeInput];
+      
+      // Catat ke memori agar tidak bisa dipakai ulang
+      currentUser.redeemedCodes.push(codeInput);
+
+      upgradePlan(reward.plan); 
       document.getElementById('inputRedeemCode').value = '';
-      alert(`🎉 Selamat! Anda berhasil menukarkan kode untuk ${validCodes[codeInput].name}.`);
+      alert(`🎉 Selamat! Anda berhasil menukarkan kode untuk ${reward.name}.`);
     } else {
-      alert("❌ Kode redeem tidak valid atau sudah kedaluwarsa.");
+      alert("Kode redeem tidak valid atau sudah kedaluwarsa.");
     }
   }
 
-  // NAVIGASI BAWAH
   const navItems = document.querySelectorAll('.nav-item');
   const indicator = document.querySelector('.indicator');
 
@@ -1123,13 +1361,16 @@
       navItems.forEach(nav => nav.classList.remove('active'));
       item.classList.add('active');
       moveIndicator(item);
+      
       const targetScreen = item.getAttribute('data-title');
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById('screen-' + targetScreen).classList.add('active');
     });
   });
 
-  // KOLEKSI & HISTORY
+  // ==========================================
+  // 8. FAVORITE OFFLINE MODE & HISTORY
+  // ==========================================
   let playHistory = JSON.parse(localStorage.getItem('vinz_history')) || [];
   let savedCollection = JSON.parse(localStorage.getItem('vinz_collection')) || [];
   let currentActiveSong = null;
@@ -1139,59 +1380,158 @@
     if(!currentActiveSong) return;
     const isSaved = savedCollection.find(s => s.url === currentActiveSong.url);
     const loveBtn = document.getElementById('btnLove');
+
     if(isSaved) {
       savedCollection = savedCollection.filter(s => s.url !== currentActiveSong.url);
       loveBtn.classList.remove('active');
       deleteOfflineAudio(currentActiveSong.url);
       alert("Lagu dihapus dari Koleksi & Penyimpanan Offline.");
     } else {
-      if(!currentAudioStreamUrl) return alert("Tunggu sebentar, file stream belum siap.");
+      if(!currentAudioStreamUrl) {
+        alert("Mohon tunggu sebentar, file stream belum siap. Coba lagi saat lagu sudah terputar.");
+        return;
+      }
+      
       loveBtn.classList.add('active');
       let success = await downloadAudioWithProgress(currentActiveSong.url, currentAudioStreamUrl, currentActiveSong.title);
-      if (success) { currentActiveSong.isOfflineReady = true; savedCollection.unshift(currentActiveSong); } 
-      else { loveBtn.classList.remove('active'); return; }
+      
+      if (success) {
+        currentActiveSong.isOfflineReady = true;
+        savedCollection.unshift(currentActiveSong);
+      } else {
+        alert("Oops, gagal menyimpan untuk Mode Offline. Terjadi kesalahan jaringan.");
+        loveBtn.classList.remove('active');
+        return;
+      }
     }
+
     localStorage.setItem('vinz_collection', JSON.stringify(savedCollection));
     renderCollection();
   }
 
   async function downloadToDevice() {
-    if (!currentActiveSong || !currentAudioStreamUrl) return alert("Tunggu hingga lagu selesai dimuat.");
+    if (!currentActiveSong || !currentAudioStreamUrl) {
+        return alert("Mohon tunggu hingga lagu selesai dimuat sebelum mengunduh.");
+    }
+    
     if(!checkAndReduceLimit()) return;
-    const toast = document.getElementById('downloadToast'), titleText = document.getElementById('dlTitle'), percentText = document.getElementById('dlPercent'), fill = document.getElementById('dlBarFill');
-    toast.classList.add('active'); titleText.innerText = `Menyimpan: ${currentActiveSong.title}`; fill.style.width = '0%'; percentText.innerText = '0%';
+
+    const toast = document.getElementById('downloadToast');
+    const titleText = document.getElementById('dlTitle');
+    const percentText = document.getElementById('dlPercent');
+    const fill = document.getElementById('dlBarFill');
+    
+    toast.classList.add('active');
+    titleText.innerText = `Menyimpan file: ${currentActiveSong.title}`;
+    fill.style.width = '0%';
+    percentText.innerText = '0%';
+
     try {
         if (currentAudioStreamUrl.startsWith('blob:')) {
-            const a = document.createElement('a'); a.href = currentAudioStreamUrl; a.download = `${currentActiveSong.title}.mp3`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-            percentText.innerText = '100%'; fill.style.width = '100%'; setTimeout(() => { toast.classList.remove('active'); }, 2000); return;
+            const a = document.createElement('a');
+            a.href = currentAudioStreamUrl;
+            a.download = `${currentActiveSong.title} - ${currentActiveSong.artist}.mp3`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            percentText.innerText = '100% (Selesai)';
+            fill.style.width = '100%';
+            setTimeout(() => { toast.classList.remove('active'); }, 2000);
+            return;
         }
-        const xhr = new XMLHttpRequest(); xhr.open('GET', currentAudioStreamUrl, true); xhr.responseType = 'blob';
-        xhr.onprogress = (event) => { if (event.lengthComputable) { const p = Math.round((event.loaded / event.total) * 100); fill.style.width = p + '%'; percentText.innerText = p + '%'; } };
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', currentAudioStreamUrl, true);
+        xhr.responseType = 'blob';
+
+        xhr.onprogress = (event) => {
+            if (event.lengthComputable) {
+                const percent = Math.round((event.loaded / event.total) * 100);
+                fill.style.width = percent + '%';
+                percentText.innerText = percent + '%';
+            }
+        };
+
         xhr.onload = () => {
             if (xhr.status === 200) {
-                const url = window.URL.createObjectURL(xhr.response); const a = document.createElement('a'); a.style.display = 'none'; a.href = url; a.download = `${currentActiveSong.title}.mp3`; document.body.appendChild(a); a.click(); window.URL.revokeObjectURL(url);
-                percentText.innerText = '100%'; fill.style.width = '100%'; setTimeout(() => { toast.classList.remove('active'); }, 2000);
-            } else { throw new Error("Gagal mengunduh"); }
+                const blob = xhr.response;
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `${currentActiveSong.title} - ${currentActiveSong.artist}.mp3`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                
+                percentText.innerText = '100% (Selesai)';
+                fill.style.width = '100%';
+                setTimeout(() => { toast.classList.remove('active'); }, 2000);
+            } else {
+                throw new Error("Gagal mengunduh file.");
+            }
         };
-        xhr.onerror = () => { toast.classList.remove('active'); window.open(currentAudioStreamUrl, '_blank'); }; xhr.send();
-    } catch (err) { toast.classList.remove('active'); alert("Kesalahan"); }
+
+        xhr.onerror = () => {
+            toast.classList.remove('active');
+            window.open(currentAudioStreamUrl, '_blank');
+        };
+        
+        xhr.send();
+    } catch (err) {
+        toast.classList.remove('active');
+        alert("Kesalahan saat mengunduh.");
+    }
   }
 
   function downloadAudioWithProgress(songKeyUrl, audioStreamUrl, title) {
     return new Promise((resolve) => {
-      const toast = document.getElementById('downloadToast'), fill = document.getElementById('dlBarFill'), percentText = document.getElementById('dlPercent'), titleText = document.getElementById('dlTitle');
-      toast.classList.add('active'); titleText.innerText = `Menyimpan Offline...`; fill.style.width = '0%'; percentText.innerText = '0%';
-      const xhr = new XMLHttpRequest(); xhr.open('GET', audioStreamUrl, true); xhr.responseType = 'blob';
-      xhr.onprogress = (event) => { if (event.lengthComputable) { const p = Math.round((event.loaded / event.total) * 100); fill.style.width = p + '%'; percentText.innerText = p + '%'; } };
-      xhr.onload = () => { if (xhr.status === 200) { saveAudioToOffline(songKeyUrl, xhr.response); percentText.innerText = '100%'; fill.style.width = '100%'; setTimeout(() => { toast.classList.remove('active'); }, 2000); resolve(true); } else { toast.classList.remove('active'); resolve(false); } };
-      xhr.onerror = () => { toast.classList.remove('active'); resolve(false); }; xhr.send();
+      const toast = document.getElementById('downloadToast');
+      const fill = document.getElementById('dlBarFill');
+      const percentText = document.getElementById('dlPercent');
+      const titleText = document.getElementById('dlTitle');
+
+      toast.classList.add('active');
+      titleText.innerText = `Menyimpan Mode Offline...`;
+      fill.style.width = '0%';
+      percentText.innerText = '0%';
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', audioStreamUrl, true);
+      xhr.responseType = 'blob';
+
+      xhr.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percent = Math.round((event.loaded / event.total) * 100);
+          fill.style.width = percent + '%';
+          percentText.innerText = percent + '%';
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          saveAudioToOffline(songKeyUrl, xhr.response);
+          percentText.innerText = '100% (Tersimpan)';
+          fill.style.width = '100%';
+          setTimeout(() => { toast.classList.remove('active'); }, 2000);
+          resolve(true);
+        } else {
+          toast.classList.remove('active');
+          resolve(false);
+        }
+      };
+
+      xhr.onerror = () => { toast.classList.remove('active'); resolve(false); };
+      xhr.send();
     });
   }
 
   function saveToHistory(songObj) {
-    playHistory = playHistory.filter(s => s.url !== songObj.url); playHistory.unshift(songObj);
+    playHistory = playHistory.filter(s => s.url !== songObj.url);
+    playHistory.unshift(songObj);
     if(playHistory.length > 20) playHistory.pop(); 
-    localStorage.setItem('vinz_history', JSON.stringify(playHistory)); renderHistory();
+    localStorage.setItem('vinz_history', JSON.stringify(playHistory));
+    renderHistory();
   }
 
   function renderHistory() {
@@ -1207,108 +1547,293 @@
   }
 
   function generateCardHTML(song, index = 0, isCollection = false) {
-    const title = song.title || "Unknown Title", artist = song.artist || song.author || "Unknown Artist", cover = song.cover || song.thumbnail || song.image || "https://via.placeholder.com/60", url = song.url || song.link || "";
+    const title = song.title || "Unknown Title";
+    const artist = song.artist || song.author || "Unknown Artist";
+    const cover = song.cover || song.thumbnail || song.image || "https://via.placeholder.com/60";
+    const url = song.url || song.link || "";
+    
     const durationBadge = song.duration ? `<span style="font-size: 10px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; padding: 2px 6px; border-radius: 6px;">${song.duration}</span>` : "";
     const offlineBadge = (isCollection || song.isOfflineReady) ? `<span class="offline-tag">⚡ Offline</span>` : "";
-    const safeTitle = String(title).replace(/'/g, "\\'"), safeArtist = String(artist).replace(/'/g, "\\'");
+
+    const safeTitle = String(title).replace(/'/g, "\\'");
+    const safeArtist = String(artist).replace(/'/g, "\\'");
+
     return `
       <div class="song-card" style="animation-delay: ${index * 0.05}s" onclick="fetchAudio('${url}', '${safeTitle}', '${safeArtist}', '${cover}')">
         <img src="${cover}" alt="Cover" referrerpolicy="no-referrer">
-        <div class="song-info"><h3>${title} ${durationBadge} ${offlineBadge}</h3><p>${artist}</p></div>
-        <button style="background: transparent; border: none; color: #38bdf8;"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></button>
-      </div>`;
+        <div class="song-info">
+          <h3>${title} ${durationBadge} ${offlineBadge}</h3>
+          <p>${artist}</p>
+        </div>
+        <button class="play-btn" style="background: transparent; border: none; color: #38bdf8;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+        </button>
+      </div>
+    `;
   }
 
-  // MUSIC ENGINE
+  // ==========================================
+  // 9. API MANAGER & MUSIC ENGINE
+  // ==========================================
   async function fetchWithProxyFallback(targetUrl) {
-    const proxies = [ targetUrl, `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`, `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}` ];
-    for (let url of proxies) { try { const res = await fetch(url, { cache: "no-store" }); if (res.ok) return await res.json(); } catch (e) { continue; } }
+    const proxies = [
+      targetUrl,
+      `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`
+    ];
+    for (let url of proxies) {
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (res.ok) return await res.json();
+      } catch (e) { continue; }
+    }
     throw new Error("Koneksi API Gagal.");
   }
-  const ApiManager = { getSearchUrl: (query) => `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent(query)}&apikey=${NEOXR_API_KEY}`, getDownloadUrl: (url) => `https://api.botcahx.eu.org/api/download/spotify2?url=${encodeURIComponent(url)}&apikey=${BOTCAHX_API_KEY}` };
-  
-  const audio = document.getElementById("realAudio"), playPauseBtn = document.getElementById("mpPlayPauseBtn"); 
-  const iconPlay = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>`, iconPause = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`, iconLoading = `<svg class="pulse-search-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`;
+
+  const ApiManager = {
+    getSearchUrl: (query) => `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent(query)}&apikey=${NEOXR_API_KEY}`,
+    getDownloadUrl: (url) => `https://api.botcahx.eu.org/api/download/spotify2?url=${encodeURIComponent(url)}&apikey=${BOTCAHX_API_KEY}`
+  };
+
+  const audio = document.getElementById("realAudio");
+  const playPauseBtn = document.getElementById("mpPlayPauseBtn"); 
+
+  const iconPlay = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>`;
+  const iconPause = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`;
+  const iconLoading = `<svg class="pulse-search-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`;
 
   function handleEnter(e) { if (e.key === "Enter") searchSong(); }
-  
+
   async function searchSong() {
-    const query = document.getElementById("searchInput").value.trim(), resDiv = document.getElementById("resultsList");
+    const query = document.getElementById("searchInput").value.trim();
+    const resDiv = document.getElementById("resultsList");
     if(!query) return;
-    if(!checkAndReduceLimit()) return resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">❌ Limit harian habis.</div></div>`;
-    resDiv.innerHTML = `<div class="status-wrapper"><svg class="pulse-search-icon" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><div class="status-msg" style="margin-top:10px;">Mencari di Melofy Engine...</div></div>`;
+
+    if(!checkAndReduceLimit()) {
+        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center;">${errSvg} Limit harian Anda habis.</div></div>`;
+        return;
+    }
+
+    resDiv.innerHTML = `
+      <div class="status-wrapper">
+        <svg class="pulse-search-icon" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <div class="status-msg" style="margin-top:10px;">Mencari di Melofy Engine...</div>
+      </div>`;
+    
     try {
       const result = await fetchWithProxyFallback(ApiManager.getSearchUrl(query));
       if (result.status && result.data && result.data.length > 0) {
         resDiv.innerHTML = result.data.map((s, index) => {
-          let parsedTitle = s.title, parsedArtist = s.artist || s.author;
-          if (s.title && s.title.includes(' - ') && (!parsedArtist || parsedArtist === "Unknown Artist")) { const parts = s.title.split(' - '); parsedArtist = parts[0].trim(); parsedTitle = parts.slice(1).join(' - ').trim(); } 
-          else if (!parsedArtist) { parsedArtist = "Unknown Artist"; }
+          let parsedTitle = s.title;
+          let parsedArtist = s.artist || s.author;
+
+          if (s.title && s.title.includes(' - ') && (!parsedArtist || parsedArtist === "Unknown Artist")) {
+              const parts = s.title.split(' - ');
+              parsedArtist = parts[0].trim();
+              parsedTitle = parts.slice(1).join(' - ').trim();
+          } else if (!parsedArtist) { parsedArtist = "Unknown Artist"; }
+
           return generateCardHTML({ title: parsedTitle, artist: parsedArtist, cover: s.thumbnail || s.image, url: s.url, duration: s.duration }, index);
         }).join('');
-      } else { resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">Lagu tidak ditemukan.</div></div>`; }
-    } catch(err) { resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">⚠️ Gagal terhubung ke Server.</div></div>`; }
+      } else {
+        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">Lagu tidak ditemukan.</div></div>`;
+      }
+    } catch(err) {
+      resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">⚠️ Gagal terhubung ke Server.</div></div>`;
+    }
   }
 
   async function fetchAudio(spotifyUrl, title, artist, cover) {
     if(!spotifyUrl) return alert("Link lagu tidak valid.");
-    currentActiveSong = { title, artist, cover, url: spotifyUrl }; saveToHistory(currentActiveSong);
-    document.getElementById('btnLove').className = savedCollection.find(s => s.url === spotifyUrl) ? 'btn-love active' : 'btn-love';
+
+    currentActiveSong = { title, artist, cover, url: spotifyUrl };
+    saveToHistory(currentActiveSong);
+    
+    const isSaved = savedCollection.find(s => s.url === spotifyUrl);
+    document.getElementById('btnLove').className = isSaved ? 'btn-love active' : 'btn-love';
+
     document.getElementById('miniPlayer').classList.add('active');
-    document.getElementById('mpTitle').innerText = title; document.getElementById('mpCover').src = cover;
-    document.getElementById('fpTitle').innerText = title; document.getElementById('fpCover').src = cover;
-    audio.pause(); audio.src = ""; currentAudioStreamUrl = null;
+    document.getElementById('mpTitle').innerText = title;
+    document.getElementById('mpCover').src = cover;
+    document.getElementById('fpTitle').innerText = title;
+    document.getElementById('fpCover').src = cover;
+
+    audio.pause();
+    audio.src = "";
+    currentAudioStreamUrl = null;
 
     const offlineBlob = await getOfflineAudio(spotifyUrl);
     if (offlineBlob) {
-      currentAudioStreamUrl = URL.createObjectURL(offlineBlob); audio.src = currentAudioStreamUrl;
-      document.getElementById('mpArtist').innerText = artist + " (Offline)"; document.getElementById('fpArtist').innerText = artist + " (Offline)";
-      playPauseBtn.innerHTML = iconPause; document.getElementById('fpPlayPauseBtn').innerHTML = iconPause; audio.play(); return;
+      currentAudioStreamUrl = URL.createObjectURL(offlineBlob);
+      audio.src = currentAudioStreamUrl;
+      document.getElementById('mpArtist').innerHTML = artist + " (Koleksi Offline)";
+      document.getElementById('fpArtist').innerHTML = artist + " (Koleksi Offline)";
+      playPauseBtn.innerHTML = iconPause;
+      document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
+      audio.play();
+      return;
     }
-    if(!checkAndReduceLimit()) { document.getElementById('mpArtist').innerText = "❌ Limit Habis"; return; }
 
-    document.getElementById('mpArtist').innerText = "Memeriksa Stream..."; document.getElementById('fpArtist').innerText = "Memuat...";
-    playPauseBtn.innerHTML = iconLoading; document.getElementById('fpPlayPauseBtn').innerHTML = iconLoading;
+    if(!checkAndReduceLimit()) {
+      document.getElementById('mpArtist').innerHTML = `${errSvg} <span style="vertical-align:middle;">Limit Habis</span>`;
+      document.getElementById('fpArtist').innerText = "Limit Audio Engine Habis";
+      return;
+    }
+
+    document.getElementById('mpArtist').innerText = "Memeriksa Stream...";
+    document.getElementById('fpArtist').innerText = "Memuat...";
+    playPauseBtn.innerHTML = iconLoading;
+    document.getElementById('fpPlayPauseBtn').innerHTML = iconLoading;
 
     try {
       const result = await fetchWithProxyFallback(ApiManager.getDownloadUrl(spotifyUrl));
       if (result.status && result.result && result.result.data && result.result.data.url) {
-        currentAudioStreamUrl = result.result.data.url; audio.src = currentAudioStreamUrl;
-        document.getElementById('mpArtist').innerText = artist; document.getElementById('fpArtist').innerText = artist; audio.play();
-      } else { document.getElementById('mpArtist').innerText = "❌ Stream Gagal"; playPauseBtn.innerHTML = iconPlay; }
-    } catch (err) { document.getElementById('mpArtist').innerText = "❌ Kesalahan"; playPauseBtn.innerHTML = iconPlay; }
+        currentAudioStreamUrl = result.result.data.url;
+        audio.src = currentAudioStreamUrl;
+        document.getElementById('mpArtist').innerText = artist;
+        document.getElementById('fpArtist').innerText = artist;
+        audio.play();
+      } else {
+        document.getElementById('mpArtist').innerHTML = `${errSvg} <span style="vertical-align:middle;">Stream Gagal Dimuat</span>`;
+        playPauseBtn.innerHTML = iconPlay;
+      }
+    } catch (err) {
+      document.getElementById('mpArtist').innerHTML = `${errSvg} <span style="vertical-align:middle;">Kesalahan Jaringan</span>`;
+      playPauseBtn.innerHTML = iconPlay;
+    }
   }
 
-  // PLAYER CONTROLS
-  function openFullPlayer(e) { if(!e.target.closest('#mpPlayPauseBtn') && !e.target.closest('.mp-controls')) document.getElementById('fullPlayer').classList.add('active'); }
+  // ==========================================
+  // 10. PLAYER CONTROLS
+  // ==========================================
+  function openFullPlayer(e) {
+    if(e.target.closest('#mpPlayPauseBtn') || e.target.closest('.mp-controls')) return; 
+    document.getElementById('fullPlayer').classList.add('active');
+  }
   function closeFullPlayer() { document.getElementById('fullPlayer').classList.remove('active'); }
-  function togglePlayPause(e) { if(e) e.stopPropagation(); if(!audio.src) return; audio.paused ? audio.play() : audio.pause(); }
-  function skipAudio(seconds) { if(audio.duration) audio.currentTime = Math.min(Math.max(audio.currentTime + seconds, 0), audio.duration); }
-  audio.addEventListener("play", () => { playPauseBtn.innerHTML = iconPause; document.getElementById('fpPlayPauseBtn').innerHTML = iconPause; isPlayingAudio = true; document.getElementById('firefliesCanvas').classList.add('active'); });
-  audio.addEventListener("pause", () => { playPauseBtn.innerHTML = iconPlay; document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay; isPlayingAudio = false; document.getElementById('firefliesCanvas').classList.remove('active'); });
-  const pBar = document.getElementById("progressBar"), tCur = document.getElementById("currentTime"), tDur = document.getElementById("durationTime");
-  audio.addEventListener("timeupdate", () => { if (audio.duration) { pBar.style.width = ((audio.currentTime / audio.duration) * 100) + "%"; tCur.innerText = formatTime(audio.currentTime); tDur.innerText = formatTime(audio.duration); } });
-  function seekAudio(e) { const area = document.getElementById("progressArea"); if(audio.duration) audio.currentTime = (e.offsetX / area.clientWidth) * audio.duration; }
-  function formatTime(sec) { let m = Math.floor(sec / 60), s = Math.floor(sec % 60); return `${m}:${s < 10 ? '0' : ''}${s}`; }
 
-  // UJI LATENCY
+  function togglePlayPause(e) {
+    if(e) e.stopPropagation();
+    if(!audio.src) return;
+    if (audio.paused) audio.play(); else audio.pause();
+  }
+
+  function skipAudio(seconds) {
+    if(audio.duration) audio.currentTime = Math.min(Math.max(audio.currentTime + seconds, 0), audio.duration);
+  }
+
+  audio.addEventListener("play", () => { 
+    playPauseBtn.innerHTML = iconPause;
+    document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
+    isPlayingAudio = true;
+    document.getElementById('firefliesCanvas').classList.add('active');
+  });
+  
+  audio.addEventListener("pause", () => { 
+    playPauseBtn.innerHTML = iconPlay;
+    document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
+    isPlayingAudio = false;
+    document.getElementById('firefliesCanvas').classList.remove('active');
+  });
+
+  const pBar = document.getElementById("progressBar");
+  const tCur = document.getElementById("currentTime");
+  const tDur = document.getElementById("durationTime");
+
+  audio.addEventListener("timeupdate", () => {
+    if (audio.duration) {
+      pBar.style.width = ((audio.currentTime / audio.duration) * 100) + "%";
+      tCur.innerText = formatTime(audio.currentTime);
+      tDur.innerText = formatTime(audio.duration);
+    }
+  });
+
+  function seekAudio(e) {
+    const area = document.getElementById("progressArea");
+    if(audio.duration) audio.currentTime = (e.offsetX / area.clientWidth) * audio.duration;
+  }
+
+  function formatTime(sec) {
+    let m = Math.floor(sec / 60);
+    let s = Math.floor(sec % 60);
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  }
+
+  // ==========================================
+  // 11. SISTEM UJI API REAL (SERENTAK / CONCURRENT)
+  // ==========================================
+  const realTests = [
+    {
+      id: 'ping-melofy',
+      url: `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent('Melofy Engine Test')}&apikey=${NEOXR_API_KEY}`
+    },
+    {
+      id: 'res-yt',
+      url: `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent('https://youtube.com/shorts/T_dezacRD1E?si=tVHrNlVr4K779sPW')}&type=video&quality=1080p&apikey=${NEOXR_API_KEY}`
+    },
+    {
+      id: 'res-tt',
+      url: `https://api.neoxr.eu/api/tiktok?url=${encodeURIComponent('https://vt.tiktok.com/ZS4Mpn2BD/')}&apikey=${NEOXR_API_KEY}`
+    },
+    {
+      id: 'res-ig',
+      url: `https://api.neoxr.eu/api/ig?url=${encodeURIComponent('https://www.instagram.com/reel/DbCoQaWxmTB/?igsh=eWNqZm5rZDhwcmVz')}&apikey=${NEOXR_API_KEY}`
+    },
+    {
+      id: 'res-sp',
+      url: `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent('Separuh Aku')}&apikey=${NEOXR_API_KEY}`
+    }
+  ];
+
+  const wifiSvgMarkup = `
+    <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path>
+      <path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path>
+      <path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path>
+      <line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line>
+    </svg>
+  `;
+
+  async function measureRealApiPing(testObj) {
+    const el = document.getElementById(testObj.id);
+    el.className = "ping-ms testing";
+    el.innerHTML = wifiSvgMarkup + "<span>Testing...</span>";
+
+    const startTime = performance.now();
+    try {
+      const response = await fetch(testObj.url);
+      const data = await response.json();
+      const endTime = performance.now();
+      const timeMs = Math.round(endTime - startTime);
+
+      if (data.status) {
+        let stateClass = "";
+        if (timeMs <= 150) stateClass = "good";      
+        else if (timeMs <= 600) stateClass = "mid";  
+        else stateClass = "bad";                     
+
+        el.className = `ping-ms ${stateClass}`;
+        el.innerHTML = wifiSvgMarkup + `<span>${timeMs}ms</span>`;
+      } else {
+        el.className = "ping-ms bad";
+        el.innerHTML = wifiSvgMarkup + "<span>Error</span>";
+      }
+    } catch (e) {
+      el.className = "ping-ms bad";
+      el.innerHTML = wifiSvgMarkup + "<span>Gagal</span>";
+    }
+  }
+
   async function runRealApiTestsConcurrent() {
-    const tests = [
-      { id: 'ping-melofy', url: `https://api.neoxr.eu/api/spotify-search?q=test&apikey=${NEOXR_API_KEY}` },
-      { id: 'res-yt', url: `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent('https://youtube.com/shorts/T_dezacRD1E?si=tVHrNlVr4K779sPW')}&type=video&apikey=${NEOXR_API_KEY}` },
-      { id: 'res-tt', url: `https://api.neoxr.eu/api/tiktok?url=${encodeURIComponent('https://vt.tiktok.com/ZS4Mpn2BD/')}&apikey=${NEOXR_API_KEY}` },
-      { id: 'res-ig', url: `https://api.neoxr.eu/api/ig?url=${encodeURIComponent('https://www.instagram.com/reel/DbCoQaWxmTB/?igsh=eWNqZm5rZDhwcmVz')}&apikey=${NEOXR_API_KEY}` },
-      { id: 'res-sp', url: `https://api.neoxr.eu/api/spotify-search?q=Separuh&apikey=${NEOXR_API_KEY}` }
-    ];
-    const btn = document.getElementById('btnTestServer'); btn.innerText = "Menguji..."; btn.disabled = true;
-    await Promise.all(tests.map(async t => {
-      const el = document.getElementById(t.id), start = performance.now();
-      try {
-        const res = await fetch(t.url), data = await res.json(), time = Math.round(performance.now() - start);
-        if(data.status) el.innerText = `${time}ms`; else el.innerText = "Error";
-      } catch (e) { el.innerText = "Gagal"; }
-    }));
-    btn.innerText = "JALANKAN UJI"; btn.disabled = false;
+    const btn = document.getElementById('btnTestServer');
+    btn.innerText = "Sedang Menguji";
+    btn.disabled = true;
+
+    // Menjalankan seluruh tes secara bersamaan (concurrent) menggunakan Promise.all
+    await Promise.all(realTests.map(test => measureRealApiPing(test)));
+
+    btn.innerText = "JALANKAN";
+    btn.disabled = false;
   }
 </script>
 
