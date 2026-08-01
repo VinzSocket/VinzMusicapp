@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Melofy - Music & Offline Player</title>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
@@ -101,8 +101,7 @@
   #appView { display: none; background: radial-gradient(circle at top right, rgba(30,41,59,0.3), transparent); flex-direction: column; z-index: 5; }
   .content { flex: 1; position: relative; overflow: hidden; }
   
-  /* Padding bawah layar ditingkatkan agar list lagu tidak tertutup navigasi & mini player */
-  .screen { position: absolute; inset: 0; padding: 20px 20px 200px 20px; display: none; opacity: 0; overflow-y: auto; flex-direction: column; }
+  .screen { position: absolute; inset: 0; padding: 20px 20px 180px 20px; display: none; opacity: 0; overflow-y: auto; flex-direction: column; }
   .screen.active { display: flex; animation: smoothFadeIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; z-index: 20; }
   .screen.center-content { justify-content: flex-start; align-items: center; text-align: center; }
   
@@ -211,7 +210,7 @@
   /* --- STATUS & LOADING --- */
   .status-wrapper { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 40px; }
   .spinner { width: 30px; height: 30px; border: 3px solid rgba(56, 189, 248, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; margin-top: 10px; display: flex; align-items: center; gap: 6px; }
+  .status-msg { color: var(--text-inactive); font-size: 13px; text-align: center; margin-top: 10px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* --- DOWNLOAD PROGRESS BAR TOAST --- */
@@ -338,58 +337,44 @@
     color: #fbbf24;
   }
 
-  /* --- MINI PLAYER & RESPONSIVE DEVICE FIX --- */
-  .mini-player { 
-    position: absolute; 
-    bottom: -100px; 
-    left: 15px; 
-    right: 15px; 
-    background: rgba(15, 23, 42, 0.95); 
-    backdrop-filter: blur(25px); 
-    border: 1px solid var(--glass-border); 
-    border-radius: 20px; 
-    display: flex; 
-    align-items: center; 
-    padding: 8px 12px; 
-    gap: 12px; 
-    transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
-    z-index: 50; 
-    cursor: pointer; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6); 
-  }
-  /* Mengatur posisi dinamis agar posisinya tepat berada di atas Nav Bar pada setiap perangkat */
-  .mini-player.active { 
-    bottom: calc(75px + env(safe-area-inset-bottom, 15px)); 
-  }
+  /* --- MINI PLAYER --- */
+  .mini-player { position: absolute; bottom: -100px; left: 15px; right: 15px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 8px 12px; gap: 12px; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+  .mini-player.active { bottom: 95px; }
   .mp-cover { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
   .mp-info { flex: 1; overflow: hidden; }
   .mp-info h4 { margin: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center;}
+  .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
 
-  /* --- FULL SCREEN PLAYER --- */
+  /* --- FULL SCREEN PLAYER DYNAMIC 100DVH & SPACE-EVENLY --- */
   .full-player { 
     position: fixed; inset: 0; background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,0.98) 100%); 
-    backdrop-filter: blur(30px); z-index: 200; display: flex; flex-direction: column; 
-    padding: 40px 25px calc(50px + env(safe-area-inset-bottom, 20px)) 25px; 
+    backdrop-filter: blur(30px); z-index: 200; 
+    height: 100dvh; /* Menggunakan viewport height dinamis */
+    display: flex; flex-direction: column; justify-content: space-evenly; /* Menyebarkan ruang kosong merata */
+    padding: 20px 25px; 
     transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-    overflow-y: auto; 
+    overflow: hidden; /* Mengunci scroll agar space-evenly yang mengatur tata letak */
   }
   .full-player.active { transform: translateY(0); }
-  .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-shrink: 0; }
+  
+  .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; flex-shrink: 0; }
   .fp-header button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
   .fp-header p { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-inactive); text-transform: uppercase; }
   
+  /* Ukuran cover art dinamis berdasarkan tinggi layar min() */
   .fp-cover-container { 
-    width: 100%; max-width: 320px; margin: 0 auto 25px auto; aspect-ratio: 1/1; 
+    width: min(100%, 40vh); /* Otomatis mengecil jika layar pendek */
+    aspect-ratio: 1/1; 
+    margin: 0 auto; 
     box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; flex-shrink: 0; 
   }
   .fp-cover-container img { width: 100%; height: 100%; object-fit: cover; }
   
-  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-shrink: 0; }
+  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; flex-shrink: 0; }
   .fp-meta-text { flex: 1; overflow: hidden; }
-  .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .fp-meta-text p { margin: 0; font-size: 14px; color: var(--text-inactive); }
+  .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 24px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); }
   
   .fp-meta-actions { display: flex; align-items: center; gap: 15px; }
   .btn-download { background: transparent; border: none; color: var(--text-inactive); cursor: pointer; transition: 0.2s; padding: 5px; }
@@ -398,37 +383,21 @@
   .btn-love.active svg { fill: #1db954; stroke: #1db954; } 
 
   /* Timeline */
-  .fp-timeline { margin-bottom: 25px; flex-shrink: 0; }
+  .fp-timeline { margin-bottom: 0; flex-shrink: 0; }
   .progress-area { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; cursor: pointer; }
   .progress-bar { height: 100%; width: 0%; background: #38bdf8; border-radius: 3px; position: relative; transition: width 0.1s linear; }
   .progress-bar::after { content: ""; position: absolute; right: -6px; top: -5px; width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(56,189,248,0.8); }
   .time-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-inactive); margin-top: 10px; font-weight: 500; }
 
   /* Main Controls */
-  .fp-controls { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; padding-bottom: 10px; }
+  .fp-controls { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; margin-bottom: 0; }
   .fp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; }
   .fp-controls button:active { transform: scale(0.9); }
-  .btn-main-play { width: 65px; height: 65px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
+  .btn-main-play { width: 70px; height: 70px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
 
-  /* --- BOTTOM NAVIGATION BAR (ADAPTIF SETIAP DEVICE) --- */
-  .bottom-nav { 
-    position: fixed; 
-    bottom: calc(10px + env(safe-area-inset-bottom, 10px)); 
-    left: 12px; 
-    right: 12px; 
-    height: 65px; 
-    background: var(--nav-bg); 
-    backdrop-filter: blur(25px); 
-    border: 1px solid rgba(255, 255, 255, 0.08); 
-    border-radius: 22px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 0 5px; 
-    z-index: 100; 
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6); 
-  }
-  .indicator { position: absolute; left: 0; top: 8px; height: 49px; background: var(--glass-indicator); border-radius: 18px; transition: transform 0.4s cubic-bezier(0.5, 1.2, 0.3, 1.1), width 0.4s ease; z-index: 0; }
+  /* --- BOTTOM NAVIGATION BAR LIQUID GLASS --- */
+  .bottom-nav { position: fixed; bottom: 15px; left: 10px; right: 10px; height: 70px; background: var(--nav-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 5px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+  .indicator { position: absolute; left: 0; top: 10px; height: 50px; background: var(--glass-indicator); border-radius: 20px; transition: transform 0.4s cubic-bezier(0.5, 1.2, 0.3, 1.1), width 0.4s ease; z-index: 0; }
   .nav-item { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; cursor: pointer; color: var(--text-inactive); transition: 0.3s; }
   .nav-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; transition: 0.4s; }
   .nav-item span { font-size: 10px; font-weight: 600; opacity: 0; transform: translateY(15px); transition: 0.4s; position: absolute; bottom: 8px; }
@@ -508,10 +477,9 @@
     <div class="auth-title">Melofy</div>
     <div class="auth-sub">Nikmati Musik Favoritmu Dimana Saja</div>
 
-    <!-- Hanya Ada Melofy ID & Google (Guest Dihapus) -->
     <div class="auth-tabs">
       <button class="tab-btn active" id="tabMelofy" onclick="switchAuthMode('melofy')">Melofy ID</button>
-      <button class="tab-btn" id="tabGoogle" onclick="switchAuthMode('google')">Google</button>
+      <button class="tab-btn" id="tabGoogle" onclick="switchAuthMode('google')">Akun Google</button>
     </div>
 
     <div id="formMelofy" style="width: 100%;">
@@ -695,10 +663,11 @@
           </svg>
           Tukar Kode Redeem
         </div>
-        <div class="search-box" style="margin-bottom: 15px; width: 100%;">
+        <div class="search-box" style="margin-bottom: 10px; width: 100%;">
           <input type="text" id="inputRedeemCode" placeholder="Masukkan Kode Redeem" style="text-transform: uppercase; font-size: 13px;">
         </div>
         <button class="btn-save-profile" onclick="processRedeemCode()" style="margin-top: 0;">Klaim Kode</button>
+        <div id="redeemMsg" style="margin-top: 10px; font-size: 12px; text-align: center;"></div>
       </div>
 
       <!-- KARTU TEST SERVER REAL API BERSAMAAN -->
@@ -751,7 +720,7 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAVIGATION BAR -->
+  <!-- BOTTOM NAVIGATION BAR (LIQUID GLASS ANIMATED) -->
   <div class="bottom-nav">
     <div class="indicator"></div>
     <div class="nav-item active" data-title="Dashboard">
@@ -845,7 +814,7 @@
   const dlIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
   const musicIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>`;
   const questionSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
-  const errSvg = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444; margin-right: 4px; vertical-align: middle;"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
+  const errorIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444; vertical-align: middle; display: inline-block;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
 
   // ==========================================
   // 1. DATABASE LOKAL OFFLINE (INDEXEDDB)
@@ -911,7 +880,7 @@
     }
 
     if (currentUser.limit <= 0) {
-        alert("Limit Harian Anda telah habis (0). Silakan Upgrade ke Premium!");
+        alert("⚠️ Limit Harian Anda telah habis (0). Silakan Upgrade ke Premium!");
         return false;
     }
 
@@ -1050,8 +1019,7 @@
       melofyUsers.push({
         name: userInp, email: fullEmail, password: passInp, nickname: userInp,
         picture: "https://api.dicebear.com/7.x/bottts/svg?seed=" + userInp,
-        plan: 'free', limit: 10, lastReset: new Date().toDateString(),
-        redeemedCodes: []
+        plan: 'free', limit: 10, lastReset: new Date().toDateString(), redeemedCodes: []
       });
       localStorage.setItem('melofy_db_users', JSON.stringify(melofyUsers));
       alert("Akun Melofy Berhasil Dibuat! Silakan masuk.");
@@ -1060,8 +1028,8 @@
         currentUser = {
           name: "Vinz Hosting", email: "VinzHosting@melofy.com",
           picture: "https://api.dicebear.com/7.x/bottts/svg?seed=VinzHosting",
-          nickname: "Vinz (VIP)", isFlagship: true, plan: 'flagship', limit: 'Unlimited', lastReset: new Date().toDateString(),
-          redeemedCodes: []
+          nickname: "Vinz (VIP)", isFlagship: true, plan: 'flagship', limit: 'Unlimited', 
+          lastReset: new Date().toDateString(), redeemedCodes: []
         };
         localStorage.setItem('vinz_user', JSON.stringify(currentUser));
         return masukKeApp();
@@ -1087,18 +1055,6 @@
     if(newPlan === 'flagship') currentUser.isFlagship = true;
     currentUser.limit = getLimitMax(newPlan);
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
-    
-    if (currentUser.email && currentUser.email.endsWith("@melofy.com") && currentUser.email !== "VinzHosting@melofy.com") {
-        let melofyUsers = JSON.parse(localStorage.getItem('melofy_db_users')) || [];
-        let userIndex = melofyUsers.findIndex(u => u.email === currentUser.email);
-        if (userIndex !== -1) {
-            melofyUsers[userIndex].plan = newPlan;
-            melofyUsers[userIndex].limit = currentUser.limit;
-            melofyUsers[userIndex].redeemedCodes = currentUser.redeemedCodes;
-            localStorage.setItem('melofy_db_users', JSON.stringify(melofyUsers));
-        }
-    }
-    
     alert("Berhasil mengaktifkan Paket " + newPlan.toUpperCase() + "!");
     masukKeApp();
   }
@@ -1111,6 +1067,11 @@
     document.getElementById('inputUsername').value = currentUser.name;
     document.getElementById('inputNickname').value = currentUser.nickname || currentUser.name;
     document.getElementById('inputEmail').value = currentUser.email;
+    
+    // Pastikan user lama yang belum memiliki struktur redeemedCodes di-update
+    if (!currentUser.redeemedCodes) {
+      currentUser.redeemedCodes = [];
+    }
 
     if (currentUser.isFlagship || currentUser.plan === 'flagship') {
       document.getElementById('flagshipBadge').style.display = 'block';
@@ -1273,7 +1234,7 @@
         </button>`;
 
     } catch (err) {
-      alert("Terjadi Kesalahan API: " + err.message);
+      alert("⚠️ Terjadi Kesalahan API: " + err.message);
     } finally {
       btn.innerText = "Proses Tautan";
       btn.disabled = false;
@@ -1319,7 +1280,7 @@
   }
 
   // ==========================================
-  // 7. EDIT PROFIL & REDEEM CODE (1x USE)
+  // 7. EDIT PROFIL & REDEEM CODE (HANYA SEKALI)
   // ==========================================
   function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
   function handleAvatarUpload(e) {
@@ -1345,32 +1306,41 @@
   
   function processRedeemCode() {
     const codeInput = document.getElementById('inputRedeemCode').value.trim().toUpperCase();
-    if(!codeInput) return alert("Silakan masukkan kode redeem!");
+    const msgDiv = document.getElementById('redeemMsg');
+    
+    if(!codeInput) {
+      msgDiv.innerHTML = `<span style="color: #ef4444; display:flex; align-items:center; justify-content:center; gap:5px;">${errorIcon} Silakan masukkan kode redeem!</span>`;
+      return;
+    }
 
     if(!currentUser) return alert("Silakan login terlebih dahulu!");
+    
+    if(!currentUser.redeemedCodes) currentUser.redeemedCodes = [];
 
+    // Cek apakah kode sudah pernah diklaim sebelumnya
+    if(currentUser.redeemedCodes.includes(codeInput)) {
+      msgDiv.innerHTML = `<span style="color: #ef4444; display:flex; align-items:center; justify-content:center; gap:5px;">${errorIcon} Kode ini sudah pernah Anda gunakan!</span>`;
+      return;
+    }
+
+    // Daftar Kode Redeem Rahasia
     const validCodes = {
       'MELOFYPRO': { plan: 'pro', name: 'Paket Pro' },
       'FLAGSHIPVIP': { plan: 'flagship', name: 'Flagship Annual' },
-      'PELAJAR100': { plan: 'pelajar', name: 'Paket Pelajar' },
-      'MELOFYPELAJAR': { plan: 'pelajar', name: 'Paket Pelajar (7 Hari)' }
+      'MELOFYPELAJAR': { plan: 'pelajar', name: 'Pelajar 7 Hari' }
     };
 
     if(validCodes[codeInput]) {
-      if (!currentUser.redeemedCodes) currentUser.redeemedCodes = [];
-      
-      if (currentUser.redeemedCodes.includes(codeInput)) {
-          return alert("Maaf, Anda sudah pernah mengaktivasi kode ini sebelumnya!");
-      }
-
       const reward = validCodes[codeInput];
+      
+      // Simpan kode ke array user agar tidak bisa diulang
       currentUser.redeemedCodes.push(codeInput);
-
+      
       upgradePlan(reward.plan); 
       document.getElementById('inputRedeemCode').value = '';
-      alert(`🎉 Selamat! Anda berhasil menukarkan kode untuk ${reward.name}.`);
+      msgDiv.innerHTML = `<span style="color: #4ade80;">🎉 Selamat! Anda berhasil menukarkan kode untuk ${reward.name}.</span>`;
     } else {
-      alert("Kode redeem tidak valid atau sudah kedaluwarsa.");
+      msgDiv.innerHTML = `<span style="color: #ef4444; display:flex; align-items:center; justify-content:center; gap:5px;">${errorIcon} Kode redeem tidak valid atau sudah kedaluwarsa.</span>`;
     }
   }
 
@@ -1641,7 +1611,7 @@
     if(!query) return;
 
     if(!checkAndReduceLimit()) {
-        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center;">${errSvg} Limit harian Anda habis.</div></div>`;
+        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center; gap:5px;">${errorIcon} Limit harian Anda habis.</div></div>`;
         return;
     }
 
@@ -1670,7 +1640,7 @@
         resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">Lagu tidak ditemukan.</div></div>`;
       }
     } catch(err) {
-      resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">⚠️ Gagal terhubung ke Server.</div></div>`;
+      resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center; gap:5px;">${errorIcon} Gagal terhubung ke Server.</div></div>`;
     }
   }
 
@@ -1697,8 +1667,8 @@
     if (offlineBlob) {
       currentAudioStreamUrl = URL.createObjectURL(offlineBlob);
       audio.src = currentAudioStreamUrl;
-      document.getElementById('mpArtist').innerHTML = artist + " (Koleksi Offline)";
-      document.getElementById('fpArtist').innerHTML = artist + " (Koleksi Offline)";
+      document.getElementById('mpArtist').innerText = artist + " (Koleksi Offline)";
+      document.getElementById('fpArtist').innerText = artist + " (Koleksi Offline)";
       playPauseBtn.innerHTML = iconPause;
       document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
       audio.play();
@@ -1706,8 +1676,8 @@
     }
 
     if(!checkAndReduceLimit()) {
-      document.getElementById('mpArtist').innerHTML = `${errSvg} <span style="vertical-align:middle;">Limit Habis</span>`;
-      document.getElementById('fpArtist').innerText = "Limit Audio Engine Habis";
+      document.getElementById('mpArtist').innerHTML = `<span style="display:flex; align-items:center; gap:4px;">${errorIcon} Limit Habis</span>`;
+      document.getElementById('fpArtist').innerHTML = `<span style="display:flex; align-items:center; gap:4px;">${errorIcon} Limit Audio Engine Habis</span>`;
       return;
     }
 
@@ -1725,11 +1695,11 @@
         document.getElementById('fpArtist').innerText = artist;
         audio.play();
       } else {
-        document.getElementById('mpArtist').innerHTML = `${errSvg} <span style="vertical-align:middle;">Stream Gagal Dimuat</span>`;
+        document.getElementById('mpArtist').innerHTML = `<span style="display:flex; align-items:center; gap:4px;">${errorIcon} Stream Gagal Dimuat</span>`;
         playPauseBtn.innerHTML = iconPlay;
       }
     } catch (err) {
-      document.getElementById('mpArtist').innerHTML = `${errSvg} <span style="vertical-align:middle;">Kesalahan Jaringan</span>`;
+      document.getElementById('mpArtist').innerHTML = `<span style="display:flex; align-items:center; gap:4px;">${errorIcon} Kesalahan Jaringan</span>`;
       playPauseBtn.innerHTML = iconPlay;
     }
   }
@@ -1767,105 +1737,32 @@
     document.getElementById('firefliesCanvas').classList.remove('active');
   });
 
-  const pBar = document.getElementById("progressBar");
-  const tCur = document.getElementById("currentTime");
-  const tDur = document.getElementById("durationTime");
-
   audio.addEventListener("timeupdate", () => {
-    if (audio.duration) {
-      pBar.style.width = ((audio.currentTime / audio.duration) * 100) + "%";
-      tCur.innerText = formatTime(audio.currentTime);
-      tDur.innerText = formatTime(audio.duration);
-    }
+    if (!audio.duration) return;
+    const current = audio.currentTime;
+    const duration = audio.duration;
+    const progressWidth = (current / duration) * 100;
+    document.getElementById("progressBar").style.width = progressWidth + "%";
+
+    const formatTime = (time) => {
+      const min = Math.floor(time / 60);
+      const sec = Math.floor(time % 60);
+      return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    };
+
+    document.getElementById("currentTime").innerText = formatTime(current);
+    document.getElementById("durationTime").innerText = formatTime(duration);
   });
 
   function seekAudio(e) {
     const area = document.getElementById("progressArea");
-    if(audio.duration) audio.currentTime = (e.offsetX / area.clientWidth) * audio.duration;
-  }
-
-  function formatTime(sec) {
-    let m = Math.floor(sec / 60);
-    let s = Math.floor(sec % 60);
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
-  }
-
-  // ==========================================
-  // 11. SISTEM UJI API REAL (SERENTAK / CONCURRENT)
-  // ==========================================
-  const realTests = [
-    {
-      id: 'ping-melofy',
-      url: `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent('Melofy Engine Test')}&apikey=${NEOXR_API_KEY}`
-    },
-    {
-      id: 'res-yt',
-      url: `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent('https://youtube.com/shorts/T_dezacRD1E?si=tVHrNlVr4K779sPW')}&type=video&quality=1080p&apikey=${NEOXR_API_KEY}`
-    },
-    {
-      id: 'res-tt',
-      url: `https://api.neoxr.eu/api/tiktok?url=${encodeURIComponent('https://vt.tiktok.com/ZS4Mpn2BD/')}&apikey=${NEOXR_API_KEY}`
-    },
-    {
-      id: 'res-ig',
-      url: `https://api.neoxr.eu/api/ig?url=${encodeURIComponent('https://www.instagram.com/reel/DbCoQaWxmTB/?igsh=eWNqZm5rZDhwcmVz')}&apikey=${NEOXR_API_KEY}`
-    },
-    {
-      id: 'res-sp',
-      url: `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent('Separuh Aku')}&apikey=${NEOXR_API_KEY}`
+    const width = area.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+    if(duration) {
+      audio.currentTime = (clickX / width) * duration;
     }
-  ];
-
-  const wifiSvgMarkup = `
-    <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path>
-      <path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path>
-      <path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path>
-      <line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line>
-    </svg>
-  `;
-
-  async function measureRealApiPing(testObj) {
-    const el = document.getElementById(testObj.id);
-    el.className = "ping-ms testing";
-    el.innerHTML = wifiSvgMarkup + "<span>Testing...</span>";
-
-    const startTime = performance.now();
-    try {
-      const response = await fetch(testObj.url);
-      const data = await response.json();
-      const endTime = performance.now();
-      const timeMs = Math.round(endTime - startTime);
-
-      if (data.status) {
-        let stateClass = "";
-        if (timeMs <= 150) stateClass = "good";      
-        else if (timeMs <= 600) stateClass = "mid";  
-        else stateClass = "bad";                     
-
-        el.className = `ping-ms ${stateClass}`;
-        el.innerHTML = wifiSvgMarkup + `<span>${timeMs}ms</span>`;
-      } else {
-        el.className = "ping-ms bad";
-        el.innerHTML = wifiSvgMarkup + "<span>Error</span>";
-      }
-    } catch (e) {
-      el.className = "ping-ms bad";
-      el.innerHTML = wifiSvgMarkup + "<span>Gagal</span>";
-    }
-  }
-
-  async function runRealApiTestsConcurrent() {
-    const btn = document.getElementById('btnTestServer');
-    btn.innerText = "Sedang Menguji";
-    btn.disabled = true;
-
-    await Promise.all(realTests.map(test => measureRealApiPing(test)));
-
-    btn.innerText = "JALANKAN";
-    btn.disabled = false;
   }
 </script>
-
 </body>
 </html>
