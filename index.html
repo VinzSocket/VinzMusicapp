@@ -245,7 +245,7 @@
 
   .btn-logout { width: 100%; max-width: 360px; padding: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; }
 
-  /* --- TEST SERVER CARD UI DENGAN WIFI ANIMATION --- */
+  /* --- KARTU REDEEM & TEST SERVER CARD UI --- */
   .server-test-card {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -285,17 +285,15 @@
   .wifi-dot { opacity: 0.2; transition: opacity 0.3s ease; stroke: currentColor; }
   .wifi-1, .wifi-2, .wifi-3 { opacity: 0; transition: opacity 0.3s ease; stroke: currentColor; }
 
-  /* Warna Berdasarkan Status Threshold Baru */
   .ping-ms.good { color: #4ade80; text-shadow: 0 0 5px rgba(74, 222, 128, 0.4); }
   .ping-ms.good .wifi-dot, .ping-ms.good .wifi-1, .ping-ms.good .wifi-2, .ping-ms.good .wifi-3 { opacity: 1; }
 
   .ping-ms.mid { color: #facc15; text-shadow: 0 0 5px rgba(250, 204, 21, 0.4); }
-  .ping-ms.mid .wifi-dot, .ping-ms.mid .wifi-1 { opacity: 1; } /* Kuning (150-600ms): Titik + 1 Baris */
+  .ping-ms.mid .wifi-dot, .ping-ms.mid .wifi-1 { opacity: 1; } 
 
   .ping-ms.bad { color: #ef4444; text-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
-  .ping-ms.bad .wifi-dot { opacity: 1; } /* Merah (>600ms): Titik Saja */
+  .ping-ms.bad .wifi-dot { opacity: 1; } 
 
-  /* Animasi Sinyal Naik Turun Saat Testing Bersamaan */
   .ping-ms.testing { color: var(--text-inactive); }
   .ping-ms.testing .wifi-dot { animation: wifiPulse 1.2s infinite 0s; }
   .ping-ms.testing .wifi-1 { animation: wifiPulse 1.2s infinite 0.2s; }
@@ -348,16 +346,27 @@
   .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
 
-  /* --- FULL SCREEN PLAYER --- */
-  .full-player { position: fixed; inset: 0; background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,0.98) 100%); backdrop-filter: blur(30px); z-index: 200; display: flex; flex-direction: column; padding: 40px 25px; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  /* --- FULL SCREEN PLAYER (TENGGELAM FIX) --- */
+  /* Penambahan overflow-y: auto dan padding bottom ekstra agar bisa di scroll jika layar HP kecil */
+  .full-player { 
+    position: fixed; inset: 0; background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,0.98) 100%); 
+    backdrop-filter: blur(30px); z-index: 200; display: flex; flex-direction: column; 
+    padding: 40px 25px 60px 25px; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    overflow-y: auto; 
+  }
   .full-player.active { transform: translateY(0); }
-  .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+  .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; flex-shrink: 0; }
   .fp-header button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
   .fp-header p { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-inactive); text-transform: uppercase; }
-  .fp-cover-container { width: 100%; aspect-ratio: 1/1; margin-bottom: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; }
+  
+  /* Flex-shrink ditambah agar gambar tidak membesar berlebihan dan mendorong konten lain keluar layar */
+  .fp-cover-container { 
+    width: 100%; max-width: 350px; margin: 0 auto 35px auto; aspect-ratio: 1/1; 
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; flex-shrink: 0; 
+  }
   .fp-cover-container img { width: 100%; height: 100%; object-fit: cover; }
   
-  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-shrink: 0; }
   .fp-meta-text { flex: 1; overflow: hidden; }
   .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 24px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); }
@@ -369,14 +378,14 @@
   .btn-love.active svg { fill: #1db954; stroke: #1db954; } 
 
   /* Timeline */
-  .fp-timeline { margin-bottom: 30px; }
+  .fp-timeline { margin-bottom: 30px; flex-shrink: 0; }
   .progress-area { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; cursor: pointer; }
   .progress-bar { height: 100%; width: 0%; background: #38bdf8; border-radius: 3px; position: relative; transition: width 0.1s linear; }
   .progress-bar::after { content: ""; position: absolute; right: -6px; top: -5px; width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(56,189,248,0.8); }
   .time-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-inactive); margin-top: 10px; font-weight: 500; }
 
   /* Main Controls */
-  .fp-controls { display: flex; justify-content: space-between; align-items: center; }
+  .fp-controls { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; padding-bottom: 20px; }
   .fp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; }
   .fp-controls button:active { transform: scale(0.9); }
   .btn-main-play { width: 70px; height: 70px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
@@ -642,6 +651,22 @@
         </div>
 
         <button class="btn-save-profile" onclick="saveProfileChanges()">Simpan Perubahan</button>
+      </div>
+      
+      <!-- KARTU REDEEM CODE (BARU) -->
+      <div class="server-test-card">
+        <div class="server-test-header">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#38bdf8" stroke-width="2.5">
+            <path d="M20 12V8H6a2 2 0 01-2-2c0-1.1.9-2 2-2h12v4"></path>
+            <path d="M4 6v12a2 2 0 002 2h14v-4H6a2 2 0 01-2-2"></path>
+            <rect x="16" y="16" width="4" height="4" rx="1"></rect>
+          </svg>
+          Tukar Kode Redeem
+        </div>
+        <div class="search-box" style="margin-bottom: 15px; width: 100%;">
+          <input type="text" id="inputRedeemCode" placeholder="Masukkan Kode Redeem" style="text-transform: uppercase; font-size: 13px;">
+        </div>
+        <button class="btn-save-profile" onclick="processRedeemCode()" style="margin-top: 0;">Klaim Kode</button>
       </div>
 
       <!-- KARTU TEST SERVER REAL API BERSAMAAN -->
@@ -1254,7 +1279,7 @@
   }
 
   // ==========================================
-  // 7. EDIT PROFIL & NAVIGASI
+  // 7. EDIT PROFIL & REDEEM CODE
   // ==========================================
   function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
   function handleAvatarUpload(e) {
@@ -1276,6 +1301,29 @@
     currentUser.name = newName; currentUser.nickname = newNick;
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
     alert("Profil berhasil diperbarui!");
+  }
+  
+  function processRedeemCode() {
+    const codeInput = document.getElementById('inputRedeemCode').value.trim().toUpperCase();
+    if(!codeInput) return alert("Silakan masukkan kode redeem!");
+
+    if(!currentUser) return alert("Silakan login terlebih dahulu!");
+
+    // Daftar Kode Redeem Rahasia
+    const validCodes = {
+      'MELOFYPRO': { plan: 'pro', name: 'Paket Pro' },
+      'FLAGSHIPVIP': { plan: 'flagship', name: 'Flagship Annual' },
+      'PELAJAR100': { plan: 'pelajar', name: 'Paket Pelajar' }
+    };
+
+    if(validCodes[codeInput]) {
+      const reward = validCodes[codeInput];
+      upgradePlan(reward.plan); 
+      document.getElementById('inputRedeemCode').value = '';
+      alert(`🎉 Selamat! Anda berhasil menukarkan kode untuk ${reward.name}.`);
+    } else {
+      alert("❌ Kode redeem tidak valid atau sudah kedaluwarsa.");
+    }
   }
 
   const navItems = document.querySelectorAll('.nav-item');
@@ -1743,10 +1791,9 @@
 
       if (data.status) {
         let stateClass = "";
-        // Threshold baru sesuai permintaan: 0-150 Hijau, 150-600 Kuning, >600 Merah
-        if (timeMs <= 150) stateClass = "good";      // Hijau: 0 - 150 ms
-        else if (timeMs <= 600) stateClass = "mid";  // Kuning: 150 - 600 ms
-        else stateClass = "bad";                     // Merah: > 600 ms
+        if (timeMs <= 150) stateClass = "good";      
+        else if (timeMs <= 600) stateClass = "mid";  
+        else stateClass = "bad";                     
 
         el.className = `ping-ms ${stateClass}`;
         el.innerHTML = wifiSvgMarkup + `<span>${timeMs}ms</span>`;
