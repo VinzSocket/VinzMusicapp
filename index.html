@@ -59,7 +59,7 @@
   
   /* --- AUTH SCREEN --- */
   #authView { display: flex; justify-content: center; align-items: center; background: transparent; padding: 20px; }
-  .glass-panel { position: relative; width: 100%; max-width: 360px; padding: 35px 25px; display: flex; flex-direction: column; align-items: center; background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 20px 50px rgba(0,0,0,0.8); z-index: 10; }
+  .glass-panel { position: relative; width: 100%; max-width: 400px; padding: 35px 25px; display: flex; flex-direction: column; align-items: center; background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 28px; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 20px 50px rgba(0,0,0,0.8); z-index: 10; }
   .auth-title { color: white; margin: 0 0 5px 0; font-weight: 700; font-size: 26px; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .auth-sub { font-size: 12px; color: var(--text-inactive); margin-bottom: 20px; text-align: center; }
 
@@ -101,7 +101,7 @@
   #appView { display: none; background: radial-gradient(circle at top right, rgba(30,41,59,0.3), transparent); flex-direction: column; z-index: 5; }
   .content { flex: 1; position: relative; overflow: hidden; }
   
-  .screen { position: absolute; inset: 0; padding: 20px 20px 180px 20px; display: none; opacity: 0; overflow-y: auto; flex-direction: column; }
+  .screen { position: absolute; inset: 0; padding: 20px 20px 180px 20px; display: none; opacity: 0; overflow-y: auto; flex-direction: column; max-width: 800px; margin: 0 auto; }
   .screen.active { display: flex; animation: smoothFadeIn 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; z-index: 20; }
   .screen.center-content { justify-content: flex-start; align-items: center; text-align: center; }
   
@@ -230,7 +230,7 @@
   .dl-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #38bdf8, #818cf8); border-radius: 3px; transition: width 0.15s ease; }
 
   /* --- AKUN SCREEN --- */
-  .profile-card { text-align: center; padding: 25px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; margin-bottom: 20px; backdrop-filter: blur(15px); width: 100%; max-width: 360px; display: flex; flex-direction: column; align-items: center; }
+  .profile-card { text-align: center; padding: 25px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; margin-bottom: 20px; backdrop-filter: blur(15px); width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; }
   .profile-img-container { position: relative; width: 90px; height: 90px; margin-bottom: 15px; }
   .profile-img-container img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; padding: 3px; }
   .change-avatar-btn { position: absolute; bottom: 0; right: 0; background: var(--primary); border: none; border-radius: 50%; width: 28px; height: 28px; color: #000; cursor: pointer; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
@@ -243,7 +243,7 @@
   .btn-save-profile { width: 100%; padding: 12px; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: var(--primary); border-radius: 12px; font-weight: 600; cursor: pointer; margin-top: 5px; transition: 0.2s; }
   .btn-save-profile:active { transform: scale(0.97); }
 
-  .btn-logout { width: 100%; max-width: 360px; padding: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; }
+  .btn-logout { width: 100%; max-width: 400px; padding: 14px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 16px; font-weight: 600; cursor: pointer; }
 
   /* --- KARTU REDEEM & TEST SERVER CARD UI --- */
   .server-test-card {
@@ -252,7 +252,7 @@
     border-radius: 20px;
     padding: 20px;
     width: 100%;
-    max-width: 360px;
+    max-width: 400px;
     margin-bottom: 20px;
     backdrop-filter: blur(15px);
   }
@@ -313,7 +313,7 @@
   .btn-test-server:active { transform: scale(0.97); }
 
   /* --- PREMIUM PRICING SCREEN --- */
-  .pricing-grid { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 380px; margin-top: 10px; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; width: 100%; max-width: 800px; margin-top: 10px; }
   .price-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 20px; text-align: left; backdrop-filter: blur(15px); position: relative; overflow: hidden; transition: 0.3s; }
   .price-card.featured { border-color: #f59e0b; background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(234, 88, 12, 0.05) 100%); }
   .price-badge { position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #f59e0b, #ea580c); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -338,7 +338,7 @@
   }
 
   /* --- MINI PLAYER --- */
-  .mini-player { position: absolute; bottom: -100px; left: 15px; right: 15px; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 8px 12px; gap: 12px; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+  .mini-player { position: absolute; bottom: -100px; left: 15px; right: 15px; max-width: 760px; margin: 0 auto; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; align-items: center; padding: 8px 12px; gap: 12px; transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 50; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
   .mini-player.active { bottom: 95px; }
   .mp-cover { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
   .mp-info { flex: 1; overflow: hidden; }
@@ -346,35 +346,28 @@
   .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
 
-  /* --- FULL SCREEN PLAYER DYNAMIC 100DVH & SPACE-EVENLY --- */
+  /* --- FULL SCREEN PLAYER (TENGGELAM FIX & RESPONSIVE) --- */
   .full-player { 
     position: fixed; inset: 0; background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,0.98) 100%); 
-    backdrop-filter: blur(30px); z-index: 200; 
-    height: 100dvh; /* Menggunakan viewport height dinamis */
-    display: flex; flex-direction: column; justify-content: space-evenly; /* Menyebarkan ruang kosong merata */
-    padding: 20px 25px; 
-    transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-    overflow: hidden; /* Mengunci scroll agar space-evenly yang mengatur tata letak */
+    backdrop-filter: blur(30px); z-index: 200; display: flex; flex-direction: column; 
+    padding: 40px 25px 100px 25px; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+    overflow-y: auto; max-width: 600px; margin: 0 auto;
   }
   .full-player.active { transform: translateY(0); }
-  
-  .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; flex-shrink: 0; }
+  .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-shrink: 0; }
   .fp-header button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
   .fp-header p { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-inactive); text-transform: uppercase; }
   
-  /* Ukuran cover art dinamis berdasarkan tinggi layar min() */
   .fp-cover-container { 
-    width: min(100%, 40vh); /* Otomatis mengecil jika layar pendek */
-    aspect-ratio: 1/1; 
-    margin: 0 auto; 
+    width: 100%; max-width: 280px; margin: 0 auto 25px auto; aspect-ratio: 1/1; 
     box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; flex-shrink: 0; 
   }
   .fp-cover-container img { width: 100%; height: 100%; object-fit: cover; }
   
-  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; flex-shrink: 0; }
+  .fp-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-shrink: 0; }
   .fp-meta-text { flex: 1; overflow: hidden; }
-  .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 24px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .fp-meta-text p { margin: 0; font-size: 15px; color: var(--text-inactive); }
+  .fp-meta-text h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fp-meta-text p { margin: 0; font-size: 14px; color: var(--text-inactive); }
   
   .fp-meta-actions { display: flex; align-items: center; gap: 15px; }
   .btn-download { background: transparent; border: none; color: var(--text-inactive); cursor: pointer; transition: 0.2s; padding: 5px; }
@@ -383,20 +376,20 @@
   .btn-love.active svg { fill: #1db954; stroke: #1db954; } 
 
   /* Timeline */
-  .fp-timeline { margin-bottom: 0; flex-shrink: 0; }
+  .fp-timeline { margin-bottom: 25px; flex-shrink: 0; }
   .progress-area { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; cursor: pointer; }
   .progress-bar { height: 100%; width: 0%; background: #38bdf8; border-radius: 3px; position: relative; transition: width 0.1s linear; }
   .progress-bar::after { content: ""; position: absolute; right: -6px; top: -5px; width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px rgba(56,189,248,0.8); }
   .time-info { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-inactive); margin-top: 10px; font-weight: 500; }
 
   /* Main Controls */
-  .fp-controls { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; margin-bottom: 0; }
+  .fp-controls { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; padding-bottom: 30px; }
   .fp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; transition: 0.2s; }
   .fp-controls button:active { transform: scale(0.9); }
   .btn-main-play { width: 70px; height: 70px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
 
   /* --- BOTTOM NAVIGATION BAR LIQUID GLASS --- */
-  .bottom-nav { position: fixed; bottom: 15px; left: 10px; right: 10px; height: 70px; background: var(--nav-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 5px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+  .bottom-nav { position: fixed; bottom: 15px; left: 10px; right: 10px; max-width: 600px; margin: 0 auto; height: 70px; background: var(--nav-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 5px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
   .indicator { position: absolute; left: 0; top: 10px; height: 50px; background: var(--glass-indicator); border-radius: 20px; transition: transform 0.4s cubic-bezier(0.5, 1.2, 0.3, 1.1), width 0.4s ease; z-index: 0; }
   .nav-item { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; cursor: pointer; color: var(--text-inactive); transition: 0.3s; }
   .nav-item svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; transition: 0.4s; }
@@ -479,7 +472,7 @@
 
     <div class="auth-tabs">
       <button class="tab-btn active" id="tabMelofy" onclick="switchAuthMode('melofy')">Melofy ID</button>
-      <button class="tab-btn" id="tabGoogle" onclick="switchAuthMode('google')">Akun Google</button>
+      <button class="tab-btn" id="tabGoogle" onclick="switchAuthMode('google')">Google Account</button>
     </div>
 
     <div id="formMelofy" style="width: 100%;">
@@ -494,8 +487,9 @@
       <button class="glass-btn" onclick="handleMelofyAuth('register')">Buat Akun Melofy</button>
     </div>
 
-    <div id="formGoogle" style="width: 100%; display: none;">
-      <div id="googleBtnContainer"></div>
+    <div id="formGoogle" style="width: 100%; display: none; text-align: center;">
+      <div style="font-size: 13px; color: var(--text-inactive); margin-bottom: 15px;">Masuk menggunakan akun Google Anda untuk melanjutkan ke aplikasi Melofy.</div>
+      <div id="googleBtnContainer" style="display: flex; justify-content: center;"></div>
     </div>
   </div>
 </div>
@@ -663,11 +657,10 @@
           </svg>
           Tukar Kode Redeem
         </div>
-        <div class="search-box" style="margin-bottom: 10px; width: 100%;">
+        <div class="search-box" style="margin-bottom: 15px; width: 100%;">
           <input type="text" id="inputRedeemCode" placeholder="Masukkan Kode Redeem" style="text-transform: uppercase; font-size: 13px;">
         </div>
         <button class="btn-save-profile" onclick="processRedeemCode()" style="margin-top: 0;">Klaim Kode</button>
-        <div id="redeemMsg" style="margin-top: 10px; font-size: 12px; text-align: center;"></div>
       </div>
 
       <!-- KARTU TEST SERVER REAL API BERSAMAAN -->
@@ -720,7 +713,7 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAVIGATION BAR (LIQUID GLASS ANIMATED) -->
+  <!-- BOTTOM NAVIGATION BAR -->
   <div class="bottom-nav">
     <div class="indicator"></div>
     <div class="nav-item active" data-title="Dashboard">
@@ -814,7 +807,7 @@
   const dlIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
   const musicIcon = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>`;
   const questionSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`;
-  const errorIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color: #ef4444; vertical-align: middle; display: inline-block;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+  const errorSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
 
   // ==========================================
   // 1. DATABASE LOKAL OFFLINE (INDEXEDDB)
@@ -860,7 +853,7 @@
   }
 
   // ==========================================
-  // 2. SISTEM LIMIT HARIAN API (GRATIS = 10)
+  // 2. SISTEM LIMIT HARIAN API 
   // ==========================================
   function getLimitMax(plan) {
     if (plan === 'flagship') return 'Unlimited';
@@ -872,6 +865,14 @@
   function checkAndReduceLimit() {
     if (!currentUser) return false;
     if (currentUser.plan === 'flagship' || currentUser.isFlagship) return true; 
+
+    // Check expiry for pelajar redeem 7 days
+    if (currentUser.redeemExpiry && new Date() > new Date(currentUser.redeemExpiry)) {
+        currentUser.plan = 'free';
+        currentUser.limit = 10;
+        delete currentUser.redeemExpiry;
+        alert("⚠️ Masa aktif kode redeem pelajar 7 hari Anda telah berakhir.");
+    }
 
     const today = new Date().toDateString();
     if (currentUser.lastReset !== today) {
@@ -992,8 +993,7 @@
     currentUser = { 
       name: payload.name, email: payload.email, picture: payload.picture,
       nickname: payload.name.split(' ')[0] || payload.name,
-      plan: 'free', limit: 10, lastReset: new Date().toDateString(),
-      redeemedCodes: []
+      plan: 'free', limit: 10, lastReset: new Date().toDateString(), redeemedCodes: []
     };
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
     masukKeApp();
@@ -1009,7 +1009,7 @@
   function handleMelofyAuth(type) {
     const userInp = document.getElementById('melofyUsername').value.trim();
     const passInp = document.getElementById('melofyPassword').value.trim();
-    if (!userInp || !passInp) return alert("Sila isi Username dan Kata Sandi!");
+    if (!userInp || !passInp) return alert("Silakan isi Username dan Kata Sandi!");
     
     const fullEmail = userInp.toLowerCase() + "@melofy.com";
     let melofyUsers = JSON.parse(localStorage.getItem('melofy_db_users')) || [];
@@ -1028,8 +1028,7 @@
         currentUser = {
           name: "Vinz Hosting", email: "VinzHosting@melofy.com",
           picture: "https://api.dicebear.com/7.x/bottts/svg?seed=VinzHosting",
-          nickname: "Vinz (VIP)", isFlagship: true, plan: 'flagship', limit: 'Unlimited', 
-          lastReset: new Date().toDateString(), redeemedCodes: []
+          nickname: "Vinz (VIP)", isFlagship: true, plan: 'flagship', limit: 'Unlimited', lastReset: new Date().toDateString(), redeemedCodes: []
         };
         localStorage.setItem('vinz_user', JSON.stringify(currentUser));
         return masukKeApp();
@@ -1049,11 +1048,11 @@
     }
   }
 
-  function upgradePlan(newPlan) {
+  function upgradePlan(newPlan, customLimit = null) {
     if (!currentUser) return;
     currentUser.plan = newPlan;
     if(newPlan === 'flagship') currentUser.isFlagship = true;
-    currentUser.limit = getLimitMax(newPlan);
+    currentUser.limit = customLimit !== null ? customLimit : getLimitMax(newPlan);
     localStorage.setItem('vinz_user', JSON.stringify(currentUser));
     alert("Berhasil mengaktifkan Paket " + newPlan.toUpperCase() + "!");
     masukKeApp();
@@ -1067,11 +1066,6 @@
     document.getElementById('inputUsername').value = currentUser.name;
     document.getElementById('inputNickname').value = currentUser.nickname || currentUser.name;
     document.getElementById('inputEmail').value = currentUser.email;
-    
-    // Pastikan user lama yang belum memiliki struktur redeemedCodes di-update
-    if (!currentUser.redeemedCodes) {
-      currentUser.redeemedCodes = [];
-    }
 
     if (currentUser.isFlagship || currentUser.plan === 'flagship') {
       document.getElementById('flagshipBadge').style.display = 'block';
@@ -1280,7 +1274,7 @@
   }
 
   // ==========================================
-  // 7. EDIT PROFIL & REDEEM CODE (HANYA SEKALI)
+  // 7. EDIT PROFIL & REDEEM CODE (PELAJAR 7 HARI)
   // ==========================================
   function triggerAvatarUpload() { document.getElementById('avatarFileInput').click(); }
   function handleAvatarUpload(e) {
@@ -1306,41 +1300,41 @@
   
   function processRedeemCode() {
     const codeInput = document.getElementById('inputRedeemCode').value.trim().toUpperCase();
-    const msgDiv = document.getElementById('redeemMsg');
-    
-    if(!codeInput) {
-      msgDiv.innerHTML = `<span style="color: #ef4444; display:flex; align-items:center; justify-content:center; gap:5px;">${errorIcon} Silakan masukkan kode redeem!</span>`;
-      return;
-    }
+    if(!codeInput) return alert("Silakan masukkan kode redeem!");
 
     if(!currentUser) return alert("Silakan login terlebih dahulu!");
-    
     if(!currentUser.redeemedCodes) currentUser.redeemedCodes = [];
 
-    // Cek apakah kode sudah pernah diklaim sebelumnya
-    if(currentUser.redeemedCodes.includes(codeInput)) {
-      msgDiv.innerHTML = `<span style="color: #ef4444; display:flex; align-items:center; justify-content:center; gap:5px;">${errorIcon} Kode ini sudah pernah Anda gunakan!</span>`;
-      return;
+    // Cek apakah akun sudah pernah mengaktivasi redeem code tersebut
+    if (currentUser.redeemedCodes.includes(codeInput)) {
+      return alert("Akun Anda sudah pernah mengaktivasi kode redeem ini sebelumnya. Kode tidak dapat digunakan lagi.");
     }
 
-    // Daftar Kode Redeem Rahasia
     const validCodes = {
-      'MELOFYPRO': { plan: 'pro', name: 'Paket Pro' },
-      'FLAGSHIPVIP': { plan: 'flagship', name: 'Flagship Annual' },
-      'MELOFYPELAJAR': { plan: 'pelajar', name: 'Pelajar 7 Hari' }
+      'MELOFYPELAJAR': { plan: 'pelajar', name: 'Paket Pelajar (7 Hari)', limit: 200, isTimed: true },
+      'MELOFYPRO': { plan: 'pro', name: 'Paket Pro', limit: 500, isTimed: false },
+      'FLAGSHIPVIP': { plan: 'flagship', name: 'Flagship Annual', limit: 'Unlimited', isTimed: false }
     };
 
     if(validCodes[codeInput]) {
       const reward = validCodes[codeInput];
       
-      // Simpan kode ke array user agar tidak bisa diulang
       currentUser.redeemedCodes.push(codeInput);
-      
-      upgradePlan(reward.plan); 
+      currentUser.plan = reward.plan;
+      currentUser.limit = reward.limit;
+
+      if (reward.isTimed) {
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 7);
+        currentUser.redeemExpiry = expiryDate.toISOString();
+      }
+
+      localStorage.setItem('vinz_user', JSON.stringify(currentUser));
       document.getElementById('inputRedeemCode').value = '';
-      msgDiv.innerHTML = `<span style="color: #4ade80;">🎉 Selamat! Anda berhasil menukarkan kode untuk ${reward.name}.</span>`;
+      alert(`🎉 Selamat! Anda berhasil mengaktifkan ${reward.name}.`);
+      masukKeApp();
     } else {
-      msgDiv.innerHTML = `<span style="color: #ef4444; display:flex; align-items:center; justify-content:center; gap:5px;">${errorIcon} Kode redeem tidak valid atau sudah kedaluwarsa.</span>`;
+      alert("Kode redeem tidak valid atau sudah kedaluwarsa.");
     }
   }
 
@@ -1601,7 +1595,6 @@
 
   const iconPlay = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>`;
   const iconPause = `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>`;
-  const iconLoading = `<svg class="pulse-search-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>`;
 
   function handleEnter(e) { if (e.key === "Enter") searchSong(); }
 
@@ -1611,7 +1604,7 @@
     if(!query) return;
 
     if(!checkAndReduceLimit()) {
-        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center; gap:5px;">${errorIcon} Limit harian Anda habis.</div></div>`;
+        resDiv.innerHTML = `<div class="status-wrapper">${errorSvg}<div class="status-msg" style="color: #ef4444;">Limit harian Anda habis.</div></div>`;
         return;
     }
 
@@ -1637,131 +1630,175 @@
           return generateCardHTML({ title: parsedTitle, artist: parsedArtist, cover: s.thumbnail || s.image, url: s.url, duration: s.duration }, index);
         }).join('');
       } else {
-        resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444;">Lagu tidak ditemukan.</div></div>`;
+        resDiv.innerHTML = `<div class="status-wrapper">${errorSvg}<div class="status-msg" style="color: #ef4444;">Musik tidak ditemukan.</div></div>`;
       }
-    } catch(err) {
-      resDiv.innerHTML = `<div class="status-wrapper"><div class="status-msg" style="color: #ef4444; display:flex; align-items:center; gap:5px;">${errorIcon} Gagal terhubung ke Server.</div></div>`;
+    } catch (e) {
+      resDiv.innerHTML = `<div class="status-wrapper">${errorSvg}<div class="status-msg" style="color: #ef4444;">Gagal terhubung ke server pencarian.</div></div>`;
     }
   }
 
-  async function fetchAudio(spotifyUrl, title, artist, cover) {
-    if(!spotifyUrl) return alert("Link lagu tidak valid.");
+  async function fetchAudio(songUrl, title, artist, cover) {
+    const mini = document.getElementById("miniPlayer");
+    document.getElementById("mpTitle").innerText = "Memuat audio...";
+    document.getElementById("mpArtist").innerText = artist;
+    document.getElementById("mpCover").src = cover;
+    mini.classList.add("active");
 
-    currentActiveSong = { title, artist, cover, url: spotifyUrl };
+    currentActiveSong = { title, artist, cover, url: songUrl };
     saveToHistory(currentActiveSong);
-    
-    const isSaved = savedCollection.find(s => s.url === spotifyUrl);
-    document.getElementById('btnLove').className = isSaved ? 'btn-love active' : 'btn-love';
 
-    document.getElementById('miniPlayer').classList.add('active');
-    document.getElementById('mpTitle').innerText = title;
-    document.getElementById('mpCover').src = cover;
-    document.getElementById('fpTitle').innerText = title;
-    document.getElementById('fpCover').src = cover;
-
-    audio.pause();
-    audio.src = "";
-    currentAudioStreamUrl = null;
-
-    const offlineBlob = await getOfflineAudio(spotifyUrl);
-    if (offlineBlob) {
-      currentAudioStreamUrl = URL.createObjectURL(offlineBlob);
-      audio.src = currentAudioStreamUrl;
-      document.getElementById('mpArtist').innerText = artist + " (Koleksi Offline)";
-      document.getElementById('fpArtist').innerText = artist + " (Koleksi Offline)";
-      playPauseBtn.innerHTML = iconPause;
-      document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
-      audio.play();
-      return;
+    const isSavedInCollection = savedCollection.find(s => s.url === songUrl);
+    if(isSavedInCollection) {
+      const offlineBlob = await getOfflineAudio(songUrl);
+      if(offlineBlob) {
+        currentAudioStreamUrl = window.URL.createObjectURL(offlineBlob);
+        audio.src = currentAudioStreamUrl;
+        audio.play();
+        updatePlayerUI(title, artist, cover, true);
+        return;
+      }
     }
-
-    if(!checkAndReduceLimit()) {
-      document.getElementById('mpArtist').innerHTML = `<span style="display:flex; align-items:center; gap:4px;">${errorIcon} Limit Habis</span>`;
-      document.getElementById('fpArtist').innerHTML = `<span style="display:flex; align-items:center; gap:4px;">${errorIcon} Limit Audio Engine Habis</span>`;
-      return;
-    }
-
-    document.getElementById('mpArtist').innerText = "Memeriksa Stream...";
-    document.getElementById('fpArtist').innerText = "Memuat...";
-    playPauseBtn.innerHTML = iconLoading;
-    document.getElementById('fpPlayPauseBtn').innerHTML = iconLoading;
 
     try {
-      const result = await fetchWithProxyFallback(ApiManager.getDownloadUrl(spotifyUrl));
-      if (result.status && result.result && result.result.data && result.result.data.url) {
-        currentAudioStreamUrl = result.result.data.url;
+      const dlRes = await fetchWithProxyFallback(ApiManager.getDownloadUrl(songUrl));
+      if(dlRes.status && dlRes.data && dlRes.data.url) {
+        currentAudioStreamUrl = dlRes.data.url;
         audio.src = currentAudioStreamUrl;
-        document.getElementById('mpArtist').innerText = artist;
-        document.getElementById('fpArtist').innerText = artist;
         audio.play();
+        updatePlayerUI(title, artist, cover, true);
       } else {
-        document.getElementById('mpArtist').innerHTML = `<span style="display:flex; align-items:center; gap:4px;">${errorIcon} Stream Gagal Dimuat</span>`;
-        playPauseBtn.innerHTML = iconPlay;
+        throw new Error("Gagal mengambil stream audio.");
       }
-    } catch (err) {
-      document.getElementById('mpArtist').innerHTML = `<span style="display:flex; align-items:center; gap:4px;">${errorIcon} Kesalahan Jaringan</span>`;
-      playPauseBtn.innerHTML = iconPlay;
+    } catch(err) {
+      alert("Gagal memutar musik: " + err.message);
+      mini.classList.remove("active");
     }
   }
 
-  // ==========================================
-  // 10. PLAYER CONTROLS
-  // ==========================================
-  function openFullPlayer(e) {
-    if(e.target.closest('#mpPlayPauseBtn') || e.target.closest('.mp-controls')) return; 
-    document.getElementById('fullPlayer').classList.add('active');
+  function updatePlayerUI(title, artist, cover, isPlaying) {
+    document.getElementById("mpTitle").innerText = title;
+    document.getElementById("mpArtist").innerText = artist;
+    document.getElementById("mpCover").src = cover;
+
+    document.getElementById("fpTitle").innerText = title;
+    document.getElementById("fpArtist").innerText = artist;
+    document.getElementById("fpCover").src = cover;
+
+    isPlayingAudio = isPlaying;
+    if(isPlayingAudio) {
+      document.getElementById('firefliesCanvas').classList.add('active');
+      playPauseBtn.innerHTML = iconPause;
+      document.getElementById("fpPlayPauseBtn").innerHTML = iconPause;
+    } else {
+      document.getElementById('firefliesCanvas').classList.remove('active');
+      playPauseBtn.innerHTML = iconPlay;
+      document.getElementById("fpPlayPauseBtn").innerHTML = iconPlay;
+    }
+
+    const isSaved = savedCollection.find(s => s.url === currentActiveSong?.url);
+    if(isSaved) document.getElementById('btnLove').classList.add('active');
+    else document.getElementById('btnLove').classList.remove('active');
   }
-  function closeFullPlayer() { document.getElementById('fullPlayer').classList.remove('active'); }
 
   function togglePlayPause(e) {
     if(e) e.stopPropagation();
-    if(!audio.src) return;
-    if (audio.paused) audio.play(); else audio.pause();
+    if(audio.paused) {
+      audio.play();
+      isPlayingAudio = true;
+      playPauseBtn.innerHTML = iconPause;
+      document.getElementById("fpPlayPauseBtn").innerHTML = iconPause;
+      document.getElementById('firefliesCanvas').classList.add('active');
+    } else {
+      audio.pause();
+      isPlayingAudio = false;
+      playPauseBtn.innerHTML = iconPlay;
+      document.getElementById("fpPlayPauseBtn").innerHTML = iconPlay;
+      document.getElementById('firefliesCanvas').classList.remove('active');
+    }
   }
 
-  function skipAudio(seconds) {
-    if(audio.duration) audio.currentTime = Math.min(Math.max(audio.currentTime + seconds, 0), audio.duration);
-  }
-
-  audio.addEventListener("play", () => { 
-    playPauseBtn.innerHTML = iconPause;
-    document.getElementById('fpPlayPauseBtn').innerHTML = iconPause;
-    isPlayingAudio = true;
-    document.getElementById('firefliesCanvas').classList.add('active');
+  audio.addEventListener('timeupdate', () => {
+    if(!audio.duration) return;
+    const progressPercent = (audio.currentTime / audio.duration) * 100;
+    document.getElementById("progressBar").style.width = `${progressPercent}%`;
+    document.getElementById("currentTime").innerText = formatTime(audio.currentTime);
+    document.getElementById("durationTime").innerText = formatTime(audio.duration);
   });
-  
-  audio.addEventListener("pause", () => { 
-    playPauseBtn.innerHTML = iconPlay;
-    document.getElementById('fpPlayPauseBtn').innerHTML = iconPlay;
+
+  audio.addEventListener('ended', () => {
     isPlayingAudio = false;
+    playPauseBtn.innerHTML = iconPlay;
+    document.getElementById("fpPlayPauseBtn").innerHTML = iconPlay;
     document.getElementById('firefliesCanvas').classList.remove('active');
   });
 
-  audio.addEventListener("timeupdate", () => {
-    if (!audio.duration) return;
-    const current = audio.currentTime;
-    const duration = audio.duration;
-    const progressWidth = (current / duration) * 100;
-    document.getElementById("progressBar").style.width = progressWidth + "%";
-
-    const formatTime = (time) => {
-      const min = Math.floor(time / 60);
-      const sec = Math.floor(time % 60);
-      return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-    };
-
-    document.getElementById("currentTime").innerText = formatTime(current);
-    document.getElementById("durationTime").innerText = formatTime(duration);
-  });
-
   function seekAudio(e) {
-    const area = document.getElementById("progressArea");
-    const width = area.clientWidth;
+    const width = e.currentTarget.clientWidth;
     const clickX = e.offsetX;
-    const duration = audio.duration;
-    if(duration) {
-      audio.currentTime = (clickX / width) * duration;
-    }
+    audio.currentTime = (clickX / width) * audio.duration;
+  }
+
+  function skipAudio(sec) { audio.currentTime += sec; }
+
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
+  function openFullPlayer(e) {
+    if(e.target.closest('.mp-controls')) return;
+    document.getElementById("fullPlayer").classList.add("active");
+  }
+
+  function closeFullPlayer() {
+    document.getElementById("fullPlayer").classList.remove("active");
+  }
+
+  // ==========================================
+  // 10. REAL API CONCURRENT LATENCY TESTS
+  // ==========================================
+  async function runRealApiTestsConcurrent() {
+    const btn = document.getElementById("btnTestServer");
+    btn.innerText = "Menguji...";
+    btn.disabled = true;
+
+    const endpoints = [
+      { id: 'ping-melofy', url: `https://api.neoxr.eu/api/spotify-search?q=test&apikey=${NEOXR_API_KEY}` },
+      { id: 'res-yt', url: `https://api.neoxr.eu/api/youtube?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ&type=video&apikey=${NEOXR_API_KEY}` },
+      { id: 'res-tt', url: `https://api.neoxr.eu/api/tiktok?url=https://www.tiktok.com/@scout2015/video/6718335390845095173&apikey=${NEOXR_API_KEY}` },
+      { id: 'res-ig', url: `https://api.neoxr.eu/api/ig?url=https://www.instagram.com/p/C-test/&apikey=${NEOXR_API_KEY}` },
+      { id: 'res-sp', url: `https://api.botcahx.eu.org/api/search/spotify?query=test&apikey=${BOTCAHX_API_KEY}` }
+    ];
+
+    endpoints.forEach(ep => {
+      const el = document.getElementById(ep.id);
+      el.className = "ping-ms testing";
+      el.querySelector("span:last-child").innerText = "Menguji...";
+    });
+
+    await Promise.all(endpoints.map(async (ep) => {
+      const startTime = performance.now();
+      const el = document.getElementById(ep.id);
+      try {
+        const res = await fetch(ep.url, { cache: 'no-store' });
+        const endTime = performance.now();
+        const latency = Math.round(endTime - startTime);
+
+        let statusClass = "good";
+        if (latency > 600) statusClass = "bad";
+        else if (latency > 300) statusClass = "mid";
+
+        el.className = `ping-ms ${statusClass}`;
+        el.querySelector("span:last-child").innerText = `${latency} ms`;
+      } catch (err) {
+        el.className = "ping-ms bad";
+        el.querySelector("span:last-child").innerText = "Timeout";
+      }
+    }));
+
+    btn.innerText = "JALANKAN";
+    btn.disabled = false;
   }
 </script>
 </body>
