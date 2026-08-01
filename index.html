@@ -20,7 +20,6 @@
 
   * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
 
-  /* FIX: Menggunakan 100vh dan 100dvh agar tidak tertutup navigation/URL bar browser di HP */
   body { 
     margin: 0; 
     height: 100vh; 
@@ -171,7 +170,7 @@
   .platform-btn.ig svg { stroke: #e1306c; }
   .platform-btn.tt svg { color: #00f2fe; }
 
-  /* --- MODAL DOWNLOAD STYLE SNAPTIK --- */
+  /* --- MODAL DOWNLOAD --- */
   .downloader-modal {
     position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px);
     z-index: 500; display: none; justify-content: center; align-items: center; padding: 20px;
@@ -355,14 +354,13 @@
   .mp-info p { margin: 2px 0 0 0; font-size: 12px; color: var(--text-inactive); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mp-controls button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
 
-  /* --- FULL SCREEN PLAYER (TENGGELAM FIX & RESPONSIF) --- */
-  /* FIX: Kita gunakan 100dvh dan space-evenly agar layout menyesuaikan tinggi layar hp yang kecil */
+  /* --- FULL SCREEN PLAYER --- */
   .full-player { 
     position: fixed; top: 0; left: 0; right: 0; 
-    height: 100vh; height: 100dvh; /* Dynamic Height */
+    height: 100vh; height: 100dvh;
     background: linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(2,6,23,0.98) 100%); 
     backdrop-filter: blur(30px); z-index: 200; 
-    display: flex; flex-direction: column; justify-content: space-evenly; /* Mengatur jarak secara otomatis */
+    display: flex; flex-direction: column; justify-content: space-evenly;
     padding: 3vh 25px 4vh 25px; 
     transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
     overflow-y: auto;
@@ -372,7 +370,6 @@
   .fp-header button { background: transparent; border: none; color: #fff; cursor: pointer; padding: 5px; }
   .fp-header p { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--text-inactive); text-transform: uppercase; }
   
-  /* FIX: Ukuran cover dinamis menyesuaikan tinggi layar (vh) agar tidak menekan tombol play ke bawah */
   .fp-cover-container { 
     width: 100%; max-width: 42vh; margin: 0 auto; aspect-ratio: 1/1; 
     box-shadow: 0 25px 50px rgba(0,0,0,0.6); border-radius: 16px; overflow: hidden; flex-shrink: 1; 
@@ -403,7 +400,7 @@
   .fp-controls button:active { transform: scale(0.9); }
   .btn-main-play { width: 70px; height: 70px; background: #fff !important; color: #000 !important; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: 0.2s; box-shadow: 0 10px 25px rgba(255,255,255,0.2); }
 
-  /* --- BOTTOM NAVIGATION BAR LIQUID GLASS --- */
+  /* --- BOTTOM NAVIGATION BAR --- */
   .bottom-nav { position: fixed; bottom: 15px; left: 10px; right: 10px; height: 70px; background: var(--nav-bg); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 5px; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
   .indicator { position: absolute; left: 0; top: 10px; height: 50px; background: var(--glass-indicator); border-radius: 20px; transition: transform 0.4s cubic-bezier(0.5, 1.2, 0.3, 1.1), width 0.4s ease; z-index: 0; }
   .nav-item { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; cursor: pointer; color: var(--text-inactive); transition: 0.3s; }
@@ -413,33 +410,17 @@
   .nav-item.active svg { transform: translateY(-8px); }
   .nav-item.active span { opacity: 1; transform: translateY(0); }
 
-  /* ========================================================= */
-  /* MEDIA QUERIES (DESKTOP & LAPTOP ADAPTATION)               */
-  /* ========================================================= */
   @media (min-width: 768px) {
-    /* Mencegah UI Nav dan Player meregang aneh ke seluruh layar lebar */
     .bottom-nav { max-width: 500px; margin: 0 auto; left: 0; right: 0; }
     .mini-player { max-width: 500px; margin: 0 auto; left: 0; right: 0; }
-    
-    /* Full Player bergaya popup rapih di tengah layar */
     .full-player { max-width: 500px; margin: 0 auto; left: 0; right: 0; border-radius: 24px 24px 0 0; }
-    
-    /* Layout Utama & Header */
     .content { max-width: 900px; margin: 0 auto; width: 100%; }
     .app-header { max-width: 900px; margin: 0 auto; border-radius: 0 0 20px 20px; }
-    
-    /* Ubah list menjadi Grid (Kotak-Kotak) di Laptop */
     .song-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-    
-    /* Menu Downloader berjajar kesamping */
     .platform-menu-vertical { flex-direction: row; flex-wrap: wrap; }
     .platform-btn { flex: 1; min-width: 220px; justify-content: center; }
-    
-    /* Kartu harga berjajar rapih */
     .pricing-grid { flex-direction: row; max-width: 100%; justify-content: center; align-items: stretch; }
     .price-card { flex: 1; max-width: 300px; }
-    
-    /* Center Card di Layar Akun */
     .server-test-card, .profile-card, .btn-logout { max-width: 500px; margin-left: auto; margin-right: auto; }
   }
 </style>
@@ -710,16 +691,9 @@
       <div class="server-test-card">
         <div class="server-test-header">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#a78bfa" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Uji Latency
+          Uji Latency Server API (Real Time)
         </div>
         <div class="ping-list">
-          <div class="ping-item">
-            <span class="platform-name">Melofy Engine</span> 
-            <span class="ping-ms" id="ping-melofy">
-              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
-              <span>-- ms</span>
-            </span>
-          </div>
           <div class="ping-item">
             <span class="platform-name">YouTube API</span> 
             <span class="ping-ms" id="res-yt">
@@ -742,14 +716,21 @@
             </span>
           </div>
           <div class="ping-item">
-            <span class="platform-name">Spotify Search</span> 
+            <span class="platform-name">Pinterest API</span> 
+            <span class="ping-ms" id="res-pin">
+              <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
+              <span>-- ms</span>
+            </span>
+          </div>
+          <div class="ping-item">
+            <span class="platform-name">Spotify (8 Letters)</span> 
             <span class="ping-ms" id="res-sp">
               <svg class="wifi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path class="wifi-3" d="M2 8.5a15 15 0 0 1 20 0"></path><path class="wifi-2" d="M5 12.5a10 10 0 0 1 14 0"></path><path class="wifi-1" d="M8.5 16.5a5 5 0 0 1 7 0"></path><line class="wifi-dot" x1="12" y1="20" x2="12.01" y2="20" stroke-width="4"></line></svg>
               <span>-- ms</span>
             </span>
           </div>
         </div>
-        <button class="btn-test-server" onclick="runRealApiTestsConcurrent()" id="btnTestServer">JALANKAN</button>
+        <button class="btn-test-server" onclick="runRealApiTestsConcurrent()" id="btnTestServer">JALANKAN UJI REAL</button>
       </div>
 
       <button class="btn-logout" onclick="logoutAccount()" style="margin-bottom: 20px;">Keluar Akun</button>
@@ -842,7 +823,7 @@
   // ==========================================
   // KUNCI API DOWNLOADER & ENGINE MUSIK
   // ==========================================
-  const NEOXR_API_KEY = "VinzKeyNeoxr0021"; 
+  const NEOXR_API_KEY = "VinzKeyNeoxr0021";
   const BOTCAHX_API_KEY = "VinzKey0110";
 
   // SVG ICONS
@@ -1082,7 +1063,7 @@
 
   function loginGuest() {
     currentUser = { 
-      name: "Akun Tamu", email: "guest@melofy.com", 
+      name: "Akun Tamu", email: "guest@melofy.com",
       picture: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
       nickname: "Tamu", plan: 'free', limit: 10, lastReset: new Date().toDateString()
     };
@@ -1345,7 +1326,6 @@
 
     if(!currentUser) return alert("Silakan login terlebih dahulu!");
 
-    // Daftar Kode Redeem Rahasia
     const validCodes = {
       'MELOFYPRO': { plan: 'pro', name: 'Paket Pro' },
       'FLAGSHIPVIP': { plan: 'flagship', name: 'Flagship Annual' },
@@ -1354,7 +1334,7 @@
 
     if(validCodes[codeInput]) {
       const reward = validCodes[codeInput];
-      upgradePlan(reward.plan); 
+      upgradePlan(reward.plan);
       document.getElementById('inputRedeemCode').value = '';
       alert(`🎉 Selamat! Anda berhasil menukarkan kode untuk ${reward.name}.`);
     } else {
@@ -1779,28 +1759,33 @@
   }
 
   // ==========================================
-  // 11. SISTEM UJI API REAL (SERENTAK / CONCURRENT)
+  // 11. SISTEM UJI LATENCY REAL SERVER (4 APIKEY.JS + SPOTIFY SEARCH 8 LETTERS)
   // ==========================================
   const realTests = [
     {
-      id: 'ping-melofy',
-      url: `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent('Melofy Engine Test')}&apikey=${NEOXR_API_KEY}`
-    },
-    {
       id: 'res-yt',
-      url: `https://api.neoxr.eu/api/youtube?url=${encodeURIComponent('https://youtube.com/shorts/T_dezacRD1E?si=tVHrNlVr4K779sPW')}&type=video&quality=1080p&apikey=${NEOXR_API_KEY}`
+      name: 'YouTube API',
+      url: 'https://api.neoxr.eu/api/youtube?url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DfKRtnMYMW08&type=video&quality=1080p&apikey=VinzKeyNeoxr0021'
     },
     {
       id: 'res-tt',
-      url: `https://api.neoxr.eu/api/tiktok?url=${encodeURIComponent('https://vt.tiktok.com/ZS4Mpn2BD/')}&apikey=${NEOXR_API_KEY}`
+      name: 'TikTok API',
+      url: 'https://api.neoxr.eu/api/tiktok?url=https%3A%2F%2Fwww.tiktok.com%2F%40nikenandalusia%2Fvideo%2F7480894024082050309%3Fis_from_webapp%3D1%26sender_device%3Dpc%26web_id%3D7482388089839765012&apikey=VinzKeyNeoxr0021'
     },
     {
       id: 'res-ig',
-      url: `https://api.neoxr.eu/api/ig?url=${encodeURIComponent('https://www.instagram.com/reel/DbCoQaWxmTB/?igsh=eWNqZm5rZDhwcmVz')}&apikey=${NEOXR_API_KEY}`
+      name: 'Instagram API',
+      url: 'https://api.neoxr.eu/api/ig?url=https%3A%2F%2Fwww.instagram.com%2Fp%2FCK0tLXyAzEI&apikey=VinzKeyNeoxr0021'
+    },
+    {
+      id: 'res-pin',
+      name: 'Pinterest API',
+      url: 'https://api.neoxr.eu/api/pin?url=https%3A%2F%2Fid.pinterest.com%2Fpin%2F237072367881744903%2F&apikey=VinzKeyNeoxr0021'
     },
     {
       id: 'res-sp',
-      url: `https://api.neoxr.eu/api/spotify-search?q=${encodeURIComponent('Separuh Aku')}&apikey=${NEOXR_API_KEY}`
+      name: 'Spotify Search (8 Letters)',
+      url: 'https://api.neoxr.eu/api/spotify-search?q=8+Letters&apikey=VinzKeyNeoxr0021'
     }
   ];
 
@@ -1815,27 +1800,38 @@
 
   async function measureRealApiPing(testObj) {
     const el = document.getElementById(testObj.id);
+    if (!el) return;
+    
     el.className = "ping-ms testing";
     el.innerHTML = wifiSvgMarkup + "<span>Testing...</span>";
 
+    // Catat waktu secara presisi sebelum fetch dan sesudah response JSON selesai
     const startTime = performance.now();
     try {
-      const response = await fetch(testObj.url);
+      const response = await fetch(testObj.url, {
+        method: "GET",
+        headers: {
+          "Accept": "application/json"
+        }
+      });
       const data = await response.json();
       const endTime = performance.now();
       const timeMs = Math.round(endTime - startTime);
 
-      if (data.status) {
+      if (response.ok && data && data.status) {
         let stateClass = "";
-        if (timeMs <= 150) stateClass = "good";      
-        else if (timeMs <= 600) stateClass = "mid";  
+        // Ambang batas performa respons latency scraper API
+        if (timeMs <= 800) stateClass = "good";      
+        else if (timeMs <= 2500) stateClass = "mid";  
         else stateClass = "bad";                     
 
         el.className = `ping-ms ${stateClass}`;
         el.innerHTML = wifiSvgMarkup + `<span>${timeMs}ms</span>`;
       } else {
+        const endTimeErr = performance.now();
+        const timeMsErr = Math.round(endTimeErr - startTime);
         el.className = "ping-ms bad";
-        el.innerHTML = wifiSvgMarkup + "<span>Error</span>";
+        el.innerHTML = wifiSvgMarkup + `<span>Error (${timeMsErr}ms)</span>`;
       }
     } catch (e) {
       el.className = "ping-ms bad";
@@ -1845,13 +1841,13 @@
 
   async function runRealApiTestsConcurrent() {
     const btn = document.getElementById('btnTestServer');
-    btn.innerText = "Sedang Menguji";
+    btn.innerText = "Sedang Menguji...";
     btn.disabled = true;
 
-    // Menjalankan seluruh tes secara bersamaan (concurrent) menggunakan Promise.all
+    // Menjalankan kelima uji server API secara serentak (concurrent)
     await Promise.all(realTests.map(test => measureRealApiPing(test)));
 
-    btn.innerText = "JALANKAN";
+    btn.innerText = "JALANKAN UJI REAL";
     btn.disabled = false;
   }
 </script>
