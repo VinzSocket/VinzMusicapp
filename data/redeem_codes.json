@@ -1,0 +1,6 @@
+{
+    "MELOFYPRO": { "plan": "pro", "name": "Paket Pro", "singleUse": false },
+    "FLAGSHIPVIP": { "plan": "flagship", "name": "Flagship Annual", "singleUse": false },
+    "PELAJAR100": { "plan": "pelajar", "name": "Paket Pelajar", "singleUse": false },
+    "MELOFYPELAJAR": { "plan": "pelajar", "name": "Paket Pelajar (7 Hari)", "durationDays": 7, "singleUse": true, "claim": null }
+}
